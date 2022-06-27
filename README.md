@@ -6,9 +6,11 @@ Current app name ideas:
 
 User role: 
 1. a busy person who cooks often
+
 User Personas:
 1. My user is Preeti and she lives in New York City. She is 32 and has a family of 4 kids. She is very well up to date with technology, so she will use a website app frequently. Her main motivation to use this web app is to keep track of all of her groceries to feed a large family. Deploying the project on a website could be a pain point since it would be much easier for Preeti to take pictures of her receipts and upload them using an app. Another pain point would be the variety of recipes, and if Preeti uses this web app often, the recipes could start repeating.
 2. My user is Faruq and he lives in California. He is a college student who lives alone, but needs to cook for himself. He is also well versed with technology. Because he doesn’t have much experience with cooking, his main motivation to use this web app is to discover recipes that are accessible (something from what he already has) since going to grocery stores is difficult for him without a car. One pain point could be how easy the recipes are—Faruq would want easy recipes, which would need another layer of filtering. 
+
 User stories:
 1. As a college student, I want to create a profile so the app can know my cooking level and adjust recipes according to my level set
 2. As a user with allergies, I want to filter my recipes according to remove recipes that have dangerous ingredients so I can safely trust the web app
