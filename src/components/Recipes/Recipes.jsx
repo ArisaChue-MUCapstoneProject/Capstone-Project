@@ -2,10 +2,19 @@ import * as React from "react"
 import { Link } from "react-router-dom"
 import "./Recipes.css"
 
-export default function Recipes() {
+import RecipeCard from "../RecipeCard/RecipeCard"
+
+export default function Recipes(props) {
   return (
     <nav className="recipes">
-        <p>Recipes</p>
+      <h2 className="recipes-heading">Recipes</h2>
+      <div className="recipes-grid">
+        {
+          props.recipes.map((recipe) => (
+            <RecipeCard key={recipe.id} title={recipe.title} image={recipe.image} />
+          ))
+        }
+      </div>
     </nav>
   )
 }

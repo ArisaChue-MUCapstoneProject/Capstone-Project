@@ -1,3 +1,10 @@
+.recipes-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 15px;
+}
+
 .recipes {
-    margin: 50px 0px 0px 0px;
+    padding: 1rem;
+    margin: auto;
 }

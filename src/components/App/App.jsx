@@ -31,6 +31,69 @@ export default function App() {
     quantity: ""
   }
 
+  var sampleRecipes = [
+    {
+        "id": 716429,
+        "title": "Pasta with Garlic, Scallions, Cauliflower & Breadcrumbs",
+        "calories": 584,
+        "carbs": "84g",
+        "fat": "20g",
+        "image": "https://spoonacular.com/recipeImages/716429-312x231.jpg",
+        "imageType": "jpg",
+        "protein": "19g"
+    },
+    {
+        "id": 715538,
+        "title": "What to make for dinner tonight?? Bruschetta Style Pork & Pasta",
+        "calories": 521,
+        "carbs": "69g",
+        "fat": "10g",
+        "image": "https://spoonacular.com/recipeImages/715538-312x231.jpg",
+        "imageType": "jpg",
+        "protein": "35g"
+    },
+    {
+      "id": 716429,
+      "title": "Pasta with Garlic, Scallions, Cauliflower & Breadcrumbs",
+      "calories": 584,
+      "carbs": "84g",
+      "fat": "20g",
+      "image": "https://spoonacular.com/recipeImages/716429-312x231.jpg",
+      "imageType": "jpg",
+      "protein": "19g"
+  },
+  {
+      "id": 715538,
+      "title": "What to make for dinner tonight?? Bruschetta Style Pork & Pasta",
+      "calories": 521,
+      "carbs": "69g",
+      "fat": "10g",
+      "image": "https://spoonacular.com/recipeImages/715538-312x231.jpg",
+      "imageType": "jpg",
+      "protein": "35g"
+  },
+  {
+    "id": 716429,
+    "title": "Pasta with Garlic, Scallions, Cauliflower & Breadcrumbs",
+    "calories": 584,
+    "carbs": "84g",
+    "fat": "20g",
+    "image": "https://spoonacular.com/recipeImages/716429-312x231.jpg",
+    "imageType": "jpg",
+    "protein": "19g"
+},
+{
+    "id": 715538,
+    "title": "What to make for dinner tonight?? Bruschetta Style Pork & Pasta",
+    "calories": 521,
+    "carbs": "69g",
+    "fat": "10g",
+    "image": "https://spoonacular.com/recipeImages/715538-312x231.jpg",
+    "imageType": "jpg",
+    "protein": "35g"
+},
+]
+
 const [products, setProducts] = useState(basicProducts)
 const [productForm, setProductForm] = useState(basicProductForm)
 
@@ -103,7 +166,7 @@ const handleOnProductFormChange = (event) => {
           <Routes>
             <Route path="/" element={<Home />}/>
             <Route path="/profile" element={<Profile />}/>
-            <Route path="/recipes" element={<Recipes />}/>
+            <Route path="/recipes" element={<Recipes recipes={sampleRecipes}/>}/>
             <Route path="/pantry" element={<Pantry productForm={productForm} handleOnProductFormChange={handleOnProductFormChange} handleOnSubmitProductForm={handleOnSubmitProductForm} handleProductQuantity={handleProductQuantity} products={products}/>}/>
             <Route path="/shoppingcart" element={<ShoppingCart />}/>
           </Routes>
