@@ -4,6 +4,7 @@ import Profile from "../Profile/Profile"
 import Recipes from "../Recipes/Recipes"
 import Pantry from "../Pantry/Pantry"
 import ShoppingCart from "../ShoppingCart/ShoppingCart"
+import { constRecipes, constRecipeInstructions, constRecipeInfo } from "../constants/constants"
 import './App.css';
 
 import { BrowserRouter, Routes, Route } from "react-router-dom"
@@ -11,6 +12,9 @@ import { useState, useEffect } from "react"
 
 export default function App() {
 
+  //TODO: move component specific code into components
+
+  //TODO: replace with empty array once testing is done
   var basicProducts = [
     {name: "apple",
     quantity: 2},
@@ -31,106 +35,62 @@ export default function App() {
     quantity: ""
   }
 
-  var sampleRecipes = [
-    {
-        "id": 716429,
-        "title": "Pasta with Garlic, Scallions, Cauliflower & Breadcrumbs",
-        "calories": 584,
-        "carbs": "84g",
-        "fat": "20g",
-        "image": "https://spoonacular.com/recipeImages/716429-312x231.jpg",
-        "imageType": "jpg",
-        "protein": "19g"
-    },
-    {
-        "id": 715538,
-        "title": "What to make for dinner tonight?? Bruschetta Style Pork & Pasta",
-        "calories": 521,
-        "carbs": "69g",
-        "fat": "10g",
-        "image": "https://spoonacular.com/recipeImages/715538-312x231.jpg",
-        "imageType": "jpg",
-        "protein": "35g"
-    },
-    {
-      "id": 716429,
-      "title": "Pasta with Garlic, Scallions, Cauliflower & Breadcrumbs",
-      "calories": 584,
-      "carbs": "84g",
-      "fat": "20g",
-      "image": "https://spoonacular.com/recipeImages/716429-312x231.jpg",
-      "imageType": "jpg",
-      "protein": "19g"
-  },
-  {
-      "id": 715538,
-      "title": "What to make for dinner tonight?? Bruschetta Style Pork & Pasta",
-      "calories": 521,
-      "carbs": "69g",
-      "fat": "10g",
-      "image": "https://spoonacular.com/recipeImages/715538-312x231.jpg",
-      "imageType": "jpg",
-      "protein": "35g"
-  },
-  {
-    "id": 716429,
-    "title": "Pasta with Garlic, Scallions, Cauliflower & Breadcrumbs",
-    "calories": 584,
-    "carbs": "84g",
-    "fat": "20g",
-    "image": "https://spoonacular.com/recipeImages/716429-312x231.jpg",
-    "imageType": "jpg",
-    "protein": "19g"
-},
-{
-    "id": 715538,
-    "title": "What to make for dinner tonight?? Bruschetta Style Pork & Pasta",
-    "calories": 521,
-    "carbs": "69g",
-    "fat": "10g",
-    "image": "https://spoonacular.com/recipeImages/715538-312x231.jpg",
-    "imageType": "jpg",
-    "protein": "35g"
-},
-]
+  //TODO: replace these placeholders once we integrate with the recipe API
+  const sampleRecipes = constRecipes
 
+  const sampleRecipeInstructions = constRecipeInstructions
+
+  const sampleRecipeInfo = constRecipeInfo
+
+// state variables
 const [products, setProducts] = useState(basicProducts)
 const [productForm, setProductForm] = useState(basicProductForm)
+const [recipeModelShow, setRecipeModalShow] = useState(false);
+const [recipeInstructions, setRecipeInstructions] = useState([]);
+const [recipeinfo, setRecipeinfo] = useState({});
 
+//enum 
+const Operations = Object.freeze({
+  Add: Symbol("add"),
+  Subtract: Symbol("subtract"),
+  Erase: Symbol("erase")
+})
+
+// changes product item quantity based on button click
 const handleProductQuantity = (productName, operation) => {
-  // find index of productName
   let itemIndex = products.findIndex(item => item.name === productName)
 
-  let newProducts = []
-  for (let i = 0; i < products.length; i++) {
-    newProducts.push(products[i])
-  }
+  let newProducts = [...products]
 
-  if (operation == "add") {
+  // edit item quantity
+  //TODO: throw error if item didn't exist in products
+  if (operation === Operations.Add) {
     newProducts[itemIndex].quantity += 1
   } 
-  else if (operation === "minus") {
+  else if (operation === Operations.Subtract) {
     newProducts[itemIndex].quantity -= 1
     if (newProducts[itemIndex].quantity == 0) {
       newProducts.splice(itemIndex, 1)
     }
-  } else {
+  } else if (operation === Operations.Erase) {
     newProducts.splice(itemIndex, 1)
-  }
+  } 
+  //TODO: create an else statement and throw error
   
+  // update products state
   setProducts(newProducts)
 }
 
+// adds new product item when submit button is clicked
 const handleOnSubmitProductForm = () => {
+  // submitted info from form
   let itemName = productForm.name.toLowerCase()
-  // find index of productName
   let itemIndex = products.findIndex(item => item.name === itemName)
 
-  let newProducts = []
-  for (let i = 0; i < products.length; i++) {
-    newProducts.push(products[i])
-  }
+  let newProducts = [...products]
 
+  // add new item to products
+  //TODO: check if productForm.quantity is positive whole number
   if (itemIndex === -1) {
     let newItem = {
       name: itemName,
@@ -138,6 +98,7 @@ const handleOnSubmitProductForm = () => {
     }
     newProducts.push(newItem)
   } else {
+    // if user submitted an item that already exists, just change quantity
     newProducts[itemIndex].quantity += Number(productForm.quantity)
   }
 
@@ -145,17 +106,36 @@ const handleOnSubmitProductForm = () => {
   setProductForm(basicProductForm)
 }
 
+// when the inputs of products form changes
 const handleOnProductFormChange = (event) => {
   let key = event.target.name
   let val = event.target.value
+  // deep copy of product form
   let newProductForm = {
     name: productForm.name,
     quantity: productForm.quantity
   }
-
+  // update with the change (either item name or quantity)
   newProductForm[key] = val
-  
   setProductForm(newProductForm)
+}
+
+// onclick function for each recipe card
+const handleRecipeCardClick = (showStatus, recipeId) => {
+  handleRecipeModal(showStatus)
+  handleGetRecipeInstructions(recipeId)
+}
+
+// pop up recipe modal for specific recipe card
+const handleRecipeModal = (showStatus) => {
+  setRecipeModalShow(showStatus)
+}
+
+// extract recipe instructions for recipe modal
+const handleGetRecipeInstructions = (recipeId) => {
+  //TODO: extract recipe instructions for specific given recipe using API
+  setRecipeInstructions(sampleRecipeInstructions)
+  setRecipeinfo(sampleRecipeInfo)
 }
 
   return (
@@ -166,7 +146,7 @@ const handleOnProductFormChange = (event) => {
           <Routes>
             <Route path="/" element={<Home />}/>
             <Route path="/profile" element={<Profile />}/>
-            <Route path="/recipes" element={<Recipes recipes={sampleRecipes}/>}/>
+            <Route path="/recipes" element={<Recipes recipeinfo={recipeinfo} handleRecipeCardClick={handleRecipeCardClick} recipeInstructions={recipeInstructions} handleRecipeModal={handleRecipeModal} recipeModelShow={recipeModelShow} recipes={sampleRecipes}/>}/>
             <Route path="/pantry" element={<Pantry productForm={productForm} handleOnProductFormChange={handleOnProductFormChange} handleOnSubmitProductForm={handleOnSubmitProductForm} handleProductQuantity={handleProductQuantity} products={products}/>}/>
             <Route path="/shoppingcart" element={<ShoppingCart />}/>
           </Routes>
