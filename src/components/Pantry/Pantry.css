@@ -1,17 +1,11 @@
 .pantry {
-    margin: 0px 0px 0px 0px;
-    background-color: azure;
-}
-
-.pantry-heading {
-    padding: 1rem;
     margin: auto;
-
+    background-color: azure;
+    padding: 1rem;
 }
 
 .product-form {
-    margin-left: 1rem;
-    margin-right: 1rem;
+    align-self: center;
 }
 
 .product-submit {
