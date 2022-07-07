@@ -1,0 +1,10 @@
+    .navbar {
+    background-color: red;
+    position: fixed;
+    width: 100%;
+    display: flex;
+    justify-content: space-evenly;
+    margin: auto;
+    top: 0;
+    height: 50px;
+    }
