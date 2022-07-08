@@ -7,12 +7,12 @@ export default function RecipeModal(props) {
     if (!props.show) {
         return null
     }
-    const { recipeInfo, instructions, title, ...modalProps } = props
+    const { recipeInfo, ...modalProps } = props
     return (
       <Modal {...modalProps} scrollable={true} size="lg" aria-labelledby="contained-modal-title-vcenter" centered>
         <Modal.Header closeButton>
           <Modal.Title id="contained-modal-title-vcenter">
-            {title}
+            {recipeInfo.title}
           </Modal.Title>
         </Modal.Header>
         <Modal.Body className="show-grid">
@@ -42,7 +42,7 @@ export default function RecipeModal(props) {
                     <p className="modal-headings">Steps:</p>
                     {
                         // props.instructions is array of instruction Objects, main instruction is at index 0
-                        instructions[0].steps.map((curStep) => (
+                        recipeInfo.analyzedInstructions[0].steps.map((curStep) => (
                             <p key={curStep.number}>{curStep.number}. {curStep.step}</p>
                         ))
                     }
