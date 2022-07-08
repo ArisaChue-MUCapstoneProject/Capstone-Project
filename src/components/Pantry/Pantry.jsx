@@ -31,7 +31,7 @@ export default function Pantry(props) {
         </Form>
     {
       products.map((product) => (
-        <ProductCard key={product.name} name={product.name} quantity={product.quantity} handleProductQuantity={props.handleProductQuantity}/>
+        <ProductCard key={product.name} name={product.name} quantity={product.quantity} operations={props.operations} handleProductQuantity={props.handleProductQuantity}/>
       ))
     }
     </div>
