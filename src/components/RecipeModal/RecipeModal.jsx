@@ -19,7 +19,7 @@ export default function RecipeModal(props) {
             {/* first row - recipe overview */}
             <Row className="modal-overview">
                 <Col>
-                Serving Time: {props.recipeinfo.readyInMinutes} mins
+                Total Time: {props.recipeinfo.readyInMinutes} mins
                 </Col>
                 <Col>
                 Servings: {props.recipeinfo.servings}
@@ -40,6 +40,7 @@ export default function RecipeModal(props) {
                 <Col>
                     <p className="modal-headings">Steps:</p>
                     {
+                        // props.instructions is array of instruction Objects, main instruction is at index 0
                         props.instructions[0].steps.map((curStep) => (
                             <p key={curStep.number}>{curStep.number}. {curStep.step}</p>
                         ))
