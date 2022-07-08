@@ -9,6 +9,7 @@ import './App.css';
 
 import { BrowserRouter, Routes, Route } from "react-router-dom"
 import { useState, useEffect } from "react"
+import axios from 'axios';
 
 export default function App() {
 
@@ -42,12 +43,15 @@ export default function App() {
 
   const sampleRecipeInfo = constRecipeInfo
 
+  const api_url = "http://localhost:3001/apirecipes/"
+
 // state variables
 const [products, setProducts] = useState(basicProducts)
 const [productForm, setProductForm] = useState(basicProductForm)
-const [recipeModelShow, setRecipeModalShow] = useState(false);
-const [recipeInstructions, setRecipeInstructions] = useState([]);
-const [recipeinfo, setRecipeinfo] = useState({});
+const [recipeModelShow, setRecipeModalShow] = useState(false)
+const [recipeInstructions, setRecipeInstructions] = useState([])
+const [recipeinfo, setRecipeinfo] = useState({})
+const [recipes, setRecipes] = useState([])
 
 //enum 
 const Operations = Object.freeze({
@@ -55,6 +59,30 @@ const Operations = Object.freeze({
   Subtract: Symbol("subtract"),
   Erase: Symbol("erase")
 })
+
+// get best recipe matches with user's food items
+useEffect(() => {
+  async function fetchData() {
+    try {
+      // API parameter format: ingredient,+ingredient,+ingredient
+      let ingredientParams = ""
+      for (let i = 0; i < products.length; i++) {
+        if (i == 0) {
+          ingredientParams += products[i].name
+        } else {
+          ingredientParams += `,+${products[i].name}`
+        }
+      }
+      const api_ingredients = api_url + ingredientParams
+      var { data } = await axios(api_ingredients)
+      console.log(data)
+      setRecipes(data)
+    } catch (err) {
+      console.log("error in fetching from backend")
+    }
+  }
+  fetchData()
+}, [products])
 
 // changes product item quantity based on button click
 const handleProductQuantity = (productName, operation) => {
@@ -64,21 +92,24 @@ const handleProductQuantity = (productName, operation) => {
 
   // edit item quantity
   //TODO: throw error if item didn't exist in products
-  if (operation === Operations.Add) {
+  if (operation == Operations.Add) {
     newProducts[itemIndex].quantity += 1
   } 
-  else if (operation === Operations.Subtract) {
+  else if (operation == Operations.Subtract) {
     newProducts[itemIndex].quantity -= 1
     if (newProducts[itemIndex].quantity == 0) {
       newProducts.splice(itemIndex, 1)
     }
-  } else if (operation === Operations.Erase) {
+  } else if (operation == Operations.Erase) {
     newProducts.splice(itemIndex, 1)
-  } 
-  //TODO: create an else statement and throw error
+  } else {
+    //TODO: create an else statement and throw error
+    console.log("no operations match")
+  }
   
   // update products state
   setProducts(newProducts)
+  console.log("new products update: ", products)
 }
 
 // adds new product item when submit button is clicked
@@ -146,8 +177,8 @@ const handleGetRecipeInstructions = (recipeId) => {
           <Routes>
             <Route path="/" element={<Home />}/>
             <Route path="/profile" element={<Profile />}/>
-            <Route path="/recipes" element={<Recipes recipeinfo={recipeinfo} handleRecipeCardClick={handleRecipeCardClick} recipeInstructions={recipeInstructions} handleRecipeModal={handleRecipeModal} recipeModelShow={recipeModelShow} recipes={sampleRecipes}/>}/>
-            <Route path="/pantry" element={<Pantry productForm={productForm} handleOnProductFormChange={handleOnProductFormChange} handleOnSubmitProductForm={handleOnSubmitProductForm} handleProductQuantity={handleProductQuantity} products={products}/>}/>
+            <Route path="/recipes" element={<Recipes recipeinfo={recipeinfo} handleRecipeCardClick={handleRecipeCardClick} recipeInstructions={recipeInstructions} handleRecipeModal={handleRecipeModal} recipeModelShow={recipeModelShow} recipes={recipes}/>}/>
+            <Route path="/pantry" element={<Pantry operations={Operations} productForm={productForm} handleOnProductFormChange={handleOnProductFormChange} handleOnSubmitProductForm={handleOnSubmitProductForm} handleProductQuantity={handleProductQuantity} products={products}/>}/>
             <Route path="/shoppingcart" element={<ShoppingCart />}/>
           </Routes>
         </main>
