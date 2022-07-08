@@ -2,14 +2,6 @@ import * as React from "react"
 import "./ProductCard.css"
 
 export default function Products(props) {
-  /*
-  operations enum format:
-    const operations = Object.freeze({
-      Add: Symbol("add"),
-      Subtract: Symbol("subtract"),
-      Erase: Symbol("erase")
-    })
-  */
   
   return (
     <div className="product-card">

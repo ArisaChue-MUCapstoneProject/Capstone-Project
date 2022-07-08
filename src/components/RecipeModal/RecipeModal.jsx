@@ -7,11 +7,12 @@ export default function RecipeModal(props) {
     if (!props.show) {
         return null
     }
+    const { recipeInfo, instructions, title, ...modalProps } = props
     return (
-      <Modal {...props} scrollable={true} size="lg" aria-labelledby="contained-modal-title-vcenter" centered>
+      <Modal {...modalProps} scrollable={true} size="lg" aria-labelledby="contained-modal-title-vcenter" centered>
         <Modal.Header closeButton>
           <Modal.Title id="contained-modal-title-vcenter">
-            {props.title}
+            {title}
           </Modal.Title>
         </Modal.Header>
         <Modal.Body className="show-grid">
@@ -19,10 +20,10 @@ export default function RecipeModal(props) {
             {/* first row - recipe overview */}
             <Row className="modal-overview">
                 <Col>
-                Total Time: {props.recipeinfo.readyInMinutes} mins
+                Total Time: {recipeInfo.readyInMinutes} mins
                 </Col>
                 <Col>
-                Servings: {props.recipeinfo.servings}
+                Servings: {recipeInfo.servings}
                 </Col>
             </Row>
             {/* recipe content */}
@@ -31,7 +32,7 @@ export default function RecipeModal(props) {
                 <Col>
                     <p className="modal-headings">Ingredients:</p>
                     {
-                        props.recipeinfo.extendedIngredients.map((ingredient) => (
+                        recipeInfo.extendedIngredients.map((ingredient) => (
                             <p key={ingredient.id}>* {ingredient.original}</p>
                         ))
                     }
@@ -41,7 +42,7 @@ export default function RecipeModal(props) {
                     <p className="modal-headings">Steps:</p>
                     {
                         // props.instructions is array of instruction Objects, main instruction is at index 0
-                        props.instructions[0].steps.map((curStep) => (
+                        instructions[0].steps.map((curStep) => (
                             <p key={curStep.number}>{curStep.number}. {curStep.step}</p>
                         ))
                     }

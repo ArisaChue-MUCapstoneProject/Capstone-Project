@@ -37,20 +37,18 @@ export default function App() {
   }
 
   //TODO: replace these placeholders once we integrate with the recipe API
-  const sampleRecipes = constRecipes
-
   const sampleRecipeInstructions = constRecipeInstructions
 
   const sampleRecipeInfo = constRecipeInfo
 
-  const api_url = "http://localhost:3001/apirecipes/"
+  const recipeApiUrl = "http://localhost:3001/apirecipes/"
 
 // state variables
 const [products, setProducts] = useState(basicProducts)
 const [productForm, setProductForm] = useState(basicProductForm)
 const [recipeModelShow, setRecipeModalShow] = useState(false)
 const [recipeInstructions, setRecipeInstructions] = useState([])
-const [recipeinfo, setRecipeinfo] = useState({})
+const [recipeInfo, setRecipeInfo] = useState({})
 const [recipes, setRecipes] = useState([])
 
 //enum 
@@ -65,17 +63,9 @@ useEffect(() => {
   async function fetchData() {
     try {
       // API parameter format: ingredient,+ingredient,+ingredient
-      let ingredientParams = ""
-      for (let i = 0; i < products.length; i++) {
-        if (i == 0) {
-          ingredientParams += products[i].name
-        } else {
-          ingredientParams += `,+${products[i].name}`
-        }
-      }
-      const api_ingredients = api_url + ingredientParams
-      var { data } = await axios(api_ingredients)
-      console.log(data)
+      let ingredientParams = products.map((product) => (product.name)).join(",+")
+      const recipeApiIngredients = recipeApiUrl + ingredientParams
+      var { data } = await axios(recipeApiIngredients)
       setRecipes(data)
     } catch (err) {
       console.log("error in fetching from backend")
@@ -92,18 +82,18 @@ const handleProductQuantity = (productName, operation) => {
 
   // edit item quantity
   //TODO: throw error if item didn't exist in products
-  if (operation == Operations.Add) {
+  if (operation === Operations.Add) {
     newProducts[itemIndex].quantity += 1
   } 
-  else if (operation == Operations.Subtract) {
+  else if (operation === Operations.Subtract) {
     newProducts[itemIndex].quantity -= 1
     if (newProducts[itemIndex].quantity == 0) {
       newProducts.splice(itemIndex, 1)
     }
-  } else if (operation == Operations.Erase) {
+  } else if (operation === Operations.Erase) {
     newProducts.splice(itemIndex, 1)
   } else {
-    //TODO: create an else statement and throw error
+    //TODO: use proper error handling
     console.log("no operations match")
   }
   
@@ -166,7 +156,7 @@ const handleRecipeModal = (showStatus) => {
 const handleGetRecipeInstructions = (recipeId) => {
   //TODO: extract recipe instructions for specific given recipe using API
   setRecipeInstructions(sampleRecipeInstructions)
-  setRecipeinfo(sampleRecipeInfo)
+  setRecipeInfo(sampleRecipeInfo)
 }
 
   return (
@@ -177,7 +167,7 @@ const handleGetRecipeInstructions = (recipeId) => {
           <Routes>
             <Route path="/" element={<Home />}/>
             <Route path="/profile" element={<Profile />}/>
-            <Route path="/recipes" element={<Recipes recipeinfo={recipeinfo} handleRecipeCardClick={handleRecipeCardClick} recipeInstructions={recipeInstructions} handleRecipeModal={handleRecipeModal} recipeModelShow={recipeModelShow} recipes={recipes}/>}/>
+            <Route path="/recipes" element={<Recipes recipeInfo={recipeInfo} handleRecipeCardClick={handleRecipeCardClick} recipeInstructions={recipeInstructions} handleRecipeModal={handleRecipeModal} recipeModelShow={recipeModelShow} recipes={recipes}/>}/>
             <Route path="/pantry" element={<Pantry operations={Operations} productForm={productForm} handleOnProductFormChange={handleOnProductFormChange} handleOnSubmitProductForm={handleOnSubmitProductForm} handleProductQuantity={handleProductQuantity} products={products}/>}/>
             <Route path="/shoppingcart" element={<ShoppingCart />}/>
           </Routes>

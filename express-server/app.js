@@ -13,10 +13,8 @@ app.use(morgan("tiny"))
 app.use(cors())
 
 app.get('/apirecipes/:ingredients', async (request, response) => {
-    console.log(request.params)
     const recipes_url = `https://api.spoonacular.com/recipes/findByIngredients?ingredients=${request.params.ingredients}&number=20&apiKey=${api_key}`;
     let { data } = await axios(recipes_url)
-    console.log(data)
     response.json(data);
   });
 
