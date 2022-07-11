@@ -35,7 +35,7 @@ export default function App() {
     quantity: ""
   }
 
-  const recipeApiUrl = "http://localhost:3001/apirecipes/"
+  const listRecipeUrl = "http://localhost:3001/apirecipes/"
   const recipeInfoUrl = "http://localhost:3001/apirecipeinfo/"
 
 // state variables
@@ -58,10 +58,11 @@ useEffect(() => {
     try {
       // API parameter format: ingredient,+ingredient,+ingredient
       let ingredientParams = products.map((product) => (product.name)).join(",+")
-      const recipeApiIngredients = recipeApiUrl + ingredientParams
+      const recipeApiIngredients = listRecipeUrl + ingredientParams
       var { data } = await axios(recipeApiIngredients)
       setRecipes(data)
     } catch (err) {
+      //TODO: error handling
       console.log("error in fetching from backend")
     }
   }
@@ -152,6 +153,7 @@ const handleGetRecipeInstructions = async (recipeId) => {
     var { data } = await axios(recipeInfoUrl + recipeId)
     setRecipeInfo(data)
   } catch (error) {
+    //TODO: error handling
     console.log("error in fetching from backend")
   }
   
