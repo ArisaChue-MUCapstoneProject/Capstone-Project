@@ -4,7 +4,6 @@ import Profile from "../Profile/Profile"
 import Recipes from "../Recipes/Recipes"
 import Pantry from "../Pantry/Pantry"
 import ShoppingCart from "../ShoppingCart/ShoppingCart"
-import { constRecipes, constRecipeInstructions, constRecipeInfo } from "../constants/constants"
 import './App.css';
 
 import { BrowserRouter, Routes, Route } from "react-router-dom"
@@ -36,18 +35,13 @@ export default function App() {
     quantity: ""
   }
 
-  //TODO: replace these placeholders once we integrate with the recipe API
-  const sampleRecipeInstructions = constRecipeInstructions
-
-  const sampleRecipeInfo = constRecipeInfo
-
-  const recipeApiUrl = "http://localhost:3001/apirecipes/"
+  const listRecipeUrl = "http://localhost:3001/apirecipes/"
+  const recipeInfoUrl = "http://localhost:3001/apirecipeinfo/"
 
 // state variables
 const [products, setProducts] = useState(basicProducts)
 const [productForm, setProductForm] = useState(basicProductForm)
 const [recipeModelShow, setRecipeModalShow] = useState(false)
-const [recipeInstructions, setRecipeInstructions] = useState([])
 const [recipeInfo, setRecipeInfo] = useState({})
 const [recipes, setRecipes] = useState([])
 
@@ -64,10 +58,11 @@ useEffect(() => {
     try {
       // API parameter format: ingredient,+ingredient,+ingredient
       let ingredientParams = products.map((product) => (product.name)).join(",+")
-      const recipeApiIngredients = recipeApiUrl + ingredientParams
+      const recipeApiIngredients = listRecipeUrl + ingredientParams
       var { data } = await axios(recipeApiIngredients)
       setRecipes(data)
     } catch (err) {
+      //TODO: error handling
       console.log("error in fetching from backend")
     }
   }
@@ -142,9 +137,9 @@ const handleOnProductFormChange = (event) => {
 }
 
 // onclick function for each recipe card
-const handleRecipeCardClick = (showStatus, recipeId) => {
+const handleRecipeCardClick = async (showStatus, recipeId) => {
+  await handleGetRecipeInstructions(recipeId)
   handleRecipeModal(showStatus)
-  handleGetRecipeInstructions(recipeId)
 }
 
 // pop up recipe modal for specific recipe card
@@ -152,11 +147,16 @@ const handleRecipeModal = (showStatus) => {
   setRecipeModalShow(showStatus)
 }
 
-// extract recipe instructions for recipe modal
-const handleGetRecipeInstructions = (recipeId) => {
-  //TODO: extract recipe instructions for specific given recipe using API
-  setRecipeInstructions(sampleRecipeInstructions)
-  setRecipeInfo(sampleRecipeInfo)
+// extract recipe info from backend for recipe modal
+const handleGetRecipeInstructions = async (recipeId) => {
+  try {
+    var { data } = await axios(recipeInfoUrl + recipeId)
+    setRecipeInfo(data)
+  } catch (error) {
+    //TODO: error handling
+    console.log("error in fetching from backend")
+  }
+  
 }
 
   return (
@@ -167,7 +167,7 @@ const handleGetRecipeInstructions = (recipeId) => {
           <Routes>
             <Route path="/" element={<Home />}/>
             <Route path="/profile" element={<Profile />}/>
-            <Route path="/recipes" element={<Recipes recipeInfo={recipeInfo} handleRecipeCardClick={handleRecipeCardClick} recipeInstructions={recipeInstructions} handleRecipeModal={handleRecipeModal} recipeModelShow={recipeModelShow} recipes={recipes}/>}/>
+            <Route path="/recipes" element={<Recipes recipeInfo={recipeInfo} handleRecipeCardClick={handleRecipeCardClick} handleRecipeModal={handleRecipeModal} recipeModelShow={recipeModelShow} recipes={recipes}/>}/>
             <Route path="/pantry" element={<Pantry operations={Operations} productForm={productForm} handleOnProductFormChange={handleOnProductFormChange} handleOnSubmitProductForm={handleOnSubmitProductForm} handleProductQuantity={handleProductQuantity} products={products}/>}/>
             <Route path="/shoppingcart" element={<ShoppingCart />}/>
           </Routes>
