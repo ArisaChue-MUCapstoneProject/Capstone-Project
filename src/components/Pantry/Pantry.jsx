@@ -13,6 +13,7 @@ export default function Pantry(props) {
   // get user data from the database
   const { currentUser } = useAuth()
   const userInfo = props.users.find(u => u.uid === currentUser.uid)
+  //TODO: error handling when userInfo is undefined
 
   //enum 
   const Operations = Object.freeze({
@@ -43,7 +44,7 @@ export default function Pantry(props) {
   // changes product item quantity based on button click
   const handleProductQuantity = (productName, operation) => {
     let itemIndex = userProducts.findIndex(item => item.name === productName)
-
+    //TODO: error handling when itemIndex is -1
     let newProducts = [...userProducts]
 
     // edit item quantity
