@@ -5,11 +5,11 @@ import { Form, Button, Card } from "react-bootstrap"
 import { useAuth } from "../../contexts/AuthContext"
 import "./SignUp.css"
 
-export default function SignUp() {
+export default function SignUp(props) {
     const emailRef = useRef()
     const passwordRef = useRef()
     const passwordConfirmRef = useRef()
-    const { signup } = useAuth()
+    const { signup, currentUser } = useAuth()
     const navigate = useNavigate()
     const [loading, setLoading] = useState(false)
 
