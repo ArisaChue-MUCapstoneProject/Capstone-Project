@@ -1,14 +1,19 @@
 import Navbar from "../Navbar/Navbar"
-import Home from "../Home/Home"
+import SignUp from "../SignUp/SignUp"
+import LogIn from "../LogIn/LogIn"
+import ForgotPass from "../ForgotPass/ForgotPass"
+import PrivateRoute from "../PrivateRoute/PrivateRoute"
 import Profile from "../Profile/Profile"
 import Recipes from "../Recipes/Recipes"
 import Pantry from "../Pantry/Pantry"
 import ShoppingCart from "../ShoppingCart/ShoppingCart"
+import { AuthProvider } from "../../contexts/AuthContext";
 import './App.css';
 
 import { BrowserRouter, Routes, Route } from "react-router-dom"
 import { useState, useEffect } from "react"
 import axios from 'axios';
+import UpdateProfile from "../UpdateProfile/UpdateProfile"
 
 export default function App() {
 
@@ -53,21 +58,21 @@ const Operations = Object.freeze({
 })
 
 // get best recipe matches with user's food items
-useEffect(() => {
-  async function fetchData() {
-    try {
-      // API parameter format: ingredient,+ingredient,+ingredient
-      let ingredientParams = products.map((product) => (product.name)).join(",+")
-      const recipeApiIngredients = listRecipeUrl + ingredientParams
-      var { data } = await axios(recipeApiIngredients)
-      setRecipes(data)
-    } catch (err) {
-      //TODO: error handling
-      console.log("error in fetching from backend")
-    }
-  }
-  fetchData()
-}, [products])
+// useEffect(() => {
+//   async function fetchData() {
+//     try {
+//       // API parameter format: ingredient,+ingredient,+ingredient
+//       let ingredientParams = products.map((product) => (product.name)).join(",+")
+//       const recipeApiIngredients = listRecipeUrl + ingredientParams
+//       var { data } = await axios(recipeApiIngredients)
+//       setRecipes(data)
+//     } catch (err) {
+//       //TODO: error handling
+//       console.log("error in fetching from backend")
+//     }
+//   }
+//   fetchData()
+// }, [products])
 
 // changes product item quantity based on button click
 const handleProductQuantity = (productName, operation) => {
@@ -161,20 +166,23 @@ const handleGetRecipeInstructions = async (recipeId) => {
 
   return (
     <div className="App">
-      <BrowserRouter>
-        <main>
-          <Navbar />
-          <Routes>
-            <Route path="/" element={<Home />}/>
-            <Route path="/profile" element={<Profile />}/>
-            <Route path="/recipes" element={<Recipes recipeInfo={recipeInfo} handleRecipeCardClick={handleRecipeCardClick} handleRecipeModal={handleRecipeModal} recipeModelShow={recipeModelShow} recipes={recipes}/>}/>
-            <Route path="/pantry" element={<Pantry operations={Operations} productForm={productForm} handleOnProductFormChange={handleOnProductFormChange} handleOnSubmitProductForm={handleOnSubmitProductForm} handleProductQuantity={handleProductQuantity} products={products}/>}/>
-            <Route path="/shoppingcart" element={<ShoppingCart />}/>
-          </Routes>
-        </main>
-      </BrowserRouter>
-      
-      
+      <AuthProvider>
+        <BrowserRouter>
+          <main>
+            <Navbar />
+            <Routes>
+              <Route path="/signup" element={<SignUp />}/>
+              <Route path="/login" element={<LogIn />}/>
+              <Route path="/forgot-password" element={<ForgotPass />}/>
+              <Route path="/profile" element={<PrivateRoute><Profile /></PrivateRoute>}/>
+              <Route path="/update-profile" element={<PrivateRoute><UpdateProfile /></PrivateRoute>}/>
+              <Route path="/recipes" element={<PrivateRoute><Recipes recipeInfo={recipeInfo} handleRecipeCardClick={handleRecipeCardClick} handleRecipeModal={handleRecipeModal} recipeModelShow={recipeModelShow} recipes={recipes}/></PrivateRoute>}/>
+              <Route path="/pantry" element={<PrivateRoute><Pantry operations={Operations} productForm={productForm} handleOnProductFormChange={handleOnProductFormChange} handleOnSubmitProductForm={handleOnSubmitProductForm} handleProductQuantity={handleProductQuantity} products={products}/></PrivateRoute>}/>
+              <Route path="/shoppingcart" element={<PrivateRoute><ShoppingCart /></PrivateRoute>}/>
+            </Routes>
+          </main>
+        </BrowserRouter>
+      </AuthProvider>
     </div>
   );
 }
