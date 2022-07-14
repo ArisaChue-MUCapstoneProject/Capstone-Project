@@ -5,10 +5,10 @@ import { Form, Button, Card } from "react-bootstrap"
 import { useAuth } from "../../contexts/AuthContext"
 import "./LogIn.css"
 
-export default function LogIn() {
+export default function LogIn(props) {
     const emailRef = useRef()
     const passwordRef = useRef()
-    const { login } = useAuth()
+    const { login, currentUser} = useAuth()
     const [loading, setLoading] = useState(false)
     const navigate = useNavigate()
 

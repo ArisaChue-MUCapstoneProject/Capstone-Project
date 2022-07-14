@@ -4,7 +4,7 @@ import { Card, Button } from "react-bootstrap"
 import { useAuth } from "../../contexts/AuthContext"
 import "./Profile.css"
 
-export default function Profile() {
+export default function Profile(props) {
   const { logout, currentUser } = useAuth()
   const navigate = useNavigate()
 
