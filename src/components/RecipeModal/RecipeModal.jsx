@@ -8,6 +8,23 @@ export default function RecipeModal(props) {
         return null
     }
     const { recipeInfo, ...modalProps } = props
+    var validMins = true
+    var validServings = true
+    var validIngred = true
+    var validSteps = true
+    if (recipeInfo.readyInMinutes == undefined) {
+      validMins = false
+    }
+    if (recipeInfo.servings == undefined) {
+      validServings = false
+    }
+    if (recipeInfo.extendedIngredients == undefined) {
+      validIngred = false
+    }
+    if (recipeInfo.analyzedInstructions == undefined || recipeInfo.analyzedInstructions[0].steps == undefined) {
+      validSteps = false
+    }
+    
     return (
       <Modal {...modalProps} scrollable={true} size="lg" aria-labelledby="contained-modal-title-vcenter" centered>
         <Modal.Header closeButton>
@@ -19,32 +36,44 @@ export default function RecipeModal(props) {
           <Container>
             {/* first row - recipe overview */}
             <Row className="modal-overview">
-                <Col>
-                Total Time: {recipeInfo.readyInMinutes} mins
-                </Col>
-                <Col>
-                Servings: {recipeInfo.servings}
-                </Col>
+              {validMins 
+                ? <Col> Total Time: {recipeInfo.readyInMinutes} mins </Col>
+                : null
+              }
+              {validServings 
+                ? <Col> Servings: {recipeInfo.servings} mins </Col>
+                : null
+              } 
             </Row>
             {/* recipe content */}
             <Row>
                 {/* ingredient content */}
                 <Col>
                     <p className="modal-headings">Ingredients:</p>
-                    {
-                        recipeInfo.extendedIngredients.map((ingredient) => (
-                            <p key={ingredient.id}>* {ingredient.original}</p>
-                        ))
+                    {validIngred
+                      ? <div>
+                          {
+                            recipeInfo.extendedIngredients.map((ingredient) => (
+                                <p key={ingredient.id}>* {ingredient.original}</p>
+                            ))
+                          }
+                      </div>
+                      : <p> No ingredients listed</p>
                     }
                 </Col>
                 {/* instructions content */}
                 <Col>
                     <p className="modal-headings">Steps:</p>
-                    {
-                        // props.instructions is array of instruction Objects, main instruction is at index 0
-                        recipeInfo.analyzedInstructions[0].steps.map((curStep) => (
-                            <p key={curStep.number}>{curStep.number}. {curStep.step}</p>
-                        ))
+                    {validSteps
+                      ? <div>
+                          {
+                            // props.instructions is array of instruction Objects, main instruction is at index 0
+                            recipeInfo.analyzedInstructions[0].steps.map((curStep) => (
+                                <p key={curStep.number}>{curStep.number}. {curStep.step}</p>
+                            ))
+                          }
+                        </div>
+                      : <p> No steps listed</p>
                     }
                 </Col>
             </Row>

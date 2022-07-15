@@ -1,8 +1,8 @@
 const express = require("express")
-// const fetch = require('node-fetch')
 const axios = require('axios')
 const morgan = require("morgan")
 const cors = require("cors")
+const { parseActionCodeURL } = require("firebase/auth")
 
 const app = express()
 
@@ -13,7 +13,7 @@ app.use(morgan("tiny"))
 app.use(cors())
 
 // fetches best recipes given user food items from API
-app.get('/apirecipes/:ingredients', async (request, response) => {
+app.get('/apiuserrecipes/:ingredients', async (request, response) => {
     const params = {
         ingredients: request.params.ingredients,
         number: 20,
@@ -34,6 +34,21 @@ app.get('/apirecipeinfo/:recipeid', async (request, response) => {
     let recipes_url = `https://api.spoonacular.com/recipes/${request.params.recipeid}/information`;
     let { data } = await axios(recipes_url, { params })
     response.json(data);
+});
+
+// fetches standard popular recipes
+app.get('/apistdrecipes', async (request, response) => {
+    const params = {
+        apiKey: api_key,
+        number: 20,
+        sort: "random",
+        addRecipeInformation: true,
+        instructionsRequired: true,
+        fillIngredients: true
+    }
+    let recipes_url = `https://api.spoonacular.com/recipes/complexSearch`;
+    let { data } = await axios(recipes_url, { params })
+    response.json(data.results);
 });
 
 module.exports = app
