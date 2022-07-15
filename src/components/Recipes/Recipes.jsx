@@ -13,22 +13,21 @@ export default function Recipes(props) {
   
   const listUserRecipeUrl = "http://localhost:3001/apiuserrecipes/"
   const listStdRecipeUrl = "http://localhost:3001/apistdrecipes"
-  const [userInfo, setUserInfo] = useState({})
   const [recipes, setRecipes] = useState([])
+  const [userProducts, setUserProducts] = useState([])
   const [error, setError] = useState("")
-  
-  var userProducts = []
-  if (userInfo == undefined) {
-    setError("Please log in first")
-  }
-  // TODO: look into why userInfo keeps becoming undefined when refresh (current user is not undefined)
-  else if (userInfo !== undefined && userInfo.data != undefined && userInfo.data.products !== undefined) {
-    var userProducts = userInfo.data.products
-  }
+
+  // update user data once page loads
+  useEffect(() => {
+    if (!props.isLoading) {
+      var curuser = props.users.find(u => u.uid === currentUser.uid)
+      setUserProducts(curuser.data.products)
+    }
+  }, [props.isLoading])
 
   // get best recipe matches with user's food items
   useEffect(() => {
-    setUserInfo(props.users.find(u => u.uid === currentUser.uid))
+    // setUserInfo()
     async function fetchStdRecipes() {
       try {
         var { data } = await axios(listStdRecipeUrl)
@@ -38,10 +37,10 @@ export default function Recipes(props) {
       }
     }
 
-    if (userProducts.length === 0) {
+    if (!props.isLoading && userProducts === undefined) {
       fetchStdRecipes()
     }
-  }, [])
+  }, [props.isLoading])
 
   // get best recipe matches with user's food items
   useEffect(() => {
@@ -57,10 +56,10 @@ export default function Recipes(props) {
       }
     }
 
-    if (userProducts.length > 0) {
+    if (!props.isLoading && userProducts != undefined && userProducts.length > 0) {
       fetchUserRecipes()
     } 
-  }, [userProducts])
+  }, [props.isLoading, userProducts])
 
   return (
     <nav className="recipes">

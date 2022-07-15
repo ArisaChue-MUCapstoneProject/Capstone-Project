@@ -1,5 +1,5 @@
 import * as React from "react"
-import { useState, useEffect } from "react"
+import { useState, useEffect, useMemo } from "react"
 import { Form, Row, Col, Button, Alert } from "react-bootstrap" 
 import { doc, updateDoc } from "firebase/firestore"
 import "bootstrap/dist/css/bootstrap.min.css";
@@ -10,14 +10,8 @@ import { db } from "../../firebase"
 import "./Pantry.css"
 
 export default function Pantry(props) {
-  const [error, setError] = useState("")
   // get user data from the database
   const { currentUser } = useAuth()
-  const userInfo = props.users.find(u => u.uid === currentUser.uid)
-  if (userInfo == undefined) {
-    setError("Please log in first")
-  }
-  
 
   //enum 
   const Operations = Object.freeze({
@@ -31,18 +25,29 @@ export default function Pantry(props) {
     quantity: ""
   }
   const [productForm, setProductForm] = useState(basicProductForm)
-  const [userProducts, setUserProducts] = useState(userInfo.data.products || [])
+  const [userProducts, setUserProducts] = useState([])
+  const [error, setError] = useState("")
+
+  // update user data once page loads
+  useEffect(() => {
+    if (!props.isLoading) {
+      var curuser = props.users.find(u => u.uid === currentUser.uid)
+      setUserProducts(curuser.data.products)
+    }
+  }, [props.isLoading])
+  
 
   // update products state
   useEffect(() => {
-    setError("")
-    props.setProducts(userProducts)
+    console.log("updating database")
     // update products in the database
-    const docRef = doc(db, "users", currentUser.uid)
-    updateDoc(docRef, {products: userProducts})
-      .catch(error => {
-        setError(error.message)
+    if (!props.isLoading && userProducts) {
+      const docRef = doc(db, "users", currentUser.uid)
+      updateDoc(docRef, {products: userProducts})
+        .catch(error => {
+          setError(error.message)
       })
+    }
   }, [userProducts])
 
   // changes product item quantity based on button click
@@ -92,11 +97,13 @@ export default function Pantry(props) {
       newProducts.push(newItem)
       setProductForm(basicProductForm)
       setUserProducts(newProducts)
+      
     } else {
       // if user submitted an item that already exists, just change quantity
       newProducts[itemIndex].quantity += Number(productForm.quantity)
       setProductForm(basicProductForm)
       setUserProducts(newProducts)
+      
     }
   }
 
@@ -137,11 +144,13 @@ export default function Pantry(props) {
             </Col>
           </Row>
         </Form>
-    {
-      userProducts.map((product) => (
-        <ProductCard key={product.name} name={product.name} quantity={product.quantity} operations={Operations} handleProductQuantity={handleProductQuantity}/>
-      ))
-    }
+        <div>
+          {
+            userProducts.map((product) => (
+              <ProductCard key={product.name} name={product.name} quantity={product.quantity} operations={Operations} handleProductQuantity={handleProductQuantity}/>
+            ))
+          }
+        </div>
     </div>
   )
 }

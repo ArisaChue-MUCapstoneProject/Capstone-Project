@@ -14,7 +14,6 @@ export default function RecipeCard(props) {
 
   // onclick function for each recipe card
   const handleRecipeCardClick = async (showStatus, recipeId) => {
-    setError("")
     await handleGetRecipeInstructions(recipeId)
     handleRecipeModal(showStatus)
   }

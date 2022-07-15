@@ -20,6 +20,7 @@ export default function App() {
   // state variables
   const [products, setProducts] = useState([])
   const [users, setUsers] = useState([])
+  const [isLoading, setIsLoading] = useState(true)
 
   // listen for realtime updates and update users
   useEffect(() => {
@@ -29,12 +30,15 @@ export default function App() {
         uid: doc.id,
         data: doc.data()
       })))
+      setIsLoading(false)
     })
 
     return () => {
         unsubscribe()
     }
   }, [])
+
+
 
   return (
     <div className="App">
@@ -48,8 +52,8 @@ export default function App() {
               <Route path="/forgot-password" element={<ForgotPass />}/>
               <Route path="/profile" element={<PrivateRoute><Profile /></PrivateRoute>}/>
               <Route path="/update-profile" element={<PrivateRoute><UpdateProfile /></PrivateRoute>}/>
-              <Route path="/recipes" element={<PrivateRoute><Recipes users={users}/></PrivateRoute>}/>
-              <Route path="/pantry" element={<PrivateRoute><Pantry setProducts={setProducts} users={users}/></PrivateRoute>}/>
+              <Route path="/recipes" element={<PrivateRoute><Recipes users={users} isLoading={isLoading}/></PrivateRoute>}/>
+              <Route path="/pantry" element={<PrivateRoute><Pantry setProducts={setProducts} users={users} isLoading={isLoading}/></PrivateRoute>}/>
               <Route path="/shoppingcart" element={<PrivateRoute><ShoppingCart /></PrivateRoute>}/>
             </Routes>
           </main>
