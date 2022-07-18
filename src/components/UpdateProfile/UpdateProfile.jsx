@@ -1,7 +1,7 @@
 import * as React from "react"
 import { useRef, useState } from "react"
 import { Link, useNavigate } from "react-router-dom"
-import { Form, Button, Card } from "react-bootstrap" 
+import { Form, Button, Card, Alert } from "react-bootstrap" 
 import { useAuth } from "../../contexts/AuthContext"
 import "./UpdateProfile.css"
 
@@ -12,13 +12,14 @@ export default function UpdateProfile() {
     const { updateUserEmail, updateUserPassword, currentUser } = useAuth()
     const navigate = useNavigate()
     const [loading, setLoading] = useState(false)
+    const [error, setError] = useState("")
 
     const handleSubmit = async (e) => {
         e.preventDefault()
-
+        setError("")
         if (passwordRef.current.value !== passwordConfirmRef.current.value) {
-            //TODO: error handling
-            console.log("passwords dont match")
+            setError("Passwords do not match")
+            return
         }
         
         // keeps track of tasks to do: update user, pass, or both
@@ -37,8 +38,7 @@ export default function UpdateProfile() {
             navigate("/profile")
         })
         .catch(() => {
-            //TODO: error handling
-            console.log("Failed to update account")
+            setError("failed to update account")
         })
         .finally(() => {
             setLoading(false)
@@ -50,6 +50,7 @@ export default function UpdateProfile() {
             <Card>
             <Card.Body>
                 <h2>Update Profile</h2>
+                {error && <Alert variant="danger">{error}</Alert>}
                 <Form onSubmit={handleSubmit}>
                 <Form.Group id="email">
                     <Form.Label>Email</Form.Label>

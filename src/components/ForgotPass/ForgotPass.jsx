@@ -10,18 +10,19 @@ export default function ForgotPass() {
     const { resetPassword } = useAuth()
     const [loading, setLoading] = useState(false)
     const [message, setMessage] = useState("")
+    const [error, setError] = useState("")
 
     const handleSubmit = async (e) => {
         e.preventDefault()
 
         try {
             setMessage("")
+            setError("")
             setLoading(true)
             await resetPassword(emailRef.current.value)
             setMessage("Check your inbox for further instructions")
-        } catch {
-            //TODO: error handling
-            console.log("Failed to reset password")
+        } catch (error) {
+            setError(error.message)
         }
         setLoading(false)
     }
@@ -31,6 +32,7 @@ export default function ForgotPass() {
             <Card>
             <Card.Body>
                 <h2>Reset Password</h2>
+                {error && <Alert variant="danger">{error}</Alert>}
                 {message && <Alert variant="success">{message}</Alert>}
                 <Form onSubmit={handleSubmit}>
                 <Form.Group id="email">

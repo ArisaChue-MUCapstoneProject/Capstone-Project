@@ -1,27 +1,28 @@
 import * as React from "react"
 import { useRef, useState } from "react"
 import { Link, useNavigate } from "react-router-dom"
-import { Form, Button, Card } from "react-bootstrap" 
+import { Form, Button, Card, Alert } from "react-bootstrap" 
 import { useAuth } from "../../contexts/AuthContext"
 import "./LogIn.css"
 
 export default function LogIn(props) {
     const emailRef = useRef()
     const passwordRef = useRef()
-    const { login, currentUser} = useAuth()
+    const { login} = useAuth()
     const [loading, setLoading] = useState(false)
     const navigate = useNavigate()
+    const [error, setError] = useState("")
 
     const handleSubmit = async (e) => {
         e.preventDefault()
 
         try {
+            setError("")
             setLoading(true)
             await login(emailRef.current.value, passwordRef.current.value)
             navigate("/profile")
-        } catch {
-            //TODO: error handling
-            console.log("error logging into account")
+        } catch (error) {
+            setError(error.message)
         }
         setLoading(false)
     }
@@ -31,6 +32,7 @@ export default function LogIn(props) {
             <Card>
             <Card.Body>
                 <h2>Log In</h2>
+                {error && <Alert variant="danger">{error}</Alert>}
                 <Form onSubmit={handleSubmit}>
                 <Form.Group id="email">
                     <Form.Label>Email</Form.Label>

@@ -15,78 +15,30 @@ import './App.css';
 import { BrowserRouter, Routes, Route } from "react-router-dom"
 import { useState, useEffect } from "react"
 import { collection, onSnapshot } from "firebase/firestore"
-import axios from 'axios';
 
 export default function App() {
+  // state variables
+  const [products, setProducts] = useState([])
+  const [users, setUsers] = useState([])
+  const [isLoading, setIsLoading] = useState(true)
 
-  //TODO: move component specific code into components
+  // listen for realtime updates and update users
+  useEffect(() => {
+    const userCollectionRef = collection(db, "users")
+    const unsubscribe = onSnapshot(userCollectionRef, snapshot => {
+      setUsers(snapshot.docs.map(doc => ({
+        uid: doc.id,
+        data: doc.data()
+      })))
+      setIsLoading(false)
+    })
 
-  const listRecipeUrl = "http://localhost:3001/apirecipes/"
-  const recipeInfoUrl = "http://localhost:3001/apirecipeinfo/"
-
-// state variables
-const [products, setProducts] = useState([])
-const [recipeModelShow, setRecipeModalShow] = useState(false)
-const [recipeInfo, setRecipeInfo] = useState({})
-const [recipes, setRecipes] = useState([])
-const [users, setUsers] = useState([])
-
-// get best recipe matches with user's food items
-useEffect(() => {
-  async function fetchData() {
-    try {
-      // API parameter format: ingredient,+ingredient,+ingredient
-      let ingredientParams = products.map((product) => (product.name)).join(",+")
-      const recipeApiIngredients = listRecipeUrl + ingredientParams
-      var { data } = await axios(recipeApiIngredients)
-      setRecipes(data)
-    } catch (err) {
-      //TODO: error handling
-      console.log("error in fetching from backend")
+    return () => {
+        unsubscribe()
     }
-  }
-  if (products.length > 0) {
-    fetchData()
-  }
-}, [products])
+  }, [])
 
-// listen for realtime updates and update users
-useEffect(() => {
-  const userCollectionRef = collection(db, "users")
-  const unsubscribe = onSnapshot(userCollectionRef, snapshot => {
-    setUsers(snapshot.docs.map(doc => ({
-      uid: doc.id,
-      data: doc.data()
-    })))
-  })
 
-  return () => {
-      unsubscribe()
-  }
-}, [])
-
-// onclick function for each recipe card
-const handleRecipeCardClick = async (showStatus, recipeId) => {
-  await handleGetRecipeInstructions(recipeId)
-  handleRecipeModal(showStatus)
-}
-
-// pop up recipe modal for specific recipe card
-const handleRecipeModal = (showStatus) => {
-  setRecipeModalShow(showStatus)
-}
-
-// extract recipe info from backend for recipe modal
-const handleGetRecipeInstructions = async (recipeId) => {
-  try {
-    var { data } = await axios(recipeInfoUrl + recipeId)
-    setRecipeInfo(data)
-  } catch (error) {
-    //TODO: error handling
-    console.log("error in fetching from backend")
-  }
-  
-}
 
   return (
     <div className="App">
@@ -100,8 +52,8 @@ const handleGetRecipeInstructions = async (recipeId) => {
               <Route path="/forgot-password" element={<ForgotPass />}/>
               <Route path="/profile" element={<PrivateRoute><Profile /></PrivateRoute>}/>
               <Route path="/update-profile" element={<PrivateRoute><UpdateProfile /></PrivateRoute>}/>
-              <Route path="/recipes" element={<PrivateRoute><Recipes recipeInfo={recipeInfo} handleRecipeCardClick={handleRecipeCardClick} handleRecipeModal={handleRecipeModal} recipeModelShow={recipeModelShow} recipes={recipes}/></PrivateRoute>}/>
-              <Route path="/pantry" element={<PrivateRoute><Pantry setProducts={setProducts} users={users}/></PrivateRoute>}/>
+              <Route path="/recipes" element={<PrivateRoute><Recipes users={users} isLoading={isLoading}/></PrivateRoute>}/>
+              <Route path="/pantry" element={<PrivateRoute><Pantry setProducts={setProducts} users={users} isLoading={isLoading}/></PrivateRoute>}/>
               <Route path="/shoppingcart" element={<PrivateRoute><ShoppingCart /></PrivateRoute>}/>
             </Routes>
           </main>

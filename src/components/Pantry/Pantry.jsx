@@ -1,6 +1,6 @@
 import * as React from "react"
-import { useState, useEffect } from "react"
-import { Form, Row, Col, Button } from "react-bootstrap" 
+import { useState, useEffect, useMemo } from "react"
+import { Form, Row, Col, Button, Alert } from "react-bootstrap" 
 import { doc, updateDoc } from "firebase/firestore"
 import "bootstrap/dist/css/bootstrap.min.css";
 
@@ -12,8 +12,6 @@ import "./Pantry.css"
 export default function Pantry(props) {
   // get user data from the database
   const { currentUser } = useAuth()
-  const userInfo = props.users.find(u => u.uid === currentUser.uid)
-  //TODO: error handling when userInfo is undefined
 
   //enum 
   const Operations = Object.freeze({
@@ -22,34 +20,50 @@ export default function Pantry(props) {
     Erase: Symbol("erase")
   })
 
-  var basicProductForm = {
+  const basicProductForm = {
     name: "",
     quantity: ""
   }
   const [productForm, setProductForm] = useState(basicProductForm)
-  const [userProducts, setUserProducts] = useState(userInfo.data.products)
+  const [userProducts, setUserProducts] = useState([])
+  const [error, setError] = useState("")
+
+  // update user data once page loads
+  useEffect(() => {
+    if (!props.isLoading) {
+      var userInfo = props.users.find(u => u.uid === currentUser.uid)
+      setUserProducts(userInfo.data.products)
+    }
+  }, [props.isLoading])
+  
 
   // update products state
   useEffect(() => {
-    props.setProducts(userProducts)
     // update products in the database
-    const docRef = doc(db, "users", currentUser.uid)
-    updateDoc(docRef, {products: userProducts})
-      .catch(error => {
-        //TODO: use proper error handling
-        console.log(error)
+    if (!props.isLoading && userProducts) {
+      const docRef = doc(db, "users", currentUser.uid)
+      updateDoc(docRef, {products: userProducts})
+        .catch(error => {
+          setError(error.message)
       })
+    }
   }, [userProducts])
+
+  function clearError() {
+    setError("")
+  }
 
   // changes product item quantity based on button click
   const handleProductQuantity = (productName, operation) => {
     let itemIndex = userProducts.findIndex(item => item.name === productName)
-    //TODO: error handling when itemIndex is -1
     let newProducts = [...userProducts]
+    clearError()
 
     // edit item quantity
-    //TODO: throw error if item didn't exist in products
-    if (operation === Operations.Add) {
+    if (itemIndex === -1) {
+      setError("item does not exist in your products")
+    }
+    else if (operation === Operations.Add) {
       newProducts[itemIndex].quantity += 1
     } 
     else if (operation === Operations.Subtract) {
@@ -60,8 +74,7 @@ export default function Pantry(props) {
     } else if (operation === Operations.Erase) {
       newProducts.splice(itemIndex, 1)
     } else {
-      //TODO: use proper error handling
-      console.log("no operations match")
+      setError("action could not be executed because operation does not exist")
     }
 
     setUserProducts(newProducts)
@@ -74,22 +87,27 @@ export default function Pantry(props) {
     let itemIndex = userProducts.findIndex(item => item.name === itemName)
 
     let newProducts = [...userProducts]
-
+    clearError()
     // add new item to products
-    //TODO: check if productForm.quantity is positive whole number
-    if (itemIndex === -1) {
+    if (productForm.quantity < 1) {
+      setError("Quantity must be positive whole number")
+    }
+    else if (itemIndex === -1) {
       let newItem = {
         name: itemName,
         quantity: Number(productForm.quantity)
       }
       newProducts.push(newItem)
+      setProductForm(basicProductForm)
+      setUserProducts(newProducts)
+      
     } else {
       // if user submitted an item that already exists, just change quantity
       newProducts[itemIndex].quantity += Number(productForm.quantity)
+      setProductForm(basicProductForm)
+      setUserProducts(newProducts)
+      
     }
-
-    setUserProducts(newProducts)
-    setProductForm(basicProductForm)
   }
 
   // when the inputs of products form changes
@@ -109,6 +127,7 @@ export default function Pantry(props) {
   return (
     <div className="pantry">
         <h2 className="pantry-heading">Products</h2>
+        {error && <Alert variant="danger">{error}</Alert>}
         <Form className="product-form">
           <Row>
             <Col xs={7}>
@@ -128,11 +147,13 @@ export default function Pantry(props) {
             </Col>
           </Row>
         </Form>
-    {
-      userProducts.map((product) => (
-        <ProductCard key={product.name} name={product.name} quantity={product.quantity} operations={Operations} handleProductQuantity={handleProductQuantity}/>
-      ))
-    }
+        <div>
+          {
+            userProducts.map((product) => (
+              <ProductCard key={product.name} name={product.name} quantity={product.quantity} operations={Operations} handleProductQuantity={handleProductQuantity}/>
+            ))
+          }
+        </div>
     </div>
   )
 }
