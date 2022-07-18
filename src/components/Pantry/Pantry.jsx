@@ -20,7 +20,7 @@ export default function Pantry(props) {
     Erase: Symbol("erase")
   })
 
-  var basicProductForm = {
+  const basicProductForm = {
     name: "",
     quantity: ""
   }
@@ -31,15 +31,14 @@ export default function Pantry(props) {
   // update user data once page loads
   useEffect(() => {
     if (!props.isLoading) {
-      var curuser = props.users.find(u => u.uid === currentUser.uid)
-      setUserProducts(curuser.data.products)
+      var userInfo = props.users.find(u => u.uid === currentUser.uid)
+      setUserProducts(userInfo.data.products)
     }
   }, [props.isLoading])
   
 
   // update products state
   useEffect(() => {
-    console.log("updating database")
     // update products in the database
     if (!props.isLoading && userProducts) {
       const docRef = doc(db, "users", currentUser.uid)
@@ -50,11 +49,15 @@ export default function Pantry(props) {
     }
   }, [userProducts])
 
+  function clearError() {
+    setError("")
+  }
+
   // changes product item quantity based on button click
   const handleProductQuantity = (productName, operation) => {
     let itemIndex = userProducts.findIndex(item => item.name === productName)
     let newProducts = [...userProducts]
-    setError("")
+    clearError()
 
     // edit item quantity
     if (itemIndex === -1) {
@@ -84,7 +87,7 @@ export default function Pantry(props) {
     let itemIndex = userProducts.findIndex(item => item.name === itemName)
 
     let newProducts = [...userProducts]
-    setError("")
+    clearError()
     // add new item to products
     if (productForm.quantity < 1) {
       setError("Quantity must be positive whole number")

@@ -20,14 +20,13 @@ export default function Recipes(props) {
   // update user data once page loads
   useEffect(() => {
     if (!props.isLoading) {
-      var curuser = props.users.find(u => u.uid === currentUser.uid)
-      setUserProducts(curuser.data.products)
+      var userInfo = props.users.find(u => u.uid === currentUser.uid)
+      setUserProducts(userInfo.data.products)
     }
   }, [props.isLoading])
 
   // get best recipe matches with user's food items
   useEffect(() => {
-    // setUserInfo()
     async function fetchStdRecipes() {
       try {
         var { data } = await axios(listStdRecipeUrl)

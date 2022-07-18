@@ -8,22 +8,10 @@ export default function RecipeModal(props) {
         return null
     }
     const { recipeInfo, ...modalProps } = props
-    var validMins = true
-    var validServings = true
-    var validIngred = true
-    var validSteps = true
-    if (recipeInfo.readyInMinutes == undefined) {
-      validMins = false
-    }
-    if (recipeInfo.servings == undefined) {
-      validServings = false
-    }
-    if (recipeInfo.extendedIngredients == undefined) {
-      validIngred = false
-    }
-    if (recipeInfo.analyzedInstructions == undefined || recipeInfo.analyzedInstructions[0].steps == undefined) {
-      validSteps = false
-    }
+    const validMins = !(recipeInfo.readInMinutes == undefined)
+    const validServings = !(recipeInfo.servings == undefined)
+    const validIngred = !(recipeInfo.extendedIngredients == undefined)
+    const validSteps = !(recipeInfo.analyzedInstructions == undefined || recipeInfo.analyzedInstructions[0].steps == undefined)
     
     return (
       <Modal {...modalProps} scrollable={true} size="lg" aria-labelledby="contained-modal-title-vcenter" centered>
@@ -36,14 +24,8 @@ export default function RecipeModal(props) {
           <Container>
             {/* first row - recipe overview */}
             <Row className="modal-overview">
-              {validMins 
-                ? <Col> Total Time: {recipeInfo.readyInMinutes} mins </Col>
-                : null
-              }
-              {validServings 
-                ? <Col> Servings: {recipeInfo.servings} mins </Col>
-                : null
-              } 
+              {validMins && (<Col> Total Time: {recipeInfo.readyInMinutes} mins </Col>)}
+              {validServings && (<Col> Servings: {recipeInfo.servings} mins </Col>)} 
             </Row>
             {/* recipe content */}
             <Row>
