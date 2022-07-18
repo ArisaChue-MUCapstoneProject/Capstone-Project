@@ -25,7 +25,7 @@ export default function SignUp(props) {
       try {
         setLoading(true)
         await signup(emailRef.current.value, passwordRef.current.value)
-        navigate("/profile")
+        navigate("/signup/profile")
       } catch (error) {
         setError(error.message)
       }
@@ -51,7 +51,7 @@ export default function SignUp(props) {
                   <Form.Label>Password Confirmation</Form.Label>
                   <Form.Control type="password" ref={passwordConfirmRef} required></Form.Control>
                 </Form.Group>
-                <Button disabled={loading} type="submit">Sign Up</Button>
+                <Button disabled={loading} type="submit">Continue</Button>
               </Form>
             </Card.Body>
           </Card>

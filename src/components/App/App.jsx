@@ -15,6 +15,7 @@ import './App.css';
 import { BrowserRouter, Routes, Route } from "react-router-dom"
 import { useState, useEffect } from "react"
 import { collection, onSnapshot } from "firebase/firestore"
+import SignUpProfile from "../SignUpProfile/SignUpProfile"
 
 export default function App() {
   // state variables
@@ -48,10 +49,11 @@ export default function App() {
             <Navbar />
             <Routes>
               <Route path="/signup" element={<SignUp />}/>
+              <Route path="/signup/profile" element={<SignUpProfile users={users} isLoading={isLoading}/>}/>
               <Route path="/login" element={<LogIn />}/>
               <Route path="/forgot-password" element={<ForgotPass />}/>
-              <Route path="/profile" element={<PrivateRoute><Profile /></PrivateRoute>}/>
-              <Route path="/update-profile" element={<PrivateRoute><UpdateProfile /></PrivateRoute>}/>
+              <Route path="/profile" element={<PrivateRoute><Profile users={users} isLoading={isLoading}/></PrivateRoute>}/>
+              <Route path="/profile/update" element={<PrivateRoute><UpdateProfile /></PrivateRoute>}/>
               <Route path="/recipes" element={<PrivateRoute><Recipes users={users} isLoading={isLoading}/></PrivateRoute>}/>
               <Route path="/pantry" element={<PrivateRoute><Pantry setProducts={setProducts} users={users} isLoading={isLoading}/></PrivateRoute>}/>
               <Route path="/shoppingcart" element={<PrivateRoute><ShoppingCart /></PrivateRoute>}/>
