@@ -9,14 +9,11 @@ export default function RecipeModal(props) {
         return null
     }
     const { recipeInfo, userDiets, ...modalProps } = props
-    console.log(recipeInfo)
     const validMins = !(recipeInfo.readInMinutes == undefined)
     const validServings = !(recipeInfo.servings == undefined)
     const validIngred = !(recipeInfo.extendedIngredients == undefined)
     const validSteps = !(recipeInfo.analyzedInstructions == undefined || recipeInfo.analyzedInstructions.length == 0 || recipeInfo.analyzedInstructions[0].steps == undefined)
     const dietsWarning = userDiets.filter(value => !recipeInfo.diets.includes(value)) || []
-    console.log(userDiets)
-    console.log(recipeInfo.diets)
     var warning
     dietsWarning 
       ? warning = (`Caution: ${dietsWarning.join(", ")} dietary restriction(s) are not followed for this recipe`)

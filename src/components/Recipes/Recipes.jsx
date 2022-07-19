@@ -11,8 +11,7 @@ export default function Recipes(props) {
   // get user data from the database
   const { currentUser } = useAuth()
   
-  const listUserRecipeUrl = "http://localhost:3001/apiuserrecipes/"
-  const listStdRecipeUrl = "http://localhost:3001/apistdrecipes"
+  const listApiRecipesUrl = "http://localhost:3001/listapirecipes/"
   const [recipes, setRecipes] = useState([])
   const [userProducts, setUserProducts] = useState([])
   const [userPrimDiet, setUserPrimDiet] = useState("")
@@ -38,40 +37,18 @@ export default function Recipes(props) {
     }
   }, [props.isLoading])
 
-  // get best recipe matches with user's food items
+  // get best recipe matches with user's information
   useEffect(() => {
-    async function fetchStdRecipes() {
-      clearError()
-      try {
-        let customParams = ""
-        userPrimDiet.length == 0 ? customParams += "/none" : customParams += "/" + userPrimDiet
-        userAllergies.length == 0 ? customParams += "/none" : customParams += "/" + userAllergies.join(",")
-
-        var { data } = await axios(listStdRecipeUrl + customParams)
-        setRecipes(data.results)
-        setIsRecipesLoading(false)
-      } catch (err) {
-        console.log(err)
-        setError(err.message)
-      }
-    }
-
-    if (!isUserInfoLoading && !props.isLoading && userProducts.length == 0) {
-      fetchStdRecipes()
-    }
-  }, [isUserInfoLoading, props.isLoading])
-
-  // get best recipe matches with user's food items
-  useEffect(() => {
-    async function fetchUserRecipes() {
+    const fetchUserRecipes = async (isStandard) => {
       try {
         clearError()
-        // API parameter format: ingredient,+ingredient,+ingredient
-        let customParams = userProducts.map((product) => (product.name)).join(",")
-        userPrimDiet.length == 0 ? customParams += "/none" : customParams += "/" + userPrimDiet
-        userAllergies.length == 0 ? customParams += "/none" : customParams += "/" + userAllergies.join(",")
+        const sortParam = isStandard ? "popularity" : "max-used-ingredients"
+        let customParams = "?"
+        customParams += userProducts.length ? `ingredients=${userProducts.map((product) => (product.name)).join(",")}` : ""
+        customParams += userPrimDiet.length ? `&diet=${userPrimDiet}` : ""
+        customParams += userAllergies.length ? `&allergies=${userAllergies.join(",")}` : ""
 
-        const recipeApiIngredients = listUserRecipeUrl + customParams
+        const recipeApiIngredients = listApiRecipesUrl + sortParam + customParams
         var { data } = await axios(recipeApiIngredients)
         setRecipes(data.results)
         setIsRecipesLoading(false)
@@ -80,9 +57,14 @@ export default function Recipes(props) {
       }
     }
 
-    if (!isUserInfoLoading && !props.isLoading && userProducts.length > 0) {
-      fetchUserRecipes()
+    if (!isUserInfoLoading && !props.isLoading) {
+      if (userProducts.length == 0) {
+        fetchUserRecipes(true)    // user has no products in pantry -> get standard recipes
+      } else {
+        fetchUserRecipes(false)   // user has products in pantry
+      }
     } 
+
   }, [isUserInfoLoading, props.isLoading, userProducts])
 
   return (
