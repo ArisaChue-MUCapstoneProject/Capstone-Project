@@ -8,16 +8,15 @@ export default function RecipeModal(props) {
     if (!props.show) {
         return null
     }
-    const { recipeInfo, userDiets, ...modalProps } = props
+    const { recipeInfo, userDiets, addIngredientToCart, ...modalProps } = props
     const validMins = !(recipeInfo.readInMinutes == undefined)
     const validServings = !(recipeInfo.servings == undefined)
     const validIngred = !(recipeInfo.extendedIngredients == undefined)
     const validSteps = !(recipeInfo.analyzedInstructions == undefined || recipeInfo.analyzedInstructions.length == 0 || recipeInfo.analyzedInstructions[0].steps == undefined)
     const dietsWarning = userDiets.filter(value => !recipeInfo.diets.includes(value)) || []
-    var warning
-    dietsWarning 
-      ? warning = (`Caution: ${dietsWarning.join(", ")} dietary restriction(s) are not followed for this recipe`)
-      : warning = ""
+    const warning = dietsWarning.length 
+      ? (`Caution: ${dietsWarning.join(", ")} dietary restriction(s) are not followed for this recipe`)
+      : ""
     
     return (
       <Modal {...modalProps} scrollable={true} size="lg" aria-labelledby="contained-modal-title-vcenter" centered>
@@ -45,7 +44,10 @@ export default function RecipeModal(props) {
                       ? <div>
                           {
                             recipeInfo.extendedIngredients.map((ingredient) => (
-                                <p key={ingredient.id}>* {ingredient.original}</p>
+                                <div key={ingredient.id}>
+                                  <p>* {ingredient.original}</p>
+                                  <Button onClick={() => addIngredientToCart(ingredient.name)}>Add to list</Button>
+                                </div>
                             ))
                           }
                       </div>

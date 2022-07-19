@@ -2,8 +2,9 @@ import * as React from "react"
 import { useState, useEffect } from "react"
 import { Alert } from "react-bootstrap" 
 import axios from 'axios';
+import { doc, updateDoc } from "firebase/firestore"
 import "./Recipes.css"
-
+import { db } from "../../firebase"
 import { useAuth } from "../../contexts/AuthContext"
 import RecipeCard from "../RecipeCard/RecipeCard"
 
@@ -14,6 +15,7 @@ export default function Recipes(props) {
   const listApiRecipesUrl = "http://localhost:3001/listapirecipes/"
   const [recipes, setRecipes] = useState([])
   const [userProducts, setUserProducts] = useState([])
+  const [userCart, setUserCart] = useState([])
   const [userPrimDiet, setUserPrimDiet] = useState("")
   const [userDiets, setUserDiets] = useState([])
   const [userAllergies, setUserAllergies] = useState([])
@@ -30,6 +32,7 @@ export default function Recipes(props) {
     if (!props.isLoading) {
       var userInfo = props.users.find(u => u.uid === currentUser.uid)
       userInfo.data.products && setUserProducts(userInfo.data.products)
+      userInfo.data.cart && setUserCart(userInfo.data.cart)
       userInfo.data.primDiet && setUserPrimDiet(userInfo.data.primDiet)
       userInfo.data.diets && setUserDiets(userInfo.data.diets)
       userInfo.data.allergies && setUserAllergies(userInfo.data.allergies)
@@ -67,6 +70,30 @@ export default function Recipes(props) {
 
   }, [isUserInfoLoading, props.isLoading, userProducts])
 
+  // update carts in database
+  useEffect(() => {
+    if (!props.isLoading && userCart) {
+      const docRef = doc(db, "users", currentUser.uid)
+      updateDoc(docRef, { cart: userCart })
+        .catch(error => {
+          setError(error.message)
+      })
+    }
+  }, [userCart])
+
+  const addIngredientToCart = (ingredientName) => {
+    clearError()
+    if (!ingredientName) {
+      setError("ingredient was not found in recipe, please enter it manually")
+    }
+    // TODO: change quantity to something specific
+    const newIngredient = {
+      name: ingredientName,
+      quantity: 2
+    }
+    setUserCart([...userCart, newIngredient])
+  }
+
   return (
     <nav className="recipes">
       <h2 className="recipes-heading">Recipes</h2>
@@ -75,7 +102,7 @@ export default function Recipes(props) {
         ? <div className="recipes-grid">
           {
             recipes.map((recipe) => (
-              <RecipeCard key={recipe.id} id={recipe.id} title={recipe.title} image={recipe.image} userDiets={userDiets}/>
+              <RecipeCard key={recipe.id} id={recipe.id} title={recipe.title} image={recipe.image} userDiets={userDiets} addIngredientToCart={addIngredientToCart}/>
             ))
           }
         </div>
