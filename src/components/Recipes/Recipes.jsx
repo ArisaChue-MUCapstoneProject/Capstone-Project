@@ -11,66 +11,78 @@ export default function Recipes(props) {
   // get user data from the database
   const { currentUser } = useAuth()
   
-  const listUserRecipeUrl = "http://localhost:3001/apiuserrecipes/"
-  const listStdRecipeUrl = "http://localhost:3001/apistdrecipes"
+  const listApiRecipesUrl = "http://localhost:3001/listapirecipes/"
   const [recipes, setRecipes] = useState([])
   const [userProducts, setUserProducts] = useState([])
+  const [userPrimDiet, setUserPrimDiet] = useState("")
+  const [userDiets, setUserDiets] = useState([])
+  const [userAllergies, setUserAllergies] = useState([])
   const [error, setError] = useState("")
+  const [isUserInfoLoading, setIsUserInfoLoading] = useState(true)
+  const [isRecipesLoading, setIsRecipesLoading] = useState(true)
+
+  function clearError() {
+    setError("")
+  }
 
   // update user data once page loads
   useEffect(() => {
     if (!props.isLoading) {
       var userInfo = props.users.find(u => u.uid === currentUser.uid)
-      setUserProducts(userInfo.data.products)
+      userInfo.data.products && setUserProducts(userInfo.data.products)
+      userInfo.data.primDiet && setUserPrimDiet(userInfo.data.primDiet)
+      userInfo.data.diets && setUserDiets(userInfo.data.diets)
+      userInfo.data.allergies && setUserAllergies(userInfo.data.allergies)
+      setIsUserInfoLoading(false)
     }
   }, [props.isLoading])
 
-  // get best recipe matches with user's food items
+  // get best recipe matches with user's information
   useEffect(() => {
-    async function fetchStdRecipes() {
+    const fetchUserRecipes = async (isStandard) => {
       try {
-        var { data } = await axios(listStdRecipeUrl)
-        setRecipes(data)
-      } catch (err) {
-        setError(err.message)
-      }
-    }
+        clearError()
+        const sortParam = isStandard ? "popularity" : "max-used-ingredients"
+        let customParams = "?"
+        customParams += userProducts.length ? `ingredients=${userProducts.map((product) => (product.name)).join(",")}` : ""
+        customParams += userPrimDiet.length ? `&diet=${userPrimDiet}` : ""
+        customParams += userAllergies.length ? `&allergies=${userAllergies.join(",")}` : ""
 
-    if (!props.isLoading && userProducts === undefined) {
-      fetchStdRecipes()
-    }
-  }, [props.isLoading])
-
-  // get best recipe matches with user's food items
-  useEffect(() => {
-    async function fetchUserRecipes() {
-      try {
-        // API parameter format: ingredient,+ingredient,+ingredient
-        let ingredientParams = userProducts.map((product) => (product.name)).join(",+")
-        const recipeApiIngredients = listUserRecipeUrl + ingredientParams
+        const recipeApiIngredients = listApiRecipesUrl + sortParam + customParams
         var { data } = await axios(recipeApiIngredients)
-        setRecipes(data)
+        setRecipes(data.results)
+        setIsRecipesLoading(false)
       } catch (err) {
         setError(err.message)
       }
     }
 
-    if (!props.isLoading && userProducts != undefined && userProducts.length > 0) {
-      fetchUserRecipes()
+    if (!isUserInfoLoading && !props.isLoading) {
+      if (userProducts.length == 0) {
+        fetchUserRecipes(true)    // user has no products in pantry -> get standard recipes
+      } else {
+        fetchUserRecipes(false)   // user has products in pantry
+      }
     } 
-  }, [props.isLoading, userProducts])
+
+  }, [isUserInfoLoading, props.isLoading, userProducts])
 
   return (
     <nav className="recipes">
       <h2 className="recipes-heading">Recipes</h2>
       {error && <Alert variant="danger">{error}</Alert>}
-      <div className="recipes-grid">
-        {
-          recipes.map((recipe) => (
-            <RecipeCard key={recipe.id} id={recipe.id} title={recipe.title} image={recipe.image} recipeModelShow={props.recipeModelShow} handleRecipeModal={props.handleRecipeModal} handleRecipeCardClick={props.handleRecipeCardClick} recipeInfo={props.recipeInfo}/>
-          ))
-        }
-      </div>
+      {recipes && recipes.length > 0 
+        ? <div className="recipes-grid">
+          {
+            recipes.map((recipe) => (
+              <RecipeCard key={recipe.id} id={recipe.id} title={recipe.title} image={recipe.image} userDiets={userDiets}/>
+            ))
+          }
+        </div>
+        : isRecipesLoading 
+          ? <p>Loading</p>
+          : <p>Please decrease your restrictions</p>
+      }
     </nav>
   )
 }

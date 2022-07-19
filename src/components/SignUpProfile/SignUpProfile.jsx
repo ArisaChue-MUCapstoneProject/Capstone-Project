@@ -1,5 +1,5 @@
 import * as React from "react"
-import { useState } from "react"
+import { useState, useEffect, useRef } from "react"
 import { Link, useNavigate } from "react-router-dom"
 import { Button, Card, Alert } from "react-bootstrap" 
 import { Typeahead } from 'react-bootstrap-typeahead'
@@ -7,30 +7,45 @@ import { doc, updateDoc } from "firebase/firestore"
 import { useAuth } from "../../contexts/AuthContext"
 import { db } from "../../firebase"
 import "./SignUpProfile.css"
-import 'react-bootstrap-typeahead/css/Typeahead.css';
+import 'react-bootstrap-typeahead/css/Typeahead.css'
 
 export default function SignUpProfile(props) {
     // get user data from the database
     const { currentUser } = useAuth()
     const navigate = useNavigate()
+    const typeaheadRef = useRef(null);
     const [loading, setLoading] = useState(false)
-    const diets = ["Gluten Free", "Ketogenic", "Vegetarian", "Vegan", "Pescetarian", "Paleo"]
+    const primDiets = ["Gluten Free", "Ketogenic", "Vegetarian", "Vegan", "Pescetarian", "Paleo"]
+    const [diets, setDiets] = useState(["Gluten Free", "Ketogenic", "Vegetarian", "Vegan", "Pescetarian", "Paleo"])
+    const [primDietChecked, setPrimDietChecked] = useState([])
     const [dietsChecked, setDietsChecked] = useState([])
     const allergies = ["Diary", "Peanut", "Soy", "Egg", "Shellfish", "Tree Nut", "Gluten"]
     const [allergiesChecked, setAllergiesChecked] = useState([])
     const [error, setError] = useState("")
+
+    // continue editing diets so secondary diet options don't show primary diet
+    useEffect(() => {
+        setDiets(primDiets.filter(val => {
+            return val != primDietChecked
+        }))
+    }, [primDietChecked])
     
+    // update diet and allergies into database
     const handleMakeProfile = async (e) => {
         setLoading(true)
         // get clicked data
-        const userDiets = dietsChecked.map(val => 
+        const userPrimDiets = primDietChecked.map(val => 
             val == "Gluten Free" ? "gluten-free" : val.toLowerCase()
+        )
+        const userDiets = dietsChecked.map(val => 
+            val.toLowerCase()
         )
         const userAllergies = allergiesChecked.map(val => 
             val.toLowerCase()
         )
         // update user profile in the database
         const userProfile = {
+            primDiet: userPrimDiets,
             diets: userDiets,
             allergies: userAllergies
         }
@@ -49,15 +64,33 @@ export default function SignUpProfile(props) {
         {error && <Alert variant="danger">{error}</Alert>}
           <Card>
             <Card.Body>
-                <p>Dietary Restrictions?</p>
+                <p>Primary Dietary Restriction?</p>
+                <Typeahead
+                    id="checkbox-primary-diet"
+                    labelKey="diets"
+                    onChange={setPrimDietChecked}
+                    options={primDiets}
+                    placeholder="Customize your primary diet..."
+                    selected={primDietChecked}
+                />
+            </Card.Body>
+          </Card>
+          <Card>
+            <Card.Body>
+                <p>Other Dietary Restrictions?</p>
                 <Typeahead
                     id="checkbox-diets"
                     labelKey="diets"
                     multiple
-                    onChange={setDietsChecked}
+                    onChange={(selected) => {
+                        setDietsChecked(selected);
+                        // Keep the menu open when making multiple selections
+                        typeaheadRef.current.toggleMenu();
+                      }}
                     options={diets}
-                    placeholder="Customize your diet..."
+                    placeholder="Customize your secondary diets..."
                     selected={dietsChecked}
+                    ref={typeaheadRef}
                 />
             </Card.Body>
           </Card>
