@@ -1,0 +1,14 @@
+.shopping-cart {
+    margin: auto;
+    background-color: azure;
+    padding: 1rem;
+}
+
+.cart-form {
+    align-self: center;
+}
+
+.cart-submit {
+    align-self: flex-end;
+    margin-bottom: 17px;
+}

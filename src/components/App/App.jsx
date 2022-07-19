@@ -19,7 +19,6 @@ import SignUpProfile from "../SignUpProfile/SignUpProfile"
 
 export default function App() {
   // state variables
-  const [products, setProducts] = useState([])
   const [users, setUsers] = useState([])
   const [isLoading, setIsLoading] = useState(true)
 
@@ -55,8 +54,8 @@ export default function App() {
               <Route path="/profile" element={<PrivateRoute><Profile users={users} isLoading={isLoading}/></PrivateRoute>}/>
               <Route path="/profile/update" element={<PrivateRoute><UpdateProfile /></PrivateRoute>}/>
               <Route path="/recipes" element={<PrivateRoute><Recipes users={users} isLoading={isLoading}/></PrivateRoute>}/>
-              <Route path="/pantry" element={<PrivateRoute><Pantry setProducts={setProducts} users={users} isLoading={isLoading}/></PrivateRoute>}/>
-              <Route path="/shoppingcart" element={<PrivateRoute><ShoppingCart /></PrivateRoute>}/>
+              <Route path="/pantry" element={<PrivateRoute><Pantry users={users} isLoading={isLoading}/></PrivateRoute>}/>
+              <Route path="/shoppingcart" element={<PrivateRoute><ShoppingCart users={users} isLoading={isLoading}/></PrivateRoute>}/>
             </Routes>
           </main>
         </BrowserRouter>
