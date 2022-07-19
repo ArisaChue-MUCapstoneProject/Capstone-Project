@@ -13,19 +13,26 @@ app.use(morgan("tiny"))
 app.use(cors())
 
 // fetches best recipes given user food items from API
-app.get('/apiuserrecipes/:ingredients', async (request, response) => {
-    const params = {
-        ingredients: request.params.ingredients,
-        number: 20,
+app.get('/apiuserrecipes/:ingredients/:diets/:allergies', async (request, response) => {
+    let params = {
+        includeIngredients: request.params.ingredients,
+        number: 5,
         instructionsRequired: true,
-        fillIngredients: true,
-        apiKey: api_key
+        sort: "max-used-ingredients",
+        apiKey: api_key,
     }
-    let recipes_url = "https://api.spoonacular.com/recipes/findByIngredients";
+    if (request.params.diets != "none") {
+        params["diet"] = request.params.diets
+    }
+    if (request.params.allergies != "none") {
+        params["intolerances"] = request.params.allergies
+    }
+    let recipes_url = "https://api.spoonacular.com/recipes/complexSearch";
     let { data } = await axios(recipes_url, { params })
     response.json(data);
 });
 
+// TODO: add in recipe information to each recipe so you don't need to create a separate request
 // fetches recipe specific info given recipe id from API
 app.get('/apirecipeinfo/:recipeid', async (request, response) => {
     const params = {
@@ -37,18 +44,22 @@ app.get('/apirecipeinfo/:recipeid', async (request, response) => {
 });
 
 // fetches standard popular recipes
-app.get('/apistdrecipes', async (request, response) => {
+app.get('/apistdrecipes/:diets/:allergies', async (request, response) => {
     const params = {
         apiKey: api_key,
-        number: 20,
-        sort: "random",
-        addRecipeInformation: true,
+        number: 5,
+        sort: "popularity",
         instructionsRequired: true,
-        fillIngredients: true
+    }
+    if (request.params.diets != "none") {
+        params["diet"] = request.params.diets
+    }
+    if (request.params.allergies != "none") {
+        params["intolerances"] = request.params.allergies
     }
     let recipes_url = `https://api.spoonacular.com/recipes/complexSearch`;
     let { data } = await axios(recipes_url, { params })
-    response.json(data.results);
+    response.json(data);
 });
 
 module.exports = app

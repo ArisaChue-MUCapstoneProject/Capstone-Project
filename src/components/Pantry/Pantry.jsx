@@ -32,7 +32,7 @@ export default function Pantry(props) {
   useEffect(() => {
     if (!props.isLoading) {
       var userInfo = props.users.find(u => u.uid === currentUser.uid)
-      setUserProducts(userInfo.data.products)
+      userInfo.data.products && setUserProducts(userInfo.data.products)
     }
   }, [props.isLoading])
   
