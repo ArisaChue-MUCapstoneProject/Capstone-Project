@@ -15,6 +15,7 @@ export default function Recipes(props) {
   const listStdRecipeUrl = "http://localhost:3001/apistdrecipes"
   const [recipes, setRecipes] = useState([])
   const [userProducts, setUserProducts] = useState([])
+  const [userPrimDiet, setUserPrimDiet] = useState("")
   const [userDiets, setUserDiets] = useState([])
   const [userAllergies, setUserAllergies] = useState([])
   const [error, setError] = useState("")
@@ -30,6 +31,7 @@ export default function Recipes(props) {
     if (!props.isLoading) {
       var userInfo = props.users.find(u => u.uid === currentUser.uid)
       userInfo.data.products && setUserProducts(userInfo.data.products)
+      userInfo.data.primDiet && setUserPrimDiet(userInfo.data.primDiet)
       userInfo.data.diets && setUserDiets(userInfo.data.diets)
       userInfo.data.allergies && setUserAllergies(userInfo.data.allergies)
       setIsUserInfoLoading(false)
@@ -42,7 +44,7 @@ export default function Recipes(props) {
       clearError()
       try {
         let customParams = ""
-        userDiets.length == 0 ? customParams += "/none" : customParams += "/" + userDiets.join(",")
+        userPrimDiet.length == 0 ? customParams += "/none" : customParams += "/" + userPrimDiet
         userAllergies.length == 0 ? customParams += "/none" : customParams += "/" + userAllergies.join(",")
 
         var { data } = await axios(listStdRecipeUrl + customParams)
@@ -66,7 +68,7 @@ export default function Recipes(props) {
         clearError()
         // API parameter format: ingredient,+ingredient,+ingredient
         let customParams = userProducts.map((product) => (product.name)).join(",")
-        userDiets.length == 0 ? customParams += "/none" : customParams += "/" + userDiets.join(",")
+        userPrimDiet.length == 0 ? customParams += "/none" : customParams += "/" + userPrimDiet
         userAllergies.length == 0 ? customParams += "/none" : customParams += "/" + userAllergies.join(",")
 
         const recipeApiIngredients = listUserRecipeUrl + customParams
@@ -91,7 +93,7 @@ export default function Recipes(props) {
         ? <div className="recipes-grid">
           {
             recipes.map((recipe) => (
-              <RecipeCard key={recipe.id} id={recipe.id} title={recipe.title} image={recipe.image} recipeModelShow={props.recipeModelShow} handleRecipeModal={props.handleRecipeModal} handleRecipeCardClick={props.handleRecipeCardClick} recipeInfo={props.recipeInfo}/>
+              <RecipeCard key={recipe.id} id={recipe.id} title={recipe.title} image={recipe.image} userDiets={userDiets}/>
             ))
           }
         </div>
