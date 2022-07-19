@@ -2,10 +2,12 @@ import * as React from "react"
 import { useState } from "react"
 import { Link, useNavigate } from "react-router-dom"
 import { Button, Card, Alert } from "react-bootstrap" 
+import { Typeahead } from 'react-bootstrap-typeahead'
 import { doc, updateDoc } from "firebase/firestore"
 import { useAuth } from "../../contexts/AuthContext"
 import { db } from "../../firebase"
 import "./SignUpProfile.css"
+import 'react-bootstrap-typeahead/css/Typeahead.css';
 
 export default function SignUpProfile(props) {
     // get user data from the database
@@ -13,35 +15,23 @@ export default function SignUpProfile(props) {
     const navigate = useNavigate()
     const [loading, setLoading] = useState(false)
     const diets = ["Gluten Free", "Ketogenic", "Vegetarian", "Vegan", "Pescetarian", "Paleo"]
-    const [dietChecked, setDietChecked] = useState([false, false, false, false, false, false])
+    const [dietsChecked, setDietsChecked] = useState([])
     const allergies = ["Diary", "Peanut", "Soy", "Egg", "Shellfish", "Tree Nut", "Gluten"]
-    const [allergiesChecked, setAllergiesChecked] = useState([false, false, false, false, false, false, false]);
+    const [allergiesChecked, setAllergiesChecked] = useState([])
     const [error, setError] = useState("")
-
-    const handleDietClick = (index) => {
-        let newChecked = [...dietChecked]
-        newChecked[index] = !newChecked[index]
-        setDietChecked(newChecked)
-    }
-
-    const handleAllergiesClick = (index) => {
-        let newChecked = [...allergiesChecked]
-        newChecked[index] = !newChecked[index]
-        setAllergiesChecked(newChecked)
-    }
     
     const handleMakeProfile = async (e) => {
         setLoading(true)
         // get clicked data
-        const userDiets = diets.filter((val, ind) => {
-            return val && dietChecked[ind]
-        })
-        const userAllergies = allergies.filter((val, ind) => {
-            return val && allergiesChecked[ind]
-        })
+        const userDiets = dietsChecked.map(val => 
+            val == "Gluten Free" ? "gluten-free" : val.toLowerCase()
+        )
+        const userAllergies = allergiesChecked.map(val => 
+            val.toLowerCase()
+        )
         // update user profile in the database
         const userProfile = {
-            diet: userDiets,
+            diets: userDiets,
             allergies: userAllergies
         }
         const docRef = doc(db, "users", currentUser.uid)
@@ -60,19 +50,29 @@ export default function SignUpProfile(props) {
           <Card>
             <Card.Body>
                 <p>Dietary Restrictions?</p>
-                {diets.map((value, index) => {
-                    return <Button key={index} variant={dietChecked[index] ? "primary" : "secondary"} onClick={() => handleDietClick(index)}>
-                        {value}
-                    </Button>})}
+                <Typeahead
+                    id="checkbox-diets"
+                    labelKey="diets"
+                    multiple
+                    onChange={setDietsChecked}
+                    options={diets}
+                    placeholder="Customize your diet..."
+                    selected={dietsChecked}
+                />
             </Card.Body>
           </Card>
           <Card>
             <Card.Body>
                 <p>Allergies?</p>
-                {allergies.map((value, index) => {
-                    return <Button key={index} variant={allergiesChecked[index] ? "primary" : "secondary"} onClick={() => handleAllergiesClick(index)}>
-                        {value}
-                    </Button>})}
+                <Typeahead
+                    id="checkbox-diets"
+                    labelKey="allergies"
+                    multiple
+                    onChange={setAllergiesChecked}
+                    options={allergies}
+                    placeholder="Customize your allergies..."
+                    selected={allergiesChecked}
+                />
             </Card.Body>
           </Card>
           <Button disabled={loading} onClick={handleMakeProfile}>Sign Up</Button>

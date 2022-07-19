@@ -147,6 +147,7 @@ export default function Pantry(props) {
             </Col>
           </Row>
         </Form>
+        {userProducts &&
         <div>
           {
             userProducts.map((product) => (
@@ -154,6 +155,7 @@ export default function Pantry(props) {
             ))
           }
         </div>
+        }
     </div>
   )
 }
