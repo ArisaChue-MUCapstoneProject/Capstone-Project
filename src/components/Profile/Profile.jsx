@@ -8,6 +8,7 @@ import { useAuth } from "../../contexts/AuthContext"
 import { db } from "../../firebase"
 import "./Profile.css"
 import 'react-bootstrap-typeahead/css/Typeahead.css'
+import CustomTooltip from "../CustomTooltip/CustomTooltip"
 
 export default function Profile(props) {
   const { logout, currentUser } = useAuth()
@@ -29,6 +30,9 @@ export default function Profile(props) {
   const allergies = ["Diary", "Peanut", "Soy", "Egg", "Shellfish", "Tree Nut", "Gluten"]
   const [allergiesChecked, setAllergiesChecked] = useState([])
   const navigate = useNavigate()
+
+  const primDietDialogue = "Primary dietary restriction will filter out recipes that don't follow this restriction"
+  const dietDialogue = "Secondary dietary restrictions will not filter out recipes that don't follow this restriction, but will show a warning at the top of recipe instructions"
 
   useEffect(() => {
     if (!props.isLoading) {
@@ -143,7 +147,10 @@ export default function Profile(props) {
               }
             </div>
             <div>
-              <p>Primary Dietary Restriction</p>
+              <div className="profile-diet-heading">
+                <p>Primary Dietary Restriction</p>
+                <CustomTooltip dialogue={primDietDialogue}/>
+              </div>
               {!props.isLoading && userPrimDiet.length ? <Badge pill bg="secondary">{userPrimDiet}</Badge>: <Badge pill bg="secondary">none</Badge> }
               {showUserPrimDietForm && 
                 <Typeahead
@@ -158,7 +165,10 @@ export default function Profile(props) {
                 <Button onClick={showPrimDietForm}>Change Me</Button>
             </div>
             <div>
-              <p>Secondary Dietary Restriction(s):</p>
+              <div className="profile-diet-heading">
+                <p>Secondary Dietary Restriction(s):</p>
+                <CustomTooltip dialogue={dietDialogue}/>
+              </div>
               {!props.isLoading && userDiets.length 
                 ? <div className="profile-diets">
                 {
