@@ -20,6 +20,7 @@ export default function Profile(props) {
   const [userDiets, setUserDiets] = useState([])
   const [userAllergies, setUserAllergies] = useState([])
   const [error, setError] = useState("")
+  // TODO: create a map -> key: each category, value: category info to combine to one
   const [showUserPrimDietForm, setShowUserPrimDietForm] = useState(false)
   const primDiets = ["Gluten Free", "Ketogenic", "Vegetarian", "Vegan", "Pescetarian", "Paleo"]
   const [primDietChecked, setPrimDietChecked] = useState([])
