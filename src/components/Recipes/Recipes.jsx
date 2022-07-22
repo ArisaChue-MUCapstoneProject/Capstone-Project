@@ -86,10 +86,11 @@ export default function Recipes(props) {
     if (!ingredientName) {
       setError("ingredient was not found in recipe, please enter it manually")
     }
-    // TODO: change quantity to something specific
+    // TODO: change quantity to something specific, change unit
     const newIngredient = {
       name: ingredientName,
-      quantity: 2
+      quantity: 2,
+      unit: "gram"
     }
     setUserCart([...userCart, newIngredient])
   }
