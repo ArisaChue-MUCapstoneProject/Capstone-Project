@@ -16,7 +16,9 @@ app.get('/listapirecipes/:sort/', async (request, response) => {
     let params = {
         number: 5,
         instructionsRequired: true,
-        sort: "max-used-ingredients",
+        addRecipeInformation: true,
+        fillIngredients: true,
+        sort: request.params.sort,
         apiKey: api_key
     }
     params = {
