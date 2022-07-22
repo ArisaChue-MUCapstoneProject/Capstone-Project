@@ -92,7 +92,7 @@ export function isVolumeUnit(unit) {
     return -1
 }
 
-// return logic: [ was able to convert to grams/mL, amount in grams/mL/non-measureable unit ]
+// return logic: [ unit type, amount in grams/mL/non-measureable unit ]
 export function convertToStandard(unit, amount) {
     // clean string
     unit.trim()
@@ -102,7 +102,8 @@ export function convertToStandard(unit, amount) {
     if (unit.length > 1 && unit.slice(-1) == "s") {
         unit = unit.substring(0, unit.length - 1)
     }
-    return unit in units ? [true, amount * units[unit]] : [false, amount]
+    let curUnitType = isVolumeUnit(unit)
+    return curUnitType >= 0 ? [curUnitType, amount * units[unit]] : [curUnitType, amount]
 }
 
 export function updateStandardAmount(adjustAmountUnit, adjustAmount, curAmountUnit, curAmount) {

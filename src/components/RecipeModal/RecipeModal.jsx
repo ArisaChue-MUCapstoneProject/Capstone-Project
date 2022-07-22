@@ -9,16 +9,18 @@ export default function RecipeModal(props) {
     if (!props.show) {
         return null
     }
-    const { recipeInfo, userDiets, addIngredientToCart, modalError, ...modalProps } = props
-    const validMins = !(recipeInfo.readInMinutes == undefined)
-    const validServings = !(recipeInfo.servings == undefined)
-    const validIngred = !(recipeInfo.extendedIngredients == undefined)
+    if(props.isIngredLoading) {
+      return <p>Loading</p>
+    }
+    const { recipeInfo, userDiets, addIngredientToCart, modalError, ingredientInfo, isIngredLoading, ...modalProps } = props
+    const validMins = !(recipeInfo.readInMinutes == undefined || recipeInfo.readInMinutes.length == 0)
+    const validServings = !(recipeInfo.servings == undefined || recipeInfo.servings.length == 0)
+    const validIngred = !(recipeInfo.extendedIngredients == undefined || recipeInfo.extendedIngredients.length == 0)
     const validSteps = !(recipeInfo.analyzedInstructions == undefined || recipeInfo.analyzedInstructions.length == 0 || recipeInfo.analyzedInstructions[0].steps == undefined)
     const dietsWarning = userDiets.filter(value => !recipeInfo.diets.includes(value)) || []
     const warning = dietsWarning.length 
       ? (`Caution: ${dietsWarning.join(", ")} dietary restriction(s) are not followed for this recipe`)
       : ""
-    
     return (
       <Modal {...modalProps} scrollable={true} size="lg" aria-labelledby="contained-modal-title-vcenter" centered>
         <Modal.Header closeButton>
@@ -44,12 +46,20 @@ export default function RecipeModal(props) {
                 {/* ingredient content */}
                 <Col>
                     <p className="modal-headings">Ingredients:</p>
+                    {ingredientInfo}
                     {validIngred
                       ? <div>
                           {
                             recipeInfo.extendedIngredients.map((ingredient) => (
                                 <div key={ingredient.id}>
-                                  <p>* {ingredient.original}</p>
+                                  {/* checking if user has each ingredient */}
+                                  {ingredientInfo.find(ingred => ingred[0] === ingredient.id)
+                                    ? <div>
+                                        <p style={{color: "green"}}>* {ingredient.original}</p> 
+                                        <p>{ingredientInfo.find(ingred => ingred[0] === ingredient.id)[1]}</p>
+                                      </div>
+                                    : <p style={{color: "red"}}>* {ingredient.original}</p>
+                                  }
                                   <Button onClick={() => addIngredientToCart(ingredient.name)}>Add to list</Button>
                                 </div>
                             ))
