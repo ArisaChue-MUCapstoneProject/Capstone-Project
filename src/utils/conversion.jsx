@@ -67,7 +67,7 @@ export const units = {
     "bunch": 55, 
     "bch": 55, 
     "bn": 55,
-    // default value
+    // non-measureable value
     "count": 1
 }
 
@@ -76,10 +76,13 @@ export const basicUnits = ["choose unit", "mL", "tbsp", "tsp", "fl oz", "cup", "
 const volumeUnits = new Set(["milliliter", "ml", "millilitre", "cc", "mL", "tablespoon", "tbsp", "tbs", "tbl", "T", "teaspoon", "tsp", "t", "pinch", "pin", "dash", "d", "fluidounce", "floz", "gill", "cup", "c", "stick", "pint", "p", "pt", "flpt", "quart", "q", "qt", "flqt", "gallon", "gal", "liter", "litre", "l", "L", "deciliter", "decilitre", "dL", "dl", "peck", "pk", "barrel", "bbl", "bushel", "bu"])
 const weightUnits = new Set(["gram", "gramme", "g", "pound", "lb", "ounce", "oz", "milligram", "milligramme", "mg", "kilogram", "kilogramme", "kg", "dozen", "doz", "bunch", "bch", "bu", "bushel", "bn"])
 
-// return 1 if volume unit, 0 if weight unit, -1 if neither
+// return 1 if volume unit, 0 if weight unit, -1 if non-measureable
 export function isVolumeUnit(unit) {
+    // clean string
     unit.trim()
     unit = unit.replace(/[^a-z]/gi, "")
+    unit = unit.toLowerCase()
+
     if (volumeUnits.has(unit)) {
         return 1
     }
@@ -89,10 +92,12 @@ export function isVolumeUnit(unit) {
     return -1
 }
 
-// return logic: [ was able to convert to grams/mL, amount in grams/mL/default unit ]
+// return logic: [ was able to convert to grams/mL, amount in grams/mL/non-measureable unit ]
 export function convertToStandard(unit, amount) {
+    // clean string
     unit.trim()
     unit = unit.replace(/[^a-z]/gi, "")
+    unit = unit.toLowerCase()
     // if unit is a plural, remove s
     if (unit.length > 1 && unit.slice(-1) == "s") {
         unit = unit.substring(0, unit.length - 1)
@@ -101,9 +106,9 @@ export function convertToStandard(unit, amount) {
 }
 
 export function updateStandardAmount(adjustAmountUnit, adjustAmount, curAmountUnit, curAmount) {
-    if (!(curAmountUnit in units)) {
-        // if both amounts are default units
-        if (!(adjustAmount in units)) {
+    if (!(adjustAmountUnit in units)) {
+        // if both amounts are non-measureable units
+        if (curAmountUnit == "count") {
             return curAmount + adjustAmount
         }
         // units are not convertable
