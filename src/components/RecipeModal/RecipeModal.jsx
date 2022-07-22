@@ -1,5 +1,6 @@
 import * as React from "react"
 import { useState } from "react"
+import { Link } from "react-router-dom"
 import Modal from "react-bootstrap/Modal"
 import { Container, Row, Col, Button, Alert } from "react-bootstrap" 
 import "./RecipeModal.css"
@@ -8,7 +9,7 @@ export default function RecipeModal(props) {
     if (!props.show) {
         return null
     }
-    const { recipeInfo, userDiets, addIngredientToCart, ...modalProps } = props
+    const { recipeInfo, userDiets, addIngredientToCart, modalError, ...modalProps } = props
     const validMins = !(recipeInfo.readInMinutes == undefined)
     const validServings = !(recipeInfo.servings == undefined)
     const validIngred = !(recipeInfo.extendedIngredients == undefined)
@@ -27,6 +28,9 @@ export default function RecipeModal(props) {
         </Modal.Header>
         <Modal.Body className="show-grid">
           <Container>
+            <Row>
+              {modalError && <Alert variant="danger">{modalError}</Alert>}
+            </Row>
             <Row>
               {warning && <Alert variant="warning">{warning}</Alert>}
             </Row>
@@ -51,7 +55,7 @@ export default function RecipeModal(props) {
                             ))
                           }
                       </div>
-                      : <p> No ingredients listed</p>
+                      : <p> Please visit this <a href={recipeInfo.sourceUrl} target="_blank">link</a> for ingredients</p>
                     }
                 </Col>
                 {/* instructions content */}
@@ -66,7 +70,7 @@ export default function RecipeModal(props) {
                             ))
                           }
                         </div>
-                      : <p> No steps listed</p>
+                      : <p> Please visit this <a href={recipeInfo.sourceUrl} target="_blank">link</a> for steps</p>
                     }
                 </Col>
             </Row>

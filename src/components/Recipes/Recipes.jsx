@@ -103,7 +103,7 @@ export default function Recipes(props) {
         ? <div className="recipes-grid">
           {
             recipes.map((recipe) => (
-              <RecipeCard key={recipe.id} id={recipe.id} title={recipe.title} image={recipe.image} userDiets={userDiets} addIngredientToCart={addIngredientToCart}/>
+              <RecipeCard key={recipe.id} id={recipe.id} title={recipe.title} image={recipe.image} userDiets={userDiets} recipes={recipes} addIngredientToCart={addIngredientToCart}/>
             ))
           }
         </div>
