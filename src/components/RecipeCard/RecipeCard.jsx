@@ -49,7 +49,7 @@ export default function RecipeCard(props) {
         <img src={props.image} alt={`recipe for ${props.title}`} onClick={() => handleRecipeCardClick(true, props.id)}/>
         <p className="recipe-name">{props.title}</p>
         {/* recipe modal */}
-        <RecipeModal show={recipeModelShow} onHide={() => handleRecipeModal(false)} recipeInfo={props.recipeInfo} modalError={modalError} userDiets={props.userDiets} ingredientInfo={props.ingredientInfo} isIngredLoading={props.isIngredLoading} addIngredientToCart={props.addIngredientToCart}></RecipeModal>
+        <RecipeModal show={recipeModelShow} onHide={() => handleRecipeModal(false)} recipeInfo={props.recipeInfo} modalError={modalError} userDiets={props.userDiets} ingredientInfo={props.ingredientInfo} isIngredLoading={props.isIngredLoading} useRecipe={props.useRecipe} addIngredientToCart={props.addIngredientToCart}></RecipeModal>
     </div>
   )
 }

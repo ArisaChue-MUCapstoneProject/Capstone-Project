@@ -26,6 +26,7 @@ export default function Recipes(props) {
   const [isIngredLoading, setIsIngredLoading] = useState(true) 
   const [recipeInfo, setRecipeInfo] = useState({})
   const [ingredientInfo, setIngredientInfo] = useState([])
+  const conversionFailure = "unable to convert amount"
 
   function clearError() {
     setError("")
@@ -85,9 +86,22 @@ export default function Recipes(props) {
     }
   }, [userCart])
 
+  // update user's products in database
+  useEffect(() => {
+    if (!props.isLoading && userProducts) {
+      const docRef = doc(db, "users", currentUser.uid)
+      updateDoc(docRef, { products: userProducts })
+        .catch(error => {
+          setError(error.message)
+      })
+    }
+  }, [userProducts])
+
+  // TODO: how to deal with plurals?
   // look to see if 1) user has ingredient 2) user has enough amount
   const checkIngredientEnough = (ingredient) => {
-    const ingredWords = new Set(ingredient.nameClean.split(" ").map(word => word.toLowerCase()))
+    const ingredientName = ingredient.nameClean || ingredient.name
+    const ingredWords = new Set(ingredientName.split(" ").map(word => word.toLowerCase()))
     let userIngredient = userProducts.find(prod => ingredWords.has(prod.name))
     // user doesn't have ingredient
     if (!userIngredient){
@@ -96,7 +110,7 @@ export default function Recipes(props) {
     let recipeIngredAmount = convertToStandard(ingredient.unit, ingredient.amount)  // return logic: [ unit type, amount in grams/mL/non-measureable unit ]
     // trying to convert different unit types
     if (recipeIngredAmount[0] != userIngredient.unitType) {
-      return [ingredient.id, "unable to convert amount"]
+      return [ingredient.id, userIngredient.name, conversionFailure, null]
     }
     var message = "you do not have enough"
     // find how much user will have after they use ingredient
@@ -104,7 +118,7 @@ export default function Recipes(props) {
       const unitName = userIngredient.unitType == 1 ? "milliliters" : userIngredient.unitType == 0 ? "grams" : "counts"
       message = `you will have ${userIngredient.quantity - recipeIngredAmount[1]} ${unitName} left`
     }
-    return [ingredient.id, message]
+    return [ingredient.id, userIngredient.name, message, userIngredient.quantity - recipeIngredAmount[1]]
   }
 
   // when recipeInfo gets updated by RecipeCard
@@ -132,15 +146,40 @@ export default function Recipes(props) {
     setUserCart([...userCart, newIngredient])
   }
 
+  // on click function on recipe modal that decreases user's products amount
+  function useRecipe() {
+    // ingredientInfo = [ id, name in userProducts, message, amount left ]
+    const newProductAmounts = userProducts.map(function(ingredient) {
+      let curIngred = ingredientInfo.find(ingd => ingd[1] == ingredient.name)
+      // matched ingredient is no longer in user's database (lost somewhere)
+      if (!curIngred) {
+        setError(`could not adjust ${ingredient.name}'s amount`)
+        return {...ingredient}
+      }
+      else if (curIngred[2] != conversionFailure) {
+        if (curIngred[3] > 0) {
+          return {
+            name: ingredient.name,
+            quantity: curIngred[3],
+            unitType: ingredient.unitType
+          }
+        } // else don't push anything since product would be used up
+      } else { // don't modify product since conversion failed
+        return {...ingredient}
+      }
+    }).filter(val => val)
+    setUserProducts(newProductAmounts)
+  }
+
   return (
-    <nav className="recipes">
+    <div className="recipes">
       <h2 className="recipes-heading">Recipes</h2>
       {error && <Alert variant="danger">{error}</Alert>}
       {recipes && recipes.length > 0 
         ? <div className="recipes-grid">
           {
             recipes.map((recipe) => (
-              <RecipeCard key={recipe.id} id={recipe.id} title={recipe.title} image={recipe.image} userDiets={userDiets} recipes={recipes} setRecipeInfo={setRecipeInfo} recipeInfo={recipeInfo} ingredientInfo={ingredientInfo} setIsIngredLoading={setIsIngredLoading} isIngredLoading={isIngredLoading} addIngredientToCart={addIngredientToCart}/>
+              <RecipeCard key={recipe.id} id={recipe.id} title={recipe.title} image={recipe.image} userDiets={userDiets} recipes={recipes} setRecipeInfo={setRecipeInfo} recipeInfo={recipeInfo} ingredientInfo={ingredientInfo} setIsIngredLoading={setIsIngredLoading} isIngredLoading={isIngredLoading} useRecipe={useRecipe} addIngredientToCart={addIngredientToCart}/>
             ))
           }
         </div>
@@ -148,6 +187,6 @@ export default function Recipes(props) {
           ? <p>Loading</p>
           : <p>Please decrease your restrictions</p>
       }
-    </nav>
+    </div>
   )
 }

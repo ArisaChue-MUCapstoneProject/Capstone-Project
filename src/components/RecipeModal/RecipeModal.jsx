@@ -12,7 +12,7 @@ export default function RecipeModal(props) {
     if(props.isIngredLoading) {
       return <p>Loading</p>
     }
-    const { recipeInfo, userDiets, addIngredientToCart, modalError, ingredientInfo, isIngredLoading, ...modalProps } = props
+    const { recipeInfo, userDiets, addIngredientToCart, modalError, ingredientInfo, isIngredLoading, useRecipe, ...modalProps } = props
     const validMins = !(recipeInfo.readInMinutes == undefined || recipeInfo.readInMinutes.length == 0)
     const validServings = !(recipeInfo.servings == undefined || recipeInfo.servings.length == 0)
     const validIngred = !(recipeInfo.extendedIngredients == undefined || recipeInfo.extendedIngredients.length == 0)
@@ -21,6 +21,12 @@ export default function RecipeModal(props) {
     const warning = dietsWarning.length 
       ? (`Caution: ${dietsWarning.join(", ")} dietary restriction(s) are not followed for this recipe`)
       : ""
+
+    function useRecipeAndClose() {
+      useRecipe()
+      props.onHide()
+    }
+    
     return (
       <Modal {...modalProps} scrollable={true} size="lg" aria-labelledby="contained-modal-title-vcenter" centered>
         <Modal.Header closeButton>
@@ -46,7 +52,6 @@ export default function RecipeModal(props) {
                 {/* ingredient content */}
                 <Col>
                     <p className="modal-headings">Ingredients:</p>
-                    {ingredientInfo}
                     {validIngred
                       ? <div>
                           {
@@ -56,7 +61,7 @@ export default function RecipeModal(props) {
                                   {ingredientInfo.find(ingred => ingred[0] === ingredient.id)
                                     ? <div>
                                         <p style={{color: "green"}}>* {ingredient.original}</p> 
-                                        <p>{ingredientInfo.find(ingred => ingred[0] === ingredient.id)[1]}</p>
+                                        <p>{ingredientInfo.find(ingred => ingred[0] === ingredient.id)[2]}</p>
                                       </div>
                                     : <p style={{color: "red"}}>* {ingredient.original}</p>
                                   }
@@ -87,6 +92,7 @@ export default function RecipeModal(props) {
           </Container>
         </Modal.Body>
         <Modal.Footer>
+          <Button onClick={useRecipeAndClose}>Use Recipe?</Button>
           <Button onClick={props.onHide}>Close</Button>
         </Modal.Footer>
       </Modal>
