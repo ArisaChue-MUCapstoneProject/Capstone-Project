@@ -84,7 +84,7 @@ export default function Recipes(props) {
           setError(error.message)
       })
     }
-  }, [userCart])
+  }, [props.isLoading, userCart])
 
   // update user's products in database
   useEffect(() => {
@@ -95,7 +95,7 @@ export default function Recipes(props) {
           setError(error.message)
       })
     }
-  }, [userProducts])
+  }, [props.isLoading, userProducts])
 
   // TODO: how to deal with plurals?
   // look to see if 1) user has ingredient 2) user has enough amount
