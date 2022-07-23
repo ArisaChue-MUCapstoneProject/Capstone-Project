@@ -7,6 +7,8 @@ import "./Recipes.css"
 import { db } from "../../firebase"
 import { useAuth } from "../../contexts/AuthContext"
 import { units, basicUnits, convertToStandard, updateStandardAmount, isVolumeUnit } from "../../utils/conversion"
+import leftUtensil from "../../icons/leftutensil.png"
+import rightUtensil from "../../icons/rightutensil.png"
 import RecipeCard from "../RecipeCard/RecipeCard"
 
 export default function Recipes(props) {
@@ -173,13 +175,17 @@ export default function Recipes(props) {
 
   return (
     <div className="recipes">
-      <h2 className="recipes-heading">Recipes</h2>
+      <div className="recipes-hero">
+        <img className="utensil-img" id="left" src={ leftUtensil } alt="fork knife" />
+        <h2 className="recipes-heading">Recipes Just For You</h2>
+        <img className="utensil-img" id="right" src={ rightUtensil } alt="fork knife" />
+      </div>
       {error && <Alert variant="danger">{error}</Alert>}
       {recipes && recipes.length > 0 
         ? <div className="recipes-grid">
           {
             recipes.map((recipe) => (
-              <RecipeCard key={recipe.id} id={recipe.id} title={recipe.title} image={recipe.image} userDiets={userDiets} recipes={recipes} setRecipeInfo={setRecipeInfo} recipeInfo={recipeInfo} ingredientInfo={ingredientInfo} setIsIngredLoading={setIsIngredLoading} isIngredLoading={isIngredLoading} useRecipe={useRecipe} addIngredientToCart={addIngredientToCart}/>
+              <RecipeCard key={recipe.id} id={recipe.id} curRecipe={recipe} userDiets={userDiets} recipes={recipes} setRecipeInfo={setRecipeInfo} recipeInfo={recipeInfo} ingredientInfo={ingredientInfo} setIsIngredLoading={setIsIngredLoading} isIngredLoading={isIngredLoading} useRecipe={useRecipe} addIngredientToCart={addIngredientToCart}/>
             ))
           }
         </div>
