@@ -44,7 +44,7 @@ export default function App() {
     <div className="App">
       <AuthProvider>
         <BrowserRouter>
-          <main>
+          <main className="main">
             <Navbar />
             <Routes>
               <Route path="/signup" element={<SignUp />}/>

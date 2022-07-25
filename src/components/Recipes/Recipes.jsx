@@ -7,9 +7,18 @@ import "./Recipes.css"
 import { db } from "../../firebase"
 import { useAuth } from "../../contexts/AuthContext"
 import { units, basicUnits, convertToStandard, updateStandardAmount, isVolumeUnit } from "../../utils/conversion"
+import leftUtensil from "../../icons/leftutensil.png"
+import rightUtensil from "../../icons/rightutensil.png"
 import RecipeCard from "../RecipeCard/RecipeCard"
 
 export default function Recipes(props) {
+  // unit enum 
+  const UNIT_TYPE = Object.freeze({
+    VOLUME: 1,
+    WEIGHT: 0,
+    UNKNOWN: -1
+  })
+
   // get user data from the database
   const { currentUser } = useAuth()
   
@@ -115,7 +124,7 @@ export default function Recipes(props) {
     var message = "you do not have enough"
     // find how much user will have after they use ingredient
     if (userIngredient.quantity >= recipeIngredAmount[1]) {
-      const unitName = userIngredient.unitType == 1 ? "milliliters" : userIngredient.unitType == 0 ? "grams" : "counts"
+      const unitName = userIngredient.unitType == UNIT_TYPE.VOLUME ? "milliliters" : userIngredient.unitType == UNIT_TYPE.WEIGHT ? "grams" : "counts"
       message = `you will have ${userIngredient.quantity - recipeIngredAmount[1]} ${unitName} left`
     }
     return [ingredient.id, userIngredient.name, message, userIngredient.quantity - recipeIngredAmount[1]]
@@ -157,7 +166,7 @@ export default function Recipes(props) {
         return {...ingredient}
       }
       else if (curIngred[2] != conversionFailure) {
-        if (curIngred[3] > 0) {
+        if (curIngred[3] == UNIT_TYPE.VOLUME || curIngred[3] == UNIT_TYPE.WEIGHT) {
           return {
             name: ingredient.name,
             quantity: curIngred[3],
@@ -173,13 +182,17 @@ export default function Recipes(props) {
 
   return (
     <div className="recipes">
-      <h2 className="recipes-heading">Recipes</h2>
+      <div className="recipes-hero">
+        <img className="utensil-img" id="left" src={ leftUtensil } alt="fork knife" />
+        <h2 className="recipes-heading">Recipes Just For You</h2>
+        <img className="utensil-img" id="right" src={ rightUtensil } alt="fork knife" />
+      </div>
       {error && <Alert variant="danger">{error}</Alert>}
       {recipes && recipes.length > 0 
         ? <div className="recipes-grid">
           {
             recipes.map((recipe) => (
-              <RecipeCard key={recipe.id} id={recipe.id} title={recipe.title} image={recipe.image} userDiets={userDiets} recipes={recipes} setRecipeInfo={setRecipeInfo} recipeInfo={recipeInfo} ingredientInfo={ingredientInfo} setIsIngredLoading={setIsIngredLoading} isIngredLoading={isIngredLoading} useRecipe={useRecipe} addIngredientToCart={addIngredientToCart}/>
+              <RecipeCard key={recipe.id} id={recipe.id} curRecipe={recipe} userDiets={userDiets} recipes={recipes} setRecipeInfo={setRecipeInfo} recipeInfo={recipeInfo} ingredientInfo={ingredientInfo} setIsIngredLoading={setIsIngredLoading} isIngredLoading={isIngredLoading} useRecipe={useRecipe} addIngredientToCart={addIngredientToCart}/>
             ))
           }
         </div>

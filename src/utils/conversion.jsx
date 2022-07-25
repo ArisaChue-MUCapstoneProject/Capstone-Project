@@ -76,6 +76,13 @@ export const basicUnits = ["choose unit", "mL", "tbsp", "tsp", "fl oz", "cup", "
 const volumeUnits = new Set(["milliliter", "ml", "millilitre", "cc", "mL", "tablespoon", "tbsp", "tbs", "tbl", "T", "teaspoon", "tsp", "t", "pinch", "pin", "dash", "d", "fluidounce", "floz", "gill", "cup", "c", "stick", "pint", "p", "pt", "flpt", "quart", "q", "qt", "flqt", "gallon", "gal", "liter", "litre", "l", "L", "deciliter", "decilitre", "dL", "dl", "peck", "pk", "barrel", "bbl", "bushel", "bu"])
 const weightUnits = new Set(["gram", "gramme", "g", "pound", "lb", "ounce", "oz", "milligram", "milligramme", "mg", "kilogram", "kilogramme", "kg", "dozen", "doz", "bunch", "bch", "bu", "bushel", "bn"])
 
+// unit enum 
+const UNIT_TYPE = Object.freeze({
+    VOLUME: 1,
+    WEIGHT: 0,
+    UNKNOWN: -1
+})
+
 // return 1 if volume unit, 0 if weight unit, -1 if non-measureable
 export function isVolumeUnit(unit) {
     // clean string
@@ -84,12 +91,12 @@ export function isVolumeUnit(unit) {
     unit = unit.toLowerCase()
 
     if (volumeUnits.has(unit)) {
-        return 1
+        return UNIT_TYPE.VOLUME
     }
     if (weightUnits.has(unit)) {
-        return 0
+        return UNIT_TYPE.WEIGHT
     }
-    return -1
+    return UNIT_TYPE.UNKNOWN
 }
 
 // return logic: [ unit type, amount in grams/mL/non-measureable unit ]
@@ -103,13 +110,13 @@ export function convertToStandard(unit, amount) {
         unit = unit.substring(0, unit.length - 1)
     }
     let curUnitType = isVolumeUnit(unit)
-    return curUnitType >= 0 ? [curUnitType, amount * units[unit]] : [curUnitType, amount]
+    return curUnitType >= UNIT_TYPE.WEIGHT ? [curUnitType, amount * units[unit]] : [curUnitType, amount]
 }
 
 export function updateStandardAmount(adjustAmountUnit, adjustAmount, curAmountUnit, curAmount) {
     if (!(adjustAmountUnit in units)) {
         // if both amounts are non-measureable units
-        if (curAmountUnit == "count") {
+        if (curAmountUnit == UNIT_TYPE.UNKNOWN) {
             return curAmount + adjustAmount
         }
         // units are not convertable
@@ -120,9 +127,9 @@ export function updateStandardAmount(adjustAmountUnit, adjustAmount, curAmountUn
 }
 
 export function metricToCustomary(metricAmount, unitType) {
-    if (unitType == 1) {
+    if (unitType == UNIT_TYPE.VOLUME) {
         return Number(metricAmount / units["cup"]).toFixed(2)
-    } else if (unitType == 0) {
+    } else if (unitType == UNIT_TYPE.WEIGHT) {
         return Number(metricAmount / units["oz"]).toFixed(2)
     } 
     return metricAmount

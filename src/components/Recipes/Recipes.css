@@ -1,11 +1,60 @@
 .recipes-grid {
+    /* margin-left: 4rem;
+    margin-right: 4rem; */
     display: grid;
     grid-template-columns: 1fr 1fr 1fr;
-    gap: 15px;
+    gap: 40px;
+}
+
+.recipes-hero {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.utensil-img {
+    height: 30px;
+    width: 110px;
+    margin: 0 3rem 0;
+    object-fit: cover;
+}
+
+#left {
+    transform: scaleY(-1);
+    object-position: bottom;
+}
+
+#right {
+    transform: scaleY(-1);
+    object-position: 80% 0;
 }
 
 .recipes {
     padding: 1rem;
     margin: auto;
     width: 100%;
+    background-color: #e9eff6;
+    padding: 70px 4rem 0px;
+    /* display: block; */
+}
+
+.recipes-border {
+    position: relative;
+    top: 0px;
+    left: -2px;
+    width: 25%;
+    /* height: 20px; */
+    /* object-fit: cover; */
+    /* object-position: -20% 0; */
+}
+
+.recipes-heading {
+    font-family: 'Nunito Sans', sans-serif;
+    font-weight: bold;
+    padding: 2.3rem 0 1rem 0;
+    font-size: 40px;
+    text-align: center;
 }
