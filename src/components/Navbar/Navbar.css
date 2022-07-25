@@ -1,11 +1,16 @@
-    .navbar {
-    background-color: red;
-    position: fixed;
-    width: 100%;
-    display: flex;
-    justify-content: space-evenly;
-    margin: auto;
-    top: 0;
-    height: 50px;
-    padding: 1rem;
+#navbar-overrides {
+        background-color: whitesmoke;
+        position: fixed;
+        width: 100%;
+        display: flex;
+        justify-content: space-evenly;
+        margin: auto;
+        top: 0;
+        height: 70px;
+        padding: 0.5rem;
     }
+
+.nav-recipes {
+    margin: auto;
+    height: 45px;
+}
