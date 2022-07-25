@@ -9,11 +9,12 @@ import RecipeModal from "../RecipeModal/RecipeModal"
 export default function RecipeCard(props) {
   const recipeInfoUrl = "http://localhost:3001/apirecipeinfo/"
   const [recipeModelShow, setRecipeModalShow] = useState(false)
-  const [recipeInfo, setRecipeInfo] = useState({})
   const [error, setError] = useState("")
+  const [modalError, setModalError] = useState("")
 
   // onclick function for each recipe card
   const handleRecipeCardClick = async (showStatus, recipeId) => {
+    props.setIsIngredLoading(true)
     await handleGetRecipeInstructions(recipeId)
     handleRecipeModal(showStatus)
   }
@@ -25,11 +26,19 @@ export default function RecipeCard(props) {
 
   // extract recipe info from backend for recipe modal
   const handleGetRecipeInstructions = async (recipeId) => {
-    try {
-      var { data } = await axios(recipeInfoUrl + recipeId)
-      setRecipeInfo(data)
-    } catch (error) {
-      setError(error.message)
+    const curRecipeInfo = props.recipes.find(recipe => recipe.id === recipeId)
+    if (curRecipeInfo == null) {
+      setModalError("recipe does not exist, please click on another one")
+    } else if (curRecipeInfo.analyzedInstructions.length == 0) {
+      // try fetching data from recipe specific get request
+      try {
+        var { data } = await axios(recipeInfoUrl + recipeId)
+        props.setRecipeInfo(data)
+      } catch (error) {
+        setModalError(error.message)
+      }
+    } else {
+      props.setRecipeInfo(curRecipeInfo)
     }
   }
 
@@ -40,7 +49,7 @@ export default function RecipeCard(props) {
         <img src={props.image} alt={`recipe for ${props.title}`} onClick={() => handleRecipeCardClick(true, props.id)}/>
         <p className="recipe-name">{props.title}</p>
         {/* recipe modal */}
-        <RecipeModal show={recipeModelShow} onHide={() => handleRecipeModal(false)} recipeInfo={recipeInfo} userDiets={props.userDiets} addIngredientToCart={props.addIngredientToCart}></RecipeModal>
+        <RecipeModal show={recipeModelShow} onHide={() => handleRecipeModal(false)} recipeInfo={props.recipeInfo} modalError={modalError} userDiets={props.userDiets} ingredientInfo={props.ingredientInfo} isIngredLoading={props.isIngredLoading} useRecipe={props.useRecipe} addIngredientToCart={props.addIngredientToCart}></RecipeModal>
     </div>
   )
 }
