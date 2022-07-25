@@ -1,0 +1,6 @@
+.heart-img {
+    margin-top: 1rem;
+    width: 25px;
+    object-fit: contain;
+    align-self: flex-start;
+}

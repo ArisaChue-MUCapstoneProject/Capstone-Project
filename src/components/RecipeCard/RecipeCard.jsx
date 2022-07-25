@@ -8,6 +8,7 @@ import axios from 'axios';
 import "./RecipeCard.css"
 
 import RecipeModal from "../RecipeModal/RecipeModal"
+import HeartIcon from "../HeartIcon/HeartIcon"
 
 export default function RecipeCard(props) {
   const recipeInfoUrl = "http://localhost:3001/apirecipeinfo/"
@@ -60,7 +61,7 @@ export default function RecipeCard(props) {
               <p className="recipe-cuisine">{cuisine.toUpperCase()}</p>
               <p className="recipe-name">{props.curRecipe.title}</p>
             </div>
-            <img className="heart-img" src={ heart } alt="heart icon" />
+            <HeartIcon/>
           </div>
           <div className="recipe-extra-info">
             {validMins && 

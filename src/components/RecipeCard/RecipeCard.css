@@ -53,13 +53,6 @@
     align-self: flex-start;
 }
 
-.heart-img {
-    margin-top: 1rem;
-    width: 25px;
-    object-fit: contain;
-    align-self: flex-start;
-}
-
 .recipe-extra-info {
     display: flex;
     justify-content: space-between;
