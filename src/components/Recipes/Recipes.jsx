@@ -12,6 +12,13 @@ import rightUtensil from "../../icons/rightutensil.png"
 import RecipeCard from "../RecipeCard/RecipeCard"
 
 export default function Recipes(props) {
+  // unit enum 
+  const UNIT_TYPE = Object.freeze({
+    VOLUME: 1,
+    WEIGHT: 0,
+    UNKNOWN: -1
+  })
+
   // get user data from the database
   const { currentUser } = useAuth()
   
@@ -117,7 +124,7 @@ export default function Recipes(props) {
     var message = "you do not have enough"
     // find how much user will have after they use ingredient
     if (userIngredient.quantity >= recipeIngredAmount[1]) {
-      const unitName = userIngredient.unitType == 1 ? "milliliters" : userIngredient.unitType == 0 ? "grams" : "counts"
+      const unitName = userIngredient.unitType == UNIT_TYPE.VOLUME ? "milliliters" : userIngredient.unitType == UNIT_TYPE.WEIGHT ? "grams" : "counts"
       message = `you will have ${userIngredient.quantity - recipeIngredAmount[1]} ${unitName} left`
     }
     return [ingredient.id, userIngredient.name, message, userIngredient.quantity - recipeIngredAmount[1]]
@@ -159,7 +166,7 @@ export default function Recipes(props) {
         return {...ingredient}
       }
       else if (curIngred[2] != conversionFailure) {
-        if (curIngred[3] > 0) {
+        if (curIngred[3] == UNIT_TYPE.VOLUME || curIngred[3] == UNIT_TYPE.WEIGHT) {
           return {
             name: ingredient.name,
             quantity: curIngred[3],

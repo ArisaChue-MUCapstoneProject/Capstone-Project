@@ -15,7 +15,7 @@ export default function Pantry(props) {
   // get user data from the database
   const { currentUser } = useAuth()
 
-  //enum 
+  // operations enum 
   const Operations = Object.freeze({
     Add: Symbol("add"),
     Subtract: Symbol("subtract"),

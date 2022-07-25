@@ -13,7 +13,7 @@ export default function RecipeModal(props) {
       return <p>Loading</p>
     }
     const { recipeInfo, userDiets, addIngredientToCart, modalError, ingredientInfo, isIngredLoading, useRecipe, ...modalProps } = props
-    const validMins = !(recipeInfo.readInMinutes == undefined || recipeInfo.readInMinutes.length == 0)
+    const validMins = !(recipeInfo.readyInMinutes == undefined || recipeInfo.readyInMinutes.length == 0)
     const validServings = !(recipeInfo.servings == undefined || recipeInfo.servings.length == 0)
     const validIngred = !(recipeInfo.extendedIngredients == undefined || recipeInfo.extendedIngredients.length == 0)
     const validSteps = !(recipeInfo.analyzedInstructions == undefined || recipeInfo.analyzedInstructions.length == 0 || recipeInfo.analyzedInstructions[0].steps == undefined)
@@ -26,7 +26,7 @@ export default function RecipeModal(props) {
       useRecipe()
       props.onHide()
     }
-    
+
     return (
       <Modal {...modalProps} scrollable={true} size="lg" aria-labelledby="contained-modal-title-vcenter" centered>
         <Modal.Header closeButton>
