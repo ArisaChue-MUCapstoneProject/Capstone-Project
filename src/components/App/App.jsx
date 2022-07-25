@@ -3,6 +3,7 @@ import SignUp from "../SignUp/SignUp"
 import LogIn from "../LogIn/LogIn"
 import ForgotPass from "../ForgotPass/ForgotPass"
 import PrivateRoute from "../PrivateRoute/PrivateRoute"
+import MarketPlace from "../MarketPlace/MarketPlace"
 import Profile from "../Profile/Profile"
 import UpdateProfile from "../UpdateProfile/UpdateProfile"
 import Recipes from "../Recipes/Recipes"
@@ -51,6 +52,7 @@ export default function App() {
               <Route path="/signup/profile" element={<SignUpProfile users={users} isLoading={isLoading}/>}/>
               <Route path="/login" element={<LogIn />}/>
               <Route path="/forgot-password" element={<ForgotPass />}/>
+              <Route path="/marketplace" element={<PrivateRoute><MarketPlace users={users} isLoading={isLoading}/></PrivateRoute>}/>
               <Route path="/profile" element={<PrivateRoute><Profile users={users} isLoading={isLoading}/></PrivateRoute>}/>
               <Route path="/profile/update" element={<PrivateRoute><UpdateProfile /></PrivateRoute>}/>
               <Route path="/recipes" element={<PrivateRoute><Recipes users={users} isLoading={isLoading}/></PrivateRoute>}/>

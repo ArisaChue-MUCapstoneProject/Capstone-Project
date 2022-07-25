@@ -166,7 +166,7 @@ export default function Recipes(props) {
         return {...ingredient}
       }
       else if (curIngred[2] != conversionFailure) {
-        if (curIngred[3] == UNIT_TYPE.VOLUME || curIngred[3] == UNIT_TYPE.WEIGHT) {
+        if (curIngred[3] > 0) {
           return {
             name: ingredient.name,
             quantity: curIngred[3],
