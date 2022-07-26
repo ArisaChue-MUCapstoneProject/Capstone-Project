@@ -6,7 +6,9 @@
     margin-top: 1rem;
 }
 
-.marketplace-content {
+.marketplace-sellers {
     margin: 1rem 6rem 0;
     border: solid;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr;
 }

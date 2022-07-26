@@ -39,17 +39,17 @@ export default function Sidebar(props) {
                         />
                         <p>Selling Right Now</p>
                             {props.userSale.length 
-                                ? <MerchGrid content={props.userSale} type={MERCH_TYPE.ONSALE} isMetric={isMetric} handleSellItem={props.handleSellItem} handleRemoveSaleItem={props.handleRemoveSaleItem}/>
+                                ? <MerchGrid content={props.userSale} type={MERCH_TYPE.ONSALE} isMetric={isMetric} handleSellItem={props.handleSellItem} handleRemoveSaleItem={props.handleRemoveSaleItem} getUnits={props.getUnits}/>
                                 : <p>Your market is empty. Add ingredients from your pantry below.</p>
                             }
                         <p>Ingredients You Have</p>
                             {props.userProducts.length 
-                                ?  <MerchGrid content={props.userProducts} type={MERCH_TYPE.INSTOCK} isMetric={isMetric} handleSellItem={props.handleSellItem} handleRemoveSaleItem={props.handleRemoveSaleItem}/>
+                                ?  <MerchGrid content={props.userProducts} type={MERCH_TYPE.INSTOCK} isMetric={isMetric} handleSellItem={props.handleSellItem} handleRemoveSaleItem={props.handleRemoveSaleItem} getUnits={props.getUnits}/>
                                 : <p>Your pantry is empty. Add more ingredients to your pantry.</p>
                             }
                         <p>Ingredients You Want</p>
                             {props.userCart.length 
-                                ? <MerchGrid content={props.userCart} type={MERCH_TYPE.WISHLIST} isMetric={isMetric} handleSellItem={props.handleSellItem} handleRemoveSaleItem={props.handleRemoveSaleItem}/>
+                                ? <MerchGrid content={props.userCart} type={MERCH_TYPE.WISHLIST} isMetric={isMetric} handleSellItem={props.handleSellItem} handleRemoveSaleItem={props.handleRemoveSaleItem} getUnits={props.getUnits}/>
                                 : <p>Your wishlist is empty. Add more ingredients to your shopping cart.</p>
                             }
                     </div>
