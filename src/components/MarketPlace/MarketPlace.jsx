@@ -1,5 +1,6 @@
 import * as React from "react"
 import { useState, useEffect } from "react"
+import "./MarketPlace.css"
 import BootstrapSwitchButton from 'bootstrap-switch-button-react'
 import Sidebar from "../Sidebar/Sidebar"
 import SellerCard from "../SellerCard/SellerCard"
@@ -8,7 +9,7 @@ import { doc, updateDoc } from "firebase/firestore"
 import { db } from "../../firebase"
 import { useAuth } from "../../contexts/AuthContext"
 import { metricToCustomary } from "../../utils/conversion"
-import "./MarketPlace.css"
+
 
 export default function MarketPlace(props) {
     // unit enum 
@@ -36,15 +37,19 @@ export default function MarketPlace(props) {
     // update user data once page loads
     useEffect(() => {
         if (!props.isLoading) {
-            console.log(props.users)
             const userInfo = props.users.find(u => u.uid === currentUser.uid)
             userInfo.data.products && setUserProducts(userInfo.data.products)
             userInfo.data.cart && setUserCart(userInfo.data.cart)
             userInfo.data.sale && setUserSale(userInfo.data.sale)
-            setSellers(props.users.filter((user) => {return user.uid != currentUser.uid && user.data.sale}))
             setIsUserInfoLoading(false)
         }
     }, [props.isLoading])
+
+    useEffect(() => {
+        if (!isUserInfoLoading) {
+            setSellers(getSellerOrder(props.users))
+        }
+    }, [isUserInfoLoading])
 
     // update database
     useEffect(() => {
@@ -127,27 +132,55 @@ export default function MarketPlace(props) {
         return `${quantityWithUnits} ${unit}`
     }
 
+    const getSellerOrder = (curUsers) => {
+        let sellerNumProducts = curUsers.map((user, indx) => {
+            if (user.uid != currentUser.uid && user.data.sale) {
+                let sellerCount = 0
+                user.data.sale.forEach((item) => {
+                    // TODO: better nlp algo to match names
+                    if (userCart.find(prod => prod.name == item.name)) {
+                        sellerCount += 1
+                    }
+                })
+                const res = {
+                    index: indx,
+                    count: sellerCount
+                }
+                return res
+            }
+        }).filter(val => val)
+        sellerNumProducts.sort((seller1, seller2) => {
+            return seller2.count - seller1.count
+        })
+        const newOrder = sellerNumProducts.map((seller) => {
+            return curUsers[seller.index]
+        })
+        return newOrder
+    }
+
     return (
         <div className="marketplace">
-            {!props.isLoading
+            {!props.isLoading && !isUserInfoLoading
                ? <>
                     <Sidebar isLoading={isUserInfoLoading} isSidebarOpen={isSidebarOpen} handleOnSidebarToggle={handleOnSidebarToggle} userSale={userSale} userProducts={userProducts} userCart={userCart} handleSellItem={handleSellItem} handleRemoveSaleItem={handleRemoveSaleItem} getUnits={getUnits}/>
-                    <BootstrapSwitchButton
-                        checked={isMetric}
-                        onlabel="Metric"
-                        onstyle="primary"
-                        offlabel="Customary"
-                        offstyle="info"
-                        width={100}
-                        onChange={() => {setIsMetric(!isMetric)}}
-                    />
-                    <div className="marketplace-sellers">
-                        {sellers.length
-                            ? props.users.map((user) => (
-                                user.uid != currentUser.uid && user.data.sale && <SellerCard key={user.uid} user={user} getUnits={getUnits} isMetric={isMetric}/>
-                            ))
-                            : <p>No sellers yet</p>
-                        }
+                    <div className="marketplace-content">
+                        <BootstrapSwitchButton
+                            checked={isMetric}
+                            onlabel="Metric"
+                            onstyle="primary"
+                            offlabel="Customary"
+                            offstyle="info"
+                            width={100}
+                            onChange={() => {setIsMetric(!isMetric)}}
+                        />
+                        <div className="marketplace-sellers">
+                            {sellers.length
+                                ? sellers.map((user) => (
+                                    user.uid != currentUser.uid && user.data.sale && user.data.sale.length > 0 && <SellerCard key={user.uid} user={user} getUnits={getUnits} isMetric={isMetric}/>
+                                ))
+                                : <p>No sellers yet</p>
+                            }
+                        </div>
                     </div>
                 </>
                 : <p>Loading</p>

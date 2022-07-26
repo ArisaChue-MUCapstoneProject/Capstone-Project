@@ -12,15 +12,17 @@ export default function SellerCard(props) {
     return (
         <div className="seller-card">
             <p>{props.user.data.email}</p>
-            {
-                props.user.data.sale.map((item) => (
-                    
-                    <div key={item.name}>
-                        <p>{item.name}</p>
-                        <p>{props.getUnits(item, props.isMetric)}</p>
-                    </div>
-                ))
-            }
+            <div className="seller-card-grid">
+                {
+                    props.user.data.sale.map((item) => (
+                        
+                        <div key={item.name} className="item-sell-card">
+                            <p>{item.name}</p>
+                            <p>{props.getUnits(item, props.isMetric)}</p>
+                        </div>
+                    ))
+                }
+            </div>
         </div>
     )
 }
