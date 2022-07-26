@@ -22,6 +22,13 @@ export default function SignUpProfile(props) {
     const allergies = ["Diary", "Peanut", "Soy", "Egg", "Shellfish", "Tree Nut", "Gluten"]
     const [allergiesChecked, setAllergiesChecked] = useState([])
     const [error, setError] = useState("")
+    const [userLocation, setUserLocation] = useState({})
+    const [isLocationLoading, setIsLocationLoading] = useState(true)
+
+    // get location every render
+    useEffect(() => {
+        getLocation()
+    }, [])
 
     // continue editing diets so secondary diet options don't show primary diet
     useEffect(() => {
@@ -43,19 +50,54 @@ export default function SignUpProfile(props) {
         const userAllergies = allergiesChecked.map(val => 
             val.toLowerCase()
         )
+        const userLoc = {
+            lat: userLocation.coords.latitude,
+            long: userLocation.coords.longitude
+        }
         // update user profile in the database
         const userProfile = {
             primDiet: userPrimDiets,
             diets: userDiets,
-            allergies: userAllergies
+            allergies: userAllergies,
+            location: userLoc
         }
         const docRef = doc(db, "users", currentUser.uid)
-        updateDoc(docRef, userProfile)
-        .catch(error => {
-            setError(error.message)
+        const promises = []
+        promises.push(
+            updateDoc(docRef, userProfile)
+            .catch(error => {
+                setError(error.message)
+            })
+        )
+        Promise.all(promises)
+        .then(() => {
+            navigate("/profile")
         })
-        navigate("/profile")
-        setLoading(false)
+        .catch(() => {
+            setError("failed to update account")
+        }).finally(() => {
+            setLoading(false)
+        })
+    }
+    
+    // get user's current location
+    function getLocation() {
+        if ("geolocation" in navigator) {
+            navigator.geolocation.getCurrentPosition(
+                function(position) {
+                    setUserLocation(position)
+                    setIsLocationLoading(false)
+                },
+                function(error) {
+                    setError(error.message)
+                    setUserLocation({})
+                    setIsLocationLoading(false)
+                }
+            )
+        } else {
+            setError("please enable location access to find closest sellers")
+            setIsLocationLoading(false)
+        }
     }
 
     return (
@@ -108,6 +150,16 @@ export default function SignUpProfile(props) {
                 />
             </Card.Body>
           </Card>
+          {userLocation && !isLocationLoading
+            ? <Card>
+                <Card.Body>
+                    <p>Your Current Location</p>
+                    <p>Latitude: {userLocation.coords.latitude}</p>
+                    <p>Longitude: {userLocation.coords.longitude}</p>
+                </Card.Body>
+            </Card>
+            : <p>Loading Location</p>
+          }
           <Button disabled={loading} onClick={handleMakeProfile}>Sign Up</Button>
           <p>Already have an account? <Link to="/login">Log In</Link></p>
       </div>
