@@ -35,7 +35,7 @@ export default function App() {
     })
 
     return () => {
-        unsubscribe()
+      unsubscribe()
     }
   }, [])
 
@@ -46,16 +46,16 @@ export default function App() {
           <main className="main">
             <Navbar />
             <Routes>
-              <Route path="/signup" element={<SignUp />}/>
-              <Route path="/signup/profile" element={<SignUpProfile users={users} isLoading={isLoading}/>}/>
-              <Route path="/login" element={<LogIn />}/>
-              <Route path="/forgot-password" element={<ForgotPass />}/>
-              <Route path="/marketplace" element={<PrivateRoute><MarketPlace users={users} isLoading={isLoading}/></PrivateRoute>}/>
-              <Route path="/profile" element={<PrivateRoute><Profile users={users} isLoading={isLoading}/></PrivateRoute>}/>
-              <Route path="/profile/update" element={<PrivateRoute><UpdateProfile /></PrivateRoute>}/>
-              <Route path="/recipes" element={<PrivateRoute><Recipes users={users} isLoading={isLoading}/></PrivateRoute>}/>
-              <Route path="/pantry" element={<PrivateRoute><Pantry users={users} isLoading={isLoading}/></PrivateRoute>}/>
-              <Route path="/shoppingcart" element={<PrivateRoute><ShoppingCart users={users} isLoading={isLoading}/></PrivateRoute>}/>
+              <Route path="/signup" element={<SignUp />} />
+              <Route path="/signup/profile" element={<SignUpProfile users={users} isLoading={isLoading} />} />
+              <Route path="/login" element={<LogIn />} />
+              <Route path="/forgot-password" element={<ForgotPass />} />
+              <Route path="/marketplace" element={<PrivateRoute><MarketPlace users={users} isLoading={isLoading} /></PrivateRoute>} />
+              <Route path="/profile" element={<PrivateRoute><Profile users={users} isLoading={isLoading} /></PrivateRoute>} />
+              <Route path="/profile/update" element={<PrivateRoute><UpdateProfile /></PrivateRoute>} />
+              <Route path="/recipes" element={<PrivateRoute><Recipes users={users} isLoading={isLoading} /></PrivateRoute>} />
+              <Route path="/pantry" element={<PrivateRoute><Pantry users={users} isLoading={isLoading} /></PrivateRoute>} />
+              <Route path="/shoppingcart" element={<PrivateRoute><ShoppingCart users={users} isLoading={isLoading} /></PrivateRoute>} />
             </Routes>
           </main>
         </BrowserRouter>

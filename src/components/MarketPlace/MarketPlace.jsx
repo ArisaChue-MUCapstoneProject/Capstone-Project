@@ -2,6 +2,7 @@ import * as React from "react"
 import { useState, useEffect } from "react"
 import "./MarketPlace.css"
 import BootstrapSwitchButton from 'bootstrap-switch-button-react'
+import Slider from '@mui/material/Slider';
 import Sidebar from "../Sidebar/Sidebar"
 import SellerCard from "../SellerCard/SellerCard"
 import { Alert } from "react-bootstrap" 
@@ -9,7 +10,7 @@ import { doc, updateDoc } from "firebase/firestore"
 import { db } from "../../firebase"
 import { useAuth } from "../../contexts/AuthContext"
 import { metricToCustomary } from "../../utils/conversion"
-import { getDistance } from "../../utils/distance"
+import { getDistance, kmToMiles } from "../../utils/distance"
 
 
 export default function MarketPlace(props) {
@@ -30,6 +31,7 @@ export default function MarketPlace(props) {
     const [userSale, setUserSale] = useState([])
     const [sellers, setSellers] = useState([])
     const [userLocation, setUserLocation] = useState({})
+    const [maxDis, setMaxDis] = useState(10)
     const [error, setError] = useState("")
 
     function clearError() {
@@ -50,9 +52,9 @@ export default function MarketPlace(props) {
 
     useEffect(() => {
         if (!isUserInfoLoading) {
-            setSellers(getSellerOrder(props.users))
+            setSellers(getSellerOrder(props.users, maxDis))
         }
-    }, [isUserInfoLoading])
+    }, [isUserInfoLoading, userCart, maxDis])
 
     // update database
     useEffect(() => {
@@ -135,7 +137,7 @@ export default function MarketPlace(props) {
         return `${quantityWithUnits} ${unit}`
     }
 
-    const getSellerOrder = (curUsers) => {
+    const getSellerOrder = (curUsers, maxDistance) => {
         let sellerNumProducts = curUsers.map((user, indx) => {
             if (user.uid != currentUser.uid && user.data.sale) {
                 let sellerCount = 0
@@ -165,14 +167,24 @@ export default function MarketPlace(props) {
                 }
             } else {
                 let dis = getDistance(userLocation.latitude, userLocation.longitude, curUsers[seller.index].data.location.latitude, curUsers[seller.index].data.location.longitude)
+                if (isMetric && dis > maxDistance) {
+                    return
+                }
+                else if (!isMetric && kmToMiles(dis) > maxDistance) {
+                    return
+                }
                 sellerInfo = {
                     account: curUsers[seller.index],
                     distance: Number(dis).toFixed(2)
                 }
             }
             return sellerInfo
-        })
+        }).filter(val => val)
         return newOrder
+    }
+
+    const handleDistanceFilterChange = (event) => {
+        setMaxDis(event.target.value)
     }
 
     return (
@@ -189,6 +201,14 @@ export default function MarketPlace(props) {
                             offstyle="info"
                             width={100}
                             onChange={() => {setIsMetric(!isMetric)}}
+                        />
+                        <p>Maximum Distance from Sellers: ({isMetric ? "km" : "mi"})</p>
+                        <Slider
+                            aria-label="Always visible"
+                            defaultValue={80}
+                            value={maxDis}
+                            valueLabelDisplay="on"
+                            onChange={handleDistanceFilterChange}
                         />
                         <div className="marketplace-sellers">
                             {sellers.length
