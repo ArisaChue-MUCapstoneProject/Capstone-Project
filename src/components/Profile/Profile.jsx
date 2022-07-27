@@ -19,6 +19,8 @@ export default function Profile(props) {
   const [userPrimDiet, setUserPrimDiet] = useState("")
   const [userDiets, setUserDiets] = useState([])
   const [userAllergies, setUserAllergies] = useState([])
+  const [userLocation, setUserLocation] = useState({})
+  const [isUserInfoLoading, setIsUserInfoLoading] = useState(true)
   const [error, setError] = useState("")
   // TODO: create a map -> key: each category, value: category info to combine to one
   const [showUserPrimDietForm, setShowUserPrimDietForm] = useState(false)
@@ -43,6 +45,8 @@ export default function Profile(props) {
       userInfo.data.primDiet && setUserPrimDiet(userInfo.data.primDiet)
       userInfo.data.diets && setUserDiets(userInfo.data.diets)
       userInfo.data.allergies && setUserAllergies(userInfo.data.allergies)
+      userInfo.data.location && setUserLocation(userInfo.data.location)
+      setIsUserInfoLoading(false)
     }
   }, [props.isLoading])
 
@@ -115,122 +119,126 @@ export default function Profile(props) {
 
   return (
     <nav className="profile">
-        <Card>
-          <Card.Body>
-            <h2>Profile</h2>
-            <div>
-              <p>Username:</p>
-              <p>{currentUser.email}</p>
-            </div>
-            <Link to="/profile/update" className="btn btn-primary">Update Username/Password</Link>
-            <div>
-              <p>Products:</p>
-              {!props.isLoading && 
-                <div className="profile-products">
-                {
-                  userProducts.map((product) => (
-                    <Badge pill bg="secondary" key={product.name}>{product.name}</Badge>
-                  ))
-                }
-              </div>
+      {!props.isLoading && !isUserInfoLoading
+        ? <Card>
+        <Card.Body>
+          <h2>Profile</h2>
+          <div>
+            <p>Username:</p>
+            <p>{currentUser.email}</p>
+          </div>
+          <Link to="/profile/update" className="btn btn-primary">Update Username/Password</Link>
+          <div>
+            <p>Products:</p>
+              <div className="profile-products">
+              {
+                userProducts.map((product) => (
+                  <Badge pill bg="secondary" key={product.name}>{product.name}</Badge>
+                ))
               }
             </div>
-            <div>
-              <p>Shopping List:</p>
-              {!props.isLoading && 
-                <div className="profile-cart">
-                {
-                  userCart.map((cart) => (
-                    <Badge pill bg="secondary" key={cart.name}>{cart.name}</Badge>
-                  ))
-                }
-              </div>
+          </div>
+          <div>
+            <p>Shopping List:</p>
+              <div className="profile-cart">
+              {
+                userCart.map((cart) => (
+                  <Badge pill bg="secondary" key={cart.name}>{cart.name}</Badge>
+                ))
               }
             </div>
-            <div>
-              <div className="profile-diet-heading">
-                <p>Primary Dietary Restriction</p>
-                <CustomTooltip dialogue={primDietDialogue}/>
-              </div>
-              {!props.isLoading && userPrimDiet.length ? <Badge pill bg="secondary">{userPrimDiet}</Badge>: <Badge pill bg="secondary">none</Badge> }
-              {showUserPrimDietForm && 
-                <Typeahead
-                      id="checkbox-primary-diet"
-                      labelKey="diets"
-                      onChange={setPrimDietChecked}
-                      options={primDiets}
-                      placeholder="Change your primary diet..."
-                      selected={primDietChecked}
-                  />
-                }
-                <Button onClick={showPrimDietForm}>Change Me</Button>
+          </div>
+          <div>
+            <div className="profile-diet-heading">
+              <p>Primary Dietary Restriction</p>
+              <CustomTooltip dialogue={primDietDialogue}/>
             </div>
-            <div>
-              <div className="profile-diet-heading">
-                <p>Secondary Dietary Restriction(s):</p>
-                <CustomTooltip dialogue={dietDialogue}/>
-              </div>
-              {!props.isLoading && userDiets.length 
-                ? <div className="profile-diets">
-                {
-                  userDiets.map((diet) => (
-                    <Badge pill bg="secondary" key={diet}>{diet}</Badge>
-                  ))
-                }
-                </div>
-                : <p>none</p>
-              }
-              {showUserDietsForm && 
-                <Typeahead
-                  id="checkbox-diets"
-                  labelKey="diets"
-                  multiple
-                  onChange={(selected) => {
-                      setDietsChecked(selected);
-                      // Keep the menu open when making multiple selections
-                      typeaheadDietsRef.current.toggleMenu();
-                    }}
-                  options={diets}
-                  placeholder="Change your secondary diets..."
-                  selected={dietsChecked}
-                  ref={typeaheadDietsRef}
+            {userPrimDiet.length ? <Badge pill bg="secondary">{userPrimDiet}</Badge>: <Badge pill bg="secondary">none</Badge> }
+            {showUserPrimDietForm && 
+              <Typeahead
+                    id="checkbox-primary-diet"
+                    labelKey="diets"
+                    onChange={setPrimDietChecked}
+                    options={primDiets}
+                    placeholder="Change your primary diet..."
+                    selected={primDietChecked}
                 />
-                }
-                <Button onClick={showDietsForm}>Change Me</Button>
-            </div>
-            <div>
-              <p>Allergies:</p>
-              {!props.isLoading && userAllergies.length 
-                ? <div className="profile-allergies">
-                {
-                  userAllergies.map((allergy) => (
-                    <Badge pill bg="secondary" key={allergy}>{allergy}</Badge>
-                  ))
-                }
-                </div>
-                : <p>none</p>
               }
-              {showUserAllergiesForm && 
-                <Typeahead
-                  id="checkbox-diets"
-                  labelKey="diets"
-                  multiple
-                  onChange={(selected) => {
-                      setAllergiesChecked(selected);
-                      // Keep the menu open when making multiple selections
-                      typeaheadAllergiesRef.current.toggleMenu();
-                    }}
-                  options={allergies}
-                  placeholder="Change your allergies..."
-                  selected={allergiesChecked}
-                  ref={typeaheadAllergiesRef}
-                />
-                }
-                <Button onClick={showAllergiesForm}>Change Me</Button>
+              <Button onClick={showPrimDietForm}>Change Me</Button>
+          </div>
+          <div>
+            <div className="profile-diet-heading">
+              <p>Secondary Dietary Restriction(s):</p>
+              <CustomTooltip dialogue={dietDialogue}/>
             </div>
-          </Card.Body>
-          <Button variant="link" onClick={handleLogOut}>Log Out</Button>
-        </Card>
+            {userDiets.length 
+              ? <div className="profile-diets">
+              {
+                userDiets.map((diet) => (
+                  <Badge pill bg="secondary" key={diet}>{diet}</Badge>
+                ))
+              }
+              </div>
+              : <p>none</p>
+            }
+            {showUserDietsForm && 
+              <Typeahead
+                id="checkbox-diets"
+                labelKey="diets"
+                multiple
+                onChange={(selected) => {
+                    setDietsChecked(selected);
+                    // Keep the menu open when making multiple selections
+                    typeaheadDietsRef.current.toggleMenu();
+                  }}
+                options={diets}
+                placeholder="Change your secondary diets..."
+                selected={dietsChecked}
+                ref={typeaheadDietsRef}
+              />
+              }
+              <Button onClick={showDietsForm}>Change Me</Button>
+          </div>
+          <div>
+            <p>Allergies:</p>
+            {userAllergies.length 
+              ? <div className="profile-allergies">
+              {
+                userAllergies.map((allergy) => (
+                  <Badge pill bg="secondary" key={allergy}>{allergy}</Badge>
+                ))
+              }
+              </div>
+              : <p>none</p>
+            }
+            {showUserAllergiesForm && 
+              <Typeahead
+                id="checkbox-diets"
+                labelKey="diets"
+                multiple
+                onChange={(selected) => {
+                    setAllergiesChecked(selected);
+                    // Keep the menu open when making multiple selections
+                    typeaheadAllergiesRef.current.toggleMenu();
+                  }}
+                options={allergies}
+                placeholder="Change your allergies..."
+                selected={allergiesChecked}
+                ref={typeaheadAllergiesRef}
+              />
+              }
+              <Button onClick={showAllergiesForm}>Change Me</Button>
+          </div>
+          <div>
+            <p>Your Current Location:</p>
+            <p>{userLocation.city}, {userLocation.region} ({userLocation.flag.emoji})</p>
+          </div>
+        </Card.Body>
+        <Button variant="link" onClick={handleLogOut}>Log Out</Button>
+      </Card>
+        : <p>Loading</p>
+
+      }
     </nav>
   )
 }

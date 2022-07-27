@@ -1,4 +1,5 @@
 import * as React from "react"
+import { kmToMiles } from "../../utils/distance"
 import "./SellerCard.css"
 
 export default function SellerCard(props) {
@@ -11,10 +12,11 @@ export default function SellerCard(props) {
 
     return (
         <div className="seller-card">
-            <p>{props.user.data.email}</p>
+            <p>{props.user.account.data.email}</p>
+            <p>Distance Away: {props.user.distance ? props.isMetric ? `${props.user.distance} km` : `${kmToMiles(props.user.distance)} mi` : "not found" }</p>
             <div className="seller-card-grid">
                 {
-                    props.user.data.sale.map((item) => (
+                    props.user.account.data.sale.map((item) => (
                         
                         <div key={item.name} className="item-sell-card">
                             <p>{item.name}</p>

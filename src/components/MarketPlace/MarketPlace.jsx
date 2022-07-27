@@ -9,6 +9,7 @@ import { doc, updateDoc } from "firebase/firestore"
 import { db } from "../../firebase"
 import { useAuth } from "../../contexts/AuthContext"
 import { metricToCustomary } from "../../utils/conversion"
+import { getDistance } from "../../utils/distance"
 
 
 export default function MarketPlace(props) {
@@ -16,7 +17,7 @@ export default function MarketPlace(props) {
     const UNIT_TYPE = Object.freeze({
         VOLUME: 1,
         WEIGHT: 0,
-        UNKNOWN: -1
+        UNKNOWN: -1,
     })
     // get user data from the database
     const { currentUser } = useAuth()
@@ -28,6 +29,7 @@ export default function MarketPlace(props) {
     const [userCart, setUserCart] = useState([])
     const [userSale, setUserSale] = useState([])
     const [sellers, setSellers] = useState([])
+    const [userLocation, setUserLocation] = useState({})
     const [error, setError] = useState("")
 
     function clearError() {
@@ -41,6 +43,7 @@ export default function MarketPlace(props) {
             userInfo.data.products && setUserProducts(userInfo.data.products)
             userInfo.data.cart && setUserCart(userInfo.data.cart)
             userInfo.data.sale && setUserSale(userInfo.data.sale)
+            userInfo.data.location && setUserLocation(userInfo.data.location)
             setIsUserInfoLoading(false)
         }
     }, [props.isLoading])
@@ -152,8 +155,22 @@ export default function MarketPlace(props) {
         sellerNumProducts.sort((seller1, seller2) => {
             return seller2.count - seller1.count
         })
+        // return seller order and distance to each seller
         const newOrder = sellerNumProducts.map((seller) => {
-            return curUsers[seller.index]
+            var sellerInfo
+            if (!userLocation || !curUsers[seller.index].data.location) {
+                sellerInfo = {
+                    account: curUsers[seller.index],
+                    distance: null
+                }
+            } else {
+                let dis = getDistance(userLocation.latitude, userLocation.longitude, curUsers[seller.index].data.location.latitude, curUsers[seller.index].data.location.longitude)
+                sellerInfo = {
+                    account: curUsers[seller.index],
+                    distance: Number(dis).toFixed(2)
+                }
+            }
+            return sellerInfo
         })
         return newOrder
     }
@@ -176,7 +193,7 @@ export default function MarketPlace(props) {
                         <div className="marketplace-sellers">
                             {sellers.length
                                 ? sellers.map((user) => (
-                                    user.uid != currentUser.uid && user.data.sale && user.data.sale.length > 0 && <SellerCard key={user.uid} user={user} getUnits={getUnits} isMetric={isMetric}/>
+                                    user.account.uid != currentUser.uid && user.account.data.sale && user.account.data.sale.length > 0 && <SellerCard key={user.account.uid} user={user} getUnits={getUnits} isMetric={isMetric}/>
                                 ))
                                 : <p>No sellers yet</p>
                             }

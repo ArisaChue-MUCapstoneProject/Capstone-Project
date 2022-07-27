@@ -1,6 +1,7 @@
 import * as React from "react"
 import { useState, useEffect, useRef } from "react"
 import { Link, useNavigate } from "react-router-dom"
+import axios from 'axios';
 import { Button, Card, Alert } from "react-bootstrap" 
 import { Typeahead } from 'react-bootstrap-typeahead'
 import { doc, updateDoc } from "firebase/firestore"
@@ -10,6 +11,7 @@ import "./SignUpProfile.css"
 import 'react-bootstrap-typeahead/css/Typeahead.css'
 
 export default function SignUpProfile(props) {
+    const apiAddressUrl = "http://localhost:3001/address/"
     // get user data from the database
     const { currentUser } = useAuth()
     const navigate = useNavigate()
@@ -27,7 +29,11 @@ export default function SignUpProfile(props) {
 
     // get location every render
     useEffect(() => {
-        getLocation()
+        try {
+            getLocation()
+        } catch (error) {
+            setError(error.message)
+        } 
     }, [])
 
     // continue editing diets so secondary diet options don't show primary diet
@@ -50,16 +56,12 @@ export default function SignUpProfile(props) {
         const userAllergies = allergiesChecked.map(val => 
             val.toLowerCase()
         )
-        const userLoc = {
-            lat: userLocation.coords.latitude,
-            long: userLocation.coords.longitude
-        }
         // update user profile in the database
         const userProfile = {
             primDiet: userPrimDiets,
             diets: userDiets,
             allergies: userAllergies,
-            location: userLoc
+            location: userLocation
         }
         const docRef = doc(db, "users", currentUser.uid)
         const promises = []
@@ -79,21 +81,13 @@ export default function SignUpProfile(props) {
             setLoading(false)
         })
     }
-    
+
     // get user's current location
-    function getLocation() {
+    async function getLocation() {
         if ("geolocation" in navigator) {
-            navigator.geolocation.getCurrentPosition(
-                function(position) {
-                    setUserLocation(position)
-                    setIsLocationLoading(false)
-                },
-                function(error) {
-                    setError(error.message)
-                    setUserLocation({})
-                    setIsLocationLoading(false)
-                }
-            )
+            var { data } = await axios(apiAddressUrl)
+            setUserLocation(data)
+            setIsLocationLoading(false)
         } else {
             setError("please enable location access to find closest sellers")
             setIsLocationLoading(false)
@@ -153,9 +147,8 @@ export default function SignUpProfile(props) {
           {userLocation && !isLocationLoading
             ? <Card>
                 <Card.Body>
-                    <p>Your Current Location</p>
-                    <p>Latitude: {userLocation.coords.latitude}</p>
-                    <p>Longitude: {userLocation.coords.longitude}</p>
+                    <p>Your Current Location:</p>
+                    <p>{userLocation.city}, {userLocation.region} ({userLocation.flag.emoji})</p>
                 </Card.Body>
             </Card>
             : <p>Loading Location</p>

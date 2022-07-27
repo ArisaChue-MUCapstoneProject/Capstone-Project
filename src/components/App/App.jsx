@@ -9,7 +9,7 @@ import UpdateProfile from "../UpdateProfile/UpdateProfile"
 import Recipes from "../Recipes/Recipes"
 import Pantry from "../Pantry/Pantry"
 import ShoppingCart from "../ShoppingCart/ShoppingCart"
-import { AuthProvider } from "../../contexts/AuthContext";
+import { AuthProvider } from "../../contexts/AuthContext"
 import { db } from "../../firebase"
 import './App.css';
 
@@ -38,8 +38,6 @@ export default function App() {
         unsubscribe()
     }
   }, [])
-
-
 
   return (
     <div className="App">
