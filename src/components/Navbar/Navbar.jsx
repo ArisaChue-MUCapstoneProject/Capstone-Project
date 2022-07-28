@@ -1,28 +1,29 @@
 import * as React from "react"
+import "./Navbar.css"
 import { Link } from "react-router-dom"
 import recipeBook from "../../icons/recipe-book.png"
-import "./Navbar.css"
+import store from "../../icons/store.png"
 
 export default function Navbar() {
   return (
     <nav className="navbar" id="navbar-overrides">
       <Link to="/">
-          <p>Log Out</p>
+          <p id="navbar-links">Log Out</p>
       </Link>
       <Link to="/marketplace">
-          <p>Marketplace</p>
+        <p id="navbar-links">Marketplace</p>
       </Link>
       <Link to="/profile">
-          <p>Profile</p>
+          <p id="navbar-links">Profile</p>
       </Link>
       <Link to="/recipes">
-          <img className="nav-recipes" src={ recipeBook } alt="recipe book icon" />
+          <p id="navbar-links">Recipes</p>
       </Link>
       <Link to="/pantry">
-          <p>Pantry</p>
+          <p id="navbar-links">Pantry</p>
       </Link>
       <Link to="/shoppingcart">
-          <p>Shopping Cart</p>
+          <p id="navbar-links">Shopping Cart</p>
       </Link>
     </nav>
   )

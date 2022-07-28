@@ -1,5 +1,5 @@
 #navbar-overrides {
-        background-color: whitesmoke;
+        background-color: var(--bars);
         position: fixed;
         width: 100%;
         display: flex;
@@ -8,9 +8,33 @@
         top: 0;
         height: 70px;
         padding: 0.5rem;
+        font-family: 'Noto Sans JP', sans-serif;
+        text-decoration: none;
     }
 
+#navbar-links {
+    padding: 1rem;
+    text-align: center;
+    margin: 0;
+    text-decoration: none;
+    color: var(--fontContent);
+}
+
+a:-webkit-any-link {
+    text-decoration: none;
+}
+
+a:hover #navbar-links {
+    color: var(--brownDark);
+}
 .nav-recipes {
-    margin: auto;
+    margin: 0;
     height: 45px;
+    filter: opacity(0.8);
+}
+
+.nav-marketplace {
+    margin: 0;
+    height: 55px;
+    filter: opacity(0.7);
 }
