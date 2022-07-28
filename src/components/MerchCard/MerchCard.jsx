@@ -1,15 +1,9 @@
 import * as React from "react"
 import { Form, Row, Col, Button, Alert } from "react-bootstrap" 
-import { metricToCustomary } from "../../utils/conversion"
+import { MERCH_TYPE } from "../../utils/conversion"
 import "./MerchCard.css"
 
 export default function MerchCard(props) {
-    // merch enum 
-    const MERCH_TYPE = Object.freeze({
-        ONSALE: 1,
-        INSTOCK: 0,
-        WISHLIST: -1
-    })
 
     return (
         <div className="merchcard">

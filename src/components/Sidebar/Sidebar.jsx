@@ -4,6 +4,7 @@ import { Form, Row, Col, Button, Alert } from "react-bootstrap"
 import BootstrapSwitchButton from 'bootstrap-switch-button-react'
 import arrow from "../../icons/arrow.png"
 import MerchGrid from "../MerchGrid/MerchGrid"
+import { MERCH_TYPE } from "../../utils/conversion"
 import "./Sidebar.css"
 
 export default function Sidebar(props) {
@@ -12,12 +13,6 @@ export default function Sidebar(props) {
     if (props.isSidebarOpen && props.isLoading) {
         return <p>Loading</p>
     }
-    // merch enum 
-    const MERCH_TYPE = Object.freeze({
-        ONSALE: 1,
-        INSTOCK: 0,
-        WISHLIST: -1
-    })
 
     const sidebarProperties = props.isSidebarOpen ? "sidebar open" : "sidebar"
     const buttonProperties = props.isSidebarOpen ? "toggle-button button-open" : "toggle-button"

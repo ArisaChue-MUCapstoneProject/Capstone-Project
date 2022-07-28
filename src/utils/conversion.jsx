@@ -77,10 +77,17 @@ const volumeUnits = new Set(["milliliter", "ml", "millilitre", "cc", "mL", "tabl
 const weightUnits = new Set(["gram", "gramme", "g", "pound", "lb", "ounce", "oz", "milligram", "milligramme", "mg", "kilogram", "kilogramme", "kg", "dozen", "doz", "bunch", "bch", "bu", "bushel", "bn"])
 
 // unit enum 
-const UNIT_TYPE = Object.freeze({
+export const UNIT_TYPE = Object.freeze({
     VOLUME: 1,
     WEIGHT: 0,
     UNKNOWN: -1
+})
+
+// merch enum 
+export const MERCH_TYPE = Object.freeze({
+    ONSALE: 1,
+    INSTOCK: 0,
+    WISHLIST: -1
 })
 
 // return 1 if volume unit, 0 if weight unit, -1 if non-measureable

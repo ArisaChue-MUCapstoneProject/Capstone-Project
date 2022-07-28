@@ -1,14 +1,10 @@
 import * as React from "react"
 import MerchCard from "../MerchCard/MerchCard"
+import { MERCH_TYPE } from "../../utils/conversion"
 import "./MerchGrid.css"
 
 export default function MerchGrid(props) {
-    // merch enum 
-    const MERCH_TYPE = Object.freeze({
-        ONSALE: 1,
-        INSTOCK: 0,
-        WISHLIST: -1
-    })
+
     return (
         <div className="merch-grid">
             {props.type == MERCH_TYPE.INSTOCK
