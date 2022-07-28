@@ -9,6 +9,9 @@ export default function Navbar() {
       <Link to="/">
           <p>Log Out</p>
       </Link>
+      <Link to="/marketplace">
+          <p>Marketplace</p>
+      </Link>
       <Link to="/profile">
           <p>Profile</p>
       </Link>

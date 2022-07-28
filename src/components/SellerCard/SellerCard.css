@@ -1,0 +1,14 @@
+.seller-card {
+    border: solid;
+    padding: 0.25rem;
+}
+
+.seller-card-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 5px;
+}
+
+.item-sell-card {
+    border: solid;
+}

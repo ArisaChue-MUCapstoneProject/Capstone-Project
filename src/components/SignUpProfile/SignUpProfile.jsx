@@ -1,6 +1,7 @@
 import * as React from "react"
 import { useState, useEffect, useRef } from "react"
 import { Link, useNavigate } from "react-router-dom"
+import axios from 'axios';
 import { Button, Card, Alert } from "react-bootstrap" 
 import { Typeahead } from 'react-bootstrap-typeahead'
 import { doc, updateDoc } from "firebase/firestore"
@@ -10,6 +11,7 @@ import "./SignUpProfile.css"
 import 'react-bootstrap-typeahead/css/Typeahead.css'
 
 export default function SignUpProfile(props) {
+    const apiAddressUrl = "http://localhost:3001/address/"
     // get user data from the database
     const { currentUser } = useAuth()
     const navigate = useNavigate()
@@ -22,6 +24,17 @@ export default function SignUpProfile(props) {
     const allergies = ["Diary", "Peanut", "Soy", "Egg", "Shellfish", "Tree Nut", "Gluten"]
     const [allergiesChecked, setAllergiesChecked] = useState([])
     const [error, setError] = useState("")
+    const [userLocation, setUserLocation] = useState({})
+    const [isLocationLoading, setIsLocationLoading] = useState(true)
+
+    // get location every render
+    useEffect(() => {
+        try {
+            getLocation()
+        } catch (error) {
+            setError(error.message)
+        } 
+    }, [])
 
     // continue editing diets so secondary diet options don't show primary diet
     useEffect(() => {
@@ -47,15 +60,38 @@ export default function SignUpProfile(props) {
         const userProfile = {
             primDiet: userPrimDiets,
             diets: userDiets,
-            allergies: userAllergies
+            allergies: userAllergies,
+            location: userLocation
         }
         const docRef = doc(db, "users", currentUser.uid)
-        updateDoc(docRef, userProfile)
-        .catch(error => {
-            setError(error.message)
+        const promises = []
+        promises.push(
+            updateDoc(docRef, userProfile)
+            .catch(error => {
+                setError(error.message)
+            })
+        )
+        Promise.all(promises)
+        .then(() => {
+            navigate("/profile")
         })
-        navigate("/profile")
-        setLoading(false)
+        .catch(() => {
+            setError("failed to update account")
+        }).finally(() => {
+            setLoading(false)
+        })
+    }
+
+    // get user's current location
+    async function getLocation() {
+        if ("geolocation" in navigator) {
+            var { data } = await axios(apiAddressUrl)
+            setUserLocation(data)
+            setIsLocationLoading(false)
+        } else {
+            setError("please enable location access to find closest sellers")
+            setIsLocationLoading(false)
+        }
     }
 
     return (
@@ -108,6 +144,15 @@ export default function SignUpProfile(props) {
                 />
             </Card.Body>
           </Card>
+          {userLocation && !isLocationLoading
+            ? <Card>
+                <Card.Body>
+                    <p>Your Current Location:</p>
+                    <p>{userLocation.city}, {userLocation.region} ({userLocation.flag.emoji})</p>
+                </Card.Body>
+            </Card>
+            : <p>Loading Location</p>
+          }
           <Button disabled={loading} onClick={handleMakeProfile}>Sign Up</Button>
           <p>Already have an account? <Link to="/login">Log In</Link></p>
       </div>

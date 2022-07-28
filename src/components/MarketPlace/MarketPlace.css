@@ -1,0 +1,19 @@
+.marketplace {
+    margin: auto;
+    width: 100%;
+    background-color: #e9eff6;
+    padding: 70px 0 0;
+    margin-top: 1rem;
+}
+
+.marketplace-content {
+    margin: 1rem 3rem 0 6rem;
+    border: solid;
+}
+
+.marketplace-sellers {
+    margin-top: 1rem;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+    gap: 10px;
+}

@@ -3,12 +3,13 @@ import SignUp from "../SignUp/SignUp"
 import LogIn from "../LogIn/LogIn"
 import ForgotPass from "../ForgotPass/ForgotPass"
 import PrivateRoute from "../PrivateRoute/PrivateRoute"
+import MarketPlace from "../MarketPlace/MarketPlace"
 import Profile from "../Profile/Profile"
 import UpdateProfile from "../UpdateProfile/UpdateProfile"
 import Recipes from "../Recipes/Recipes"
 import Pantry from "../Pantry/Pantry"
 import ShoppingCart from "../ShoppingCart/ShoppingCart"
-import { AuthProvider } from "../../contexts/AuthContext";
+import { AuthProvider } from "../../contexts/AuthContext"
 import { db } from "../../firebase"
 import './App.css';
 
@@ -34,11 +35,9 @@ export default function App() {
     })
 
     return () => {
-        unsubscribe()
+      unsubscribe()
     }
   }, [])
-
-
 
   return (
     <div className="App">
@@ -47,15 +46,16 @@ export default function App() {
           <main className="main">
             <Navbar />
             <Routes>
-              <Route path="/signup" element={<SignUp />}/>
-              <Route path="/signup/profile" element={<SignUpProfile users={users} isLoading={isLoading}/>}/>
-              <Route path="/login" element={<LogIn />}/>
-              <Route path="/forgot-password" element={<ForgotPass />}/>
-              <Route path="/profile" element={<PrivateRoute><Profile users={users} isLoading={isLoading}/></PrivateRoute>}/>
-              <Route path="/profile/update" element={<PrivateRoute><UpdateProfile /></PrivateRoute>}/>
-              <Route path="/recipes" element={<PrivateRoute><Recipes users={users} isLoading={isLoading}/></PrivateRoute>}/>
-              <Route path="/pantry" element={<PrivateRoute><Pantry users={users} isLoading={isLoading}/></PrivateRoute>}/>
-              <Route path="/shoppingcart" element={<PrivateRoute><ShoppingCart users={users} isLoading={isLoading}/></PrivateRoute>}/>
+              <Route path="/signup" element={<SignUp />} />
+              <Route path="/signup/profile" element={<SignUpProfile users={users} isLoading={isLoading} />} />
+              <Route path="/login" element={<LogIn />} />
+              <Route path="/forgot-password" element={<ForgotPass />} />
+              <Route path="/marketplace" element={<PrivateRoute><MarketPlace users={users} isLoading={isLoading} /></PrivateRoute>} />
+              <Route path="/profile" element={<PrivateRoute><Profile users={users} isLoading={isLoading} /></PrivateRoute>} />
+              <Route path="/profile/update" element={<PrivateRoute><UpdateProfile /></PrivateRoute>} />
+              <Route path="/recipes" element={<PrivateRoute><Recipes users={users} isLoading={isLoading} /></PrivateRoute>} />
+              <Route path="/pantry" element={<PrivateRoute><Pantry users={users} isLoading={isLoading} /></PrivateRoute>} />
+              <Route path="/shoppingcart" element={<PrivateRoute><ShoppingCart users={users} isLoading={isLoading} /></PrivateRoute>} />
             </Routes>
           </main>
         </BrowserRouter>

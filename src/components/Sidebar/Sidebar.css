@@ -1,0 +1,36 @@
+.sidebar {
+    height: 100%;
+    position: fixed;
+    background-color: whitesmoke;
+    width: 60px;
+    border-radius: 5px;
+    z-index: 10;
+    border: solid;
+}
+
+.open {
+    width: 400px;
+    padding: 1rem;
+}
+
+.toggle-button {
+    margin: 20px 0 0 15px;
+    background-color: transparent;
+    border: none;
+}
+
+.arrow-img {
+    width: 19px;
+    height: 30px;
+    filter: opacity(0.6)
+}
+
+.arrow-img:hover {
+    filter: opacity(0.3);
+    cursor: pointer;
+}
+
+.button-open {
+    transform: rotateY(180deg);
+    margin-left: 85%;
+}

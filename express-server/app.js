@@ -6,6 +6,7 @@ const cors = require("cors")
 const app = express()
 
 const api_key = "a881bae80f664370858fb9bbfc57a42d"
+const address_api_key = "44afbd3f3cc04714b96d0aa4e95b65c9"
 
 app.use(express.json())
 app.use(morgan("tiny"))
@@ -40,6 +41,16 @@ app.get('/apirecipeinfo/:recipeid', async (request, response) => {
     }
     let recipes_url = `https://api.spoonacular.com/recipes/${request.params.recipeid}/information`;
     let { data } = await axios(recipes_url, { params })
+    response.json(data);
+});
+
+// get current user location
+app.get('/address', async (request, response) => {
+    const params = {
+        api_key: address_api_key
+    }
+    let address_url = "https://ipgeolocation.abstractapi.com/v1/";
+    let { data } = await axios(address_url, { params })
     response.json(data);
 });
 
