@@ -10,6 +10,7 @@ import { units, basicUnits, convertToStandard, updateStandardAmount, isVolumeUni
 import leftUtensil from "../../icons/leftutensil.png"
 import rightUtensil from "../../icons/rightutensil.png"
 import RecipeCard from "../RecipeCard/RecipeCard"
+import RecipesHero from "../RecipesHero/RecipesHero"
 
 export default function Recipes(props) {
   // unit enum 
@@ -182,12 +183,10 @@ export default function Recipes(props) {
 
   return (
     <div className="recipes">
-      <div className="recipes-hero">
-        <img className="utensil-img" id="left" src={ leftUtensil } alt="fork knife" />
-        <h2 className="recipes-heading">Recipes Just For You</h2>
-        <img className="utensil-img" id="right" src={ rightUtensil } alt="fork knife" />
-      </div>
       {error && <Alert variant="danger">{error}</Alert>}
+      <div className="recipes-hero">
+        <RecipesHero userProducts={userProducts}/>
+      </div>
       {recipes && recipes.length > 0 
         ? <div className="recipes-grid">
           {
