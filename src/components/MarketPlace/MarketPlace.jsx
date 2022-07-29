@@ -187,13 +187,16 @@ export default function MarketPlace(props) {
                ? <>
                     <Sidebar isLoading={isUserInfoLoading} isSidebarOpen={isSidebarOpen} handleOnSidebarToggle={handleOnSidebarToggle} userSale={userSale} userProducts={userProducts} userCart={userCart} handleSellItem={handleSellItem} handleRemoveSaleItem={handleRemoveSaleItem} getUnits={getUnits}/>
                     <div className="marketplace-content">
-                        <div className="marketplace-sellers">
-                            {sellers.length
-                                ? sellers.map((user) => (
-                                    user.account.uid != currentUser.uid && user.account.data.sale && user.account.data.sale.length > 0 && <SellerCard key={user.account.uid} user={user} getUnits={getUnits} isMetric={isMetric}/>
-                                ))
-                                : <p>No sellers yet</p>
-                            }
+                        <div>
+                            <h1 className="heading">Sellers Near You</h1>
+                            <div className="marketplace-sellers">
+                                {sellers.length
+                                    ? sellers.map((user) => (
+                                        user.account.uid != currentUser.uid && user.account.data.sale && user.account.data.sale.length > 0 && <SellerCard key={user.account.uid} user={user} getUnits={getUnits} isMetric={isMetric}/>
+                                    ))
+                                    : <p>No sellers yet</p>
+                                }
+                            </div>
                         </div>
                         <div className="marketplace-content-heading">
                             <div className="marketplace-switch">

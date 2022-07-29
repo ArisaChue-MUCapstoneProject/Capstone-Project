@@ -7,14 +7,16 @@ export default function MerchCard(props) {
 
     return (
         <div className="merchcard">
-            <p>{props.item.name}</p>
-            <p>{props.getUnits(props.item, props.isMetric)}</p>
-            {props.type == MERCH_TYPE.INSTOCK &&
-               <Button onClick={() => props.handleSellItem(props.item)}>Sell</Button> 
-            }
-            {props.type == MERCH_TYPE.ONSALE &&
-               <Button onClick={() => props.handleRemoveSaleItem(props.item)}>Remove</Button> 
-            }
+            <p id="merch-name">{props.item.name.substring(0, 1).toUpperCase()+props.item.name.substring(1)}</p>
+            <p id="merch-amount">{props.getUnits(props.item, props.isMetric)}</p>
+            <div className="merch-button">
+                {props.type == MERCH_TYPE.INSTOCK &&
+                <Button variant="secondary" onClick={() => props.handleSellItem(props.item)}>Sell</Button> 
+                }
+                {props.type == MERCH_TYPE.ONSALE &&
+                <Button variant="secondary" onClick={() => props.handleRemoveSaleItem(props.item)} className="my-btn">Keep</Button> 
+                }
+            </div>
         </div>
     )
 }
