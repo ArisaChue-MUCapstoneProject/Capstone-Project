@@ -1,14 +1,100 @@
 .pantry {
     margin: auto;
-    background-color: azure;
-    padding: 1rem;
+    width: 100%;
+    background-color: var(--background);
+    padding: 70px 0 0px;
+    margin: 1.5rem 2rem 0 6rem;
+}
+
+.pantry-content {
+    display: flex;
+    font-family: 'Noto Sans JP', sans-serif;
+    color: var(--fontContent);
+}
+
+h1.pantry-heading {
+    padding-bottom: 0.5rem;
+    font-size: 3rem;
+    
+}
+
+.pantry-heading-sub {
+    font-size: 1.2rem;
+    padding-bottom: 0.5rem;
+    padding-left: 0.15rem;
+}
+
+.pantry-categories {
+    border-radius: 8px;
+    border: 1px solid var(--greenDark2);
+    width: 18%;
+    display: grid;
+    grid-template-rows: repeat(11, 4rem);
+    padding: 1rem 0 1rem 2.5rem;
+    font-size: 1.2rem;
+    background-color: var(--recipeCard);
+    height: fit-content;
+}
+
+.category-select {
+    color: var(--fontHeading);
+    font-weight: bold;
+    font-size: 1.3rem;
+    padding: 0;
+    margin: 0;
+}
+
+.category-sub-select {
+    text-decoration: none;
+    color: var(--fontContent);
+}
+
+.category-sub-select:hover {
+    color: var(--brownDark);
+}
+
+.category-headings {
+    scroll-margin-top: 90px;
+    margin-bottom: 1rem;
+    font-weight: bold;
+    font-size: 1.6rem;
+    padding-left: 1rem;
+}
+
+.products-list {
+    width: 52%;
+    padding: 0 1.5rem 0;
+}
+
+.pantry-side-content {
+    display: grid;
+    justify-items: center;
+    width: 30%;
+    height: fit-content;
+}
+
+.pantry-switch {
+    padding: 2rem;
+    width: 100%;
+    margin-bottom: 1rem;
+    box-shadow: 2px 2px 3px gray;
+    border: 1px solid var(--greenDark2);
+    border-radius: 8px;
+    background-color: var(--card);
+    height: fit-content;
 }
 
 .product-form {
-    align-self: center;
+    padding: 2rem;
+    width: 100%;
+    margin-bottom: 1rem;
+    box-shadow: 2px 2px 3px gray;
+    border: 1px solid var(--greenDark2);
+    border-radius: 8px;
+    background-color: var(--card);
+    height: fit-content;
 }
 
 .product-submit {
-    align-self: flex-end;
-    margin-bottom: 17px;
+    margin: 0;
 }

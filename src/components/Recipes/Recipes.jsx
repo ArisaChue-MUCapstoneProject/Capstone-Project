@@ -171,7 +171,8 @@ export default function Recipes(props) {
           return {
             name: ingredient.name,
             quantity: curIngred[3],
-            unitType: ingredient.unitType
+            unitType: ingredient.unitType,
+            category: ingredient.category
           }
         } // else don't push anything since product would be used up
       } else { // don't modify product since conversion failed
