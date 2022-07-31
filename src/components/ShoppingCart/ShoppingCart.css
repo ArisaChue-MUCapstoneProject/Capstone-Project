@@ -1,7 +1,20 @@
 .shopping-cart {
     margin: auto;
-    background-color: azure;
-    padding: 1rem;
+    background-color: var(--background);
+    padding: 70px 0 0px;
+    margin: 1.5rem 2rem 0 6rem;
+}
+
+h1.cart-heading {
+    padding-bottom: 0.5rem;
+    font-size: 3rem;
+    
+}
+
+.cart-heading-sub {
+    font-size: 1.2rem;
+    padding-bottom: 0.5rem;
+    padding-left: 0.15rem;
 }
 
 .cart-form {

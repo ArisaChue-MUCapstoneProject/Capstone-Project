@@ -39,17 +39,17 @@ export default function Sidebar(props) {
                         </div>
                         <p className="sidebar-heading">Selling Right Now</p>
                             {props.userSale.length 
-                                ? <MerchGrid content={props.userSale} type={MERCH_TYPE.ONSALE} isMetric={isMetric} handleSellItem={props.handleSellItem} handleRemoveSaleItem={props.handleRemoveSaleItem} getUnits={props.getUnits}/>
+                                ? <MerchGrid content={props.userSale} type={MERCH_TYPE.ONSALE} isMetric={isMetric} handleSellItem={props.handleSellItem} handleRemoveSaleItem={props.handleRemoveSaleItem} />
                                 : <p className="empty-message">Your market is empty. Add ingredients from your pantry below.</p>
                             }
                         <p className="sidebar-heading">Ingredients You Have</p>
                             {props.userProducts.length 
-                                ?  <MerchGrid content={props.userProducts} type={MERCH_TYPE.INSTOCK} isMetric={isMetric} handleSellItem={props.handleSellItem} handleRemoveSaleItem={props.handleRemoveSaleItem} getUnits={props.getUnits}/>
+                                ?  <MerchGrid content={props.userProducts} type={MERCH_TYPE.INSTOCK} isMetric={isMetric} handleSellItem={props.handleSellItem} handleRemoveSaleItem={props.handleRemoveSaleItem} />
                                 : <p className="empty-message">Your pantry is empty. Add more ingredients to your pantry.</p>
                             }
                         <p className="sidebar-heading">Ingredients You Want</p>
                             {props.userCart.length 
-                                ? <MerchGrid content={props.userCart} type={MERCH_TYPE.WISHLIST} isMetric={isMetric} handleSellItem={props.handleSellItem} handleRemoveSaleItem={props.handleRemoveSaleItem} getUnits={props.getUnits}/>
+                                ? <MerchGrid content={props.userCart} type={MERCH_TYPE.WISHLIST} isMetric={isMetric} handleSellItem={props.handleSellItem} handleRemoveSaleItem={props.handleRemoveSaleItem} />
                                 : <p className="empty-message">Your wishlist is empty. Add more ingredients to your shopping cart.</p>
                             }
                     </div>

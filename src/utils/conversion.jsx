@@ -91,6 +91,20 @@ export const MERCH_TYPE = Object.freeze({
     WISHLIST: -1
 })
 
+// get correct metric or customary units, return string of value with units
+export const getUnits = (item, isMetric) => {
+    const quantityWithUnits = isMetric ? item.quantity : metricToCustomary(item.quantity, item.unitType)
+    var unit
+    if (item.unitType == UNIT_TYPE.VOLUME) {
+        unit = isMetric ? "milliliters" : "cups"
+    } else if (item.unitType == UNIT_TYPE.WEIGHT) {
+        unit = isMetric ? "grams" : "ounces"
+    } else {
+        unit = "counts"
+    }
+    return `${quantityWithUnits} ${unit}`
+}
+
 // return 1 if volume unit, 0 if weight unit, -1 if non-measureable
 export function isVolumeUnit(unit) {
     // clean string

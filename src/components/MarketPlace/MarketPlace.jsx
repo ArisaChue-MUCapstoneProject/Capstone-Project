@@ -119,19 +119,6 @@ export default function MarketPlace(props) {
         }
     }
 
-    const getUnits = (item, isMetric) => {
-        const quantityWithUnits = isMetric ? item.quantity : metricToCustomary(item.quantity, item.unitType)
-        var unit
-        if (item.unitType == UNIT_TYPE.VOLUME) {
-            unit = isMetric ? "milliliters" : "cups"
-        } else if (item.unitType == UNIT_TYPE.WEIGHT) {
-            unit = isMetric ? "grams" : "ounces"
-        } else {
-            unit = "counts"
-        }
-        return `${quantityWithUnits} ${unit}`
-    }
-
     const getSellerOrder = (curUsers, maxDistance) => {
         // sellerNumProducts structure: {seller index in users, num of ingredients matching}
         let sellerNumProducts = curUsers.map((user, indx) => {
@@ -185,14 +172,14 @@ export default function MarketPlace(props) {
         <div className="marketplace">
             {!props.isLoading && !isUserInfoLoading
                ? <>
-                    <Sidebar isLoading={isUserInfoLoading} isSidebarOpen={isSidebarOpen} handleOnSidebarToggle={handleOnSidebarToggle} userSale={userSale} userProducts={userProducts} userCart={userCart} handleSellItem={handleSellItem} handleRemoveSaleItem={handleRemoveSaleItem} getUnits={getUnits}/>
+                    <Sidebar isLoading={isUserInfoLoading} isSidebarOpen={isSidebarOpen} handleOnSidebarToggle={handleOnSidebarToggle} userSale={userSale} userProducts={userProducts} userCart={userCart} handleSellItem={handleSellItem} handleRemoveSaleItem={handleRemoveSaleItem}/>
                     <div className="marketplace-content">
                         <div>
                             <h1 className="heading">Sellers Near You</h1>
                             <div className="marketplace-sellers">
                                 {sellers.length
                                     ? sellers.map((user) => (
-                                        user.account.uid != currentUser.uid && user.account.data.sale && user.account.data.sale.length > 0 && <SellerCard key={user.account.uid} user={user} getUnits={getUnits} isMetric={isMetric}/>
+                                        user.account.uid != currentUser.uid && user.account.data.sale && user.account.data.sale.length > 0 && <SellerCard key={user.account.uid} user={user} isMetric={isMetric}/>
                                     ))
                                     : <p>No sellers yet</p>
                                 }

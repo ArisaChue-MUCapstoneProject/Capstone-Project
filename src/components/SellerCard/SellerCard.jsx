@@ -1,5 +1,6 @@
 import * as React from "react"
-import Avatar from '@mui/material/Avatar';
+import Avatar from '@mui/material/Avatar'
+import { getUnits } from "../../utils/conversion"
 import { kmToMiles } from "../../utils/distance"
 import { stringAvatar } from "../../utils/design"
 import "./SellerCard.css"
@@ -24,7 +25,7 @@ export default function SellerCard(props) {
                         
                         <div key={item.name} className={`item-sell-card c${indx%3}`}>
                             <p id="item-name">{item.name.substring(0, 1).toUpperCase()+item.name.substring(1)}</p>
-                            <p id="item-amount">{props.getUnits(item, props.isMetric)}</p>
+                            <p id="item-amount">{getUnits(item, props.isMetric)}</p>
                         </div>
                     ))
                 }
