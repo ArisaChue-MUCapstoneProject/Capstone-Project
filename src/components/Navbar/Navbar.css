@@ -21,7 +21,7 @@
     color: var(--fontContent);
 }
 
-a:-webkit-any-link {
+a:-webkit-any-link #navbar-links{
     text-decoration: none;
 }
 

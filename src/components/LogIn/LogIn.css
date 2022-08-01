@@ -1,0 +1,102 @@
+.login {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    background-color: var(--background);
+    font-family: 'Nunito Sans', sans-serif;
+    height: 100vh;
+    background-color: var(--bars);
+    align-items: center;
+    color: var(--fontContent);
+}
+
+.login-hero {
+    position: relative;
+    background-image: url("../../icons/login_home.jpeg");
+    height: 97%;
+    border-radius: 35px;
+    background-size: cover;
+    margin-left: 1rem;
+    background-position: center;
+}
+
+.login-hero-text {
+    color: white;
+    position: absolute;
+    top: 50%;
+    left: 49.5%;
+    transform: translate(-50%, -50%);
+    display: grid;
+    justify-content: center;
+    /* border: solid; */
+}
+
+.login-hero-heading {
+    align-self: center;
+    justify-self: center;
+    font-size: 4rem;
+    padding-bottom: 0.7rem;
+    margin: 0;
+}
+
+.login-hero-heading-sub {
+    font-size: 2rem;
+    align-self: center;
+    justify-self: center;
+    text-align: center;
+}
+
+.accent {
+    color: var(--fontContent);
+    font-weight: bold;
+}
+
+.login-right {
+    display: flex;
+    padding: 0;
+    width: 100%;
+    justify-content: center;
+    align-items: center;
+}
+
+.login-content {
+    width: 100%;
+    display: grid;
+}
+
+.login-heading {
+    font-size: 3rem;
+    padding-left: 10%;
+    margin-bottom: 0.25rem;
+    font-weight: bold;
+    color: var(--fontHeading);
+}
+
+.login-heading-sub {
+    font-size: 1rem;
+    padding-left: 10%;
+    color: var(--fontSub);
+}
+
+form.login-form {
+    width: 80%;
+    justify-self: center;
+    display: grid;
+    row-gap: 10px;
+}
+
+#login-forgot {
+    justify-self: flex-end;
+}
+
+a:hover#login-forgot {
+    color: var(--brownDark);
+}
+
+#login-signup {
+    margin-top: 1rem;
+    justify-self: center;
+}
+
+#login-signup a:hover {
+    color: var(--brownDark);
+}

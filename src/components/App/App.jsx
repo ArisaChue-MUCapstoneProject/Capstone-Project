@@ -11,6 +11,7 @@ import Pantry from "../Pantry/Pantry"
 import ShoppingCart from "../ShoppingCart/ShoppingCart"
 import { AuthProvider } from "../../contexts/AuthContext"
 import { db } from "../../firebase"
+import { useAuth } from "../../contexts/AuthContext"
 import './App.css';
 
 import { BrowserRouter, Routes, Route } from "react-router-dom"
@@ -19,6 +20,7 @@ import { collection, onSnapshot } from "firebase/firestore"
 import SignUpProfile from "../SignUpProfile/SignUpProfile"
 
 export default function App() {
+  const { currentUser } = useAuth();
   // state variables
   const [users, setUsers] = useState([])
   const [isLoading, setIsLoading] = useState(true)
@@ -41,10 +43,9 @@ export default function App() {
 
   return (
     <div className="App">
-      <AuthProvider>
         <BrowserRouter>
           <main className="main">
-            <Navbar />
+            {currentUser && <Navbar />}
             <Routes>
               <Route path="/signup" element={<SignUp />} />
               <Route path="/signup/profile" element={<SignUpProfile users={users} isLoading={isLoading} />} />
@@ -59,7 +60,6 @@ export default function App() {
             </Routes>
           </main>
         </BrowserRouter>
-      </AuthProvider>
     </div>
   );
 }
