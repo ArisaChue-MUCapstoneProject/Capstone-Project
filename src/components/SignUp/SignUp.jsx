@@ -60,7 +60,7 @@ export default function SignUp(props) {
       <div className="signup-hero">
         <div className="signup-hero-text">
           <h1 className="signup-hero-heading">Welcome!</h1>
-          <h3 className="signup-hero-heading-sub">Join us to start saving food right from your computer</h3> </div>
+          <h3 className="signup-hero-heading-sub">Join us so you can start saving food right from your computer</h3> </div>
 
       </div>
 

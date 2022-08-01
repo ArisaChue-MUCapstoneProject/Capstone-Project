@@ -34,11 +34,11 @@
     color: white;
     position: absolute;
     top: 50%;
-    left: 49.5%;
+    left: 50%;
     transform: translate(-50%, -50%);
     display: grid;
     justify-content: center;
-    width: 70%;
+    width: 75%;
 }
 
 .signup-hero-heading {
@@ -46,7 +46,7 @@
     justify-self: center;
     font-size: 4rem;
     padding: 0;
-    margin-bottom: 0.7rem;
+    margin-bottom: 1rem;
     background-color: var(--bars);
     color: var(--fontHeading);
     padding: 0.7rem 1rem;

@@ -11,23 +11,33 @@
 
 .login-hero {
     position: relative;
-    background-image: url("../../icons/login_home.jpeg");
     height: 97%;
     border-radius: 35px;
-    background-size: cover;
     margin-left: 1rem;
+}
+
+.login-hero::before {
+    content: "";
+    position: absolute;
+    top: 0px;
+    right: 0px;
+    bottom: 0px;
+    left: 0px;
+    background-image: url("../../icons/login_home.jpeg");
+    opacity: 0.85;
+    background-size: cover;
     background-position: center;
+    border-radius: 35px;
 }
 
 .login-hero-text {
     color: white;
     position: absolute;
-    top: 50%;
+    top: 49.5%;
     left: 49.5%;
     transform: translate(-50%, -50%);
     display: grid;
     justify-content: center;
-    /* border: solid; */
 }
 
 .login-hero-heading {
