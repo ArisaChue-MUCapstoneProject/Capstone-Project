@@ -38,7 +38,7 @@ export default function ForgotPass() {
             </div>
             <div className="forgot-right">
                 <div className="forgot-content">
-                    <h2 className="forgot-heading">Forgot your password?</h2>
+                    <h2 className="forgot-heading">Forgot your <span className="accent-signup">password?</span></h2>
                     <p className="forgot-heading-sub">Don't worry, enter your email and we'll send you an email to reset your password</p>
                     {error && <Alert variant="danger">{error}</Alert>}
                     {message && <Alert variant="success">{message}</Alert>}

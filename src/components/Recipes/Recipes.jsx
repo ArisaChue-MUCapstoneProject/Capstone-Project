@@ -151,7 +151,9 @@ export default function Recipes(props) {
     const newIngredient = {
       name: ingredientName,
       quantity: 2,
-      unit: "gram"
+      unit: "gram",
+      unitType: 0,
+      category: "dairy"
     }
     setUserCart([...userCart, newIngredient])
   }

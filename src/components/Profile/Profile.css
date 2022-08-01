@@ -42,10 +42,11 @@ h1.profile-heading {
     height: auto;
     aspect-ratio: 1 / 1;
     font-size: 5rem;
+    border: 0.5px solid var(--greenDark2);
 }
 
 .profile-content {
-    background-color: var(--background);
+    background-color: var(--recipeCard);
     border: 0.5px solid var(--greenDark2);
     border-radius: 15px;
     margin: 8rem 15rem 0;
@@ -70,8 +71,16 @@ h1.profile-heading {
     width: fit-content;
 }
 
-.profile-button {
+.btn.btn-light {
     height: fit-content;
+    background-color: transparent;
+    border: 0.5px var(--greenDark2) solid;
+    padding: 0.2rem 0.5rem;
+}
+
+.profile-icon {
+    width: auto;
+    height: 1.5rem;
 }
 
 .profile-sub-content {

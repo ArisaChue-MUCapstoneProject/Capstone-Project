@@ -7,9 +7,6 @@ import store from "../../icons/store.png"
 export default function Navbar() {
   return (
     <nav className="navbar" id="navbar-overrides">
-      <Link to="/">
-          <p id="navbar-links">Log Out</p>
-      </Link>
       <Link to="/profile">
           <p id="navbar-links">Profile</p>
       </Link>
@@ -24,6 +21,9 @@ export default function Navbar() {
       </Link>
       <Link to="/marketplace">
         <p id="navbar-links">Marketplace</p>
+      </Link>
+      <Link to="/">
+          <p id="navbar-links">Log Out</p>
       </Link>
     </nav>
   )

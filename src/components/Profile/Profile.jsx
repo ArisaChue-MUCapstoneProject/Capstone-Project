@@ -4,6 +4,8 @@ import { Link, useNavigate } from "react-router-dom"
 import { Card, Button, Badge, Alert, Form } from "react-bootstrap"
 import Avatar from '@mui/material/Avatar'
 import { Typeahead } from 'react-bootstrap-typeahead'
+import { AiOutlineEdit } from 'react-icons/ai'
+import { IoRefreshOutline } from 'react-icons/io5'
 import { doc, updateDoc } from "firebase/firestore"
 import axios from 'axios';
 import { useAuth } from "../../contexts/AuthContext"
@@ -201,7 +203,7 @@ export default function Profile(props) {
                       </Form.Group>
 
                     }
-                    <Button className="profile-button overflow" onClick={showNameForm}>Change Name</Button>
+                    <Button variant="light" className="profile-button overflow" onClick={showNameForm}><AiOutlineEdit className="profile-icon"/></Button>
                   </div>
                 </div>
                 <div>
@@ -224,7 +226,7 @@ export default function Profile(props) {
                         selected={primDietChecked}
                       />
                     }
-                    <Button className="profile-button overflow" onClick={showPrimDietForm}>Change Diet</Button>
+                    <Button variant="light" className="profile-button overflow" onClick={showPrimDietForm}><AiOutlineEdit className="profile-icon"/></Button>
                   </div>
                 </div>
               </div>
@@ -233,7 +235,7 @@ export default function Profile(props) {
                   <p className="profile-sub-heading">Email:</p>
                   <div className="profile-sub-content">
                     <p className="overflow">{currentUser.email}</p>
-                    <Link to="/profile/update" className="btn btn-primary profile-button overflow">Update Username/Password</Link>
+                    <Link to="/profile/update" className="btn btn-light profile-button overflow"><AiOutlineEdit className="profile-icon"/></Link>
                   </div>
                 </div>
                 <div>
@@ -270,7 +272,7 @@ export default function Profile(props) {
                         ref={typeaheadDietsRef}
                       />
                     }
-                    <Button className="profile-button overflow" onClick={showDietsForm}>Change Diet</Button>
+                    <Button variant="light" className="profile-button overflow" onClick={showDietsForm}><AiOutlineEdit className="profile-icon"/></Button>
                   </div>
                 </div>
               </div>
@@ -280,7 +282,7 @@ export default function Profile(props) {
                   {!isLocationLoading
                     ? <div className="profile-sub-content">
                       <p className="overflow">{userLocation.city}, {userLocation.region} ({userLocation.flag.emoji})</p>
-                      <Button className="profile-button overflow" onClick={handleLocationRefresh}>Refresh Location</Button>
+                      <Button variant="light" className="profile-button overflow" onClick={handleLocationRefresh}><IoRefreshOutline className="profile-icon"/></Button>
                     </div>
                     : <p>Loading</p>
                   }
@@ -320,7 +322,7 @@ export default function Profile(props) {
                         ref={typeaheadAllergiesRef}
                       />
                     }
-                    <Button className="profile-button overflow" onClick={showAllergiesForm}>Change Allergy</Button>
+                    <Button variant="light" className="profile-button overflow" onClick={showAllergiesForm}><AiOutlineEdit className="profile-icon"/></Button>
                   </div>
                 </div>
               </div>

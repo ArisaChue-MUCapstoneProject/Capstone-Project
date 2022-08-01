@@ -16,7 +16,6 @@ export default function SignUpProfile(props) {
     // get user data from the database
     const { currentUser } = useAuth()
     const navigate = useNavigate()
-    const typeaheadRef = useRef(null);
     const [loading, setLoading] = useState(false)
     const primDiets = ["Gluten Free", "Ketogenic", "Vegetarian", "Vegan", "Pescetarian", "Paleo"]
     const [diets, setDiets] = useState(["Gluten Free", "Ketogenic", "Vegetarian", "Vegan", "Pescetarian", "Paleo"])
@@ -80,9 +79,6 @@ export default function SignUpProfile(props) {
                     setError(error.message)
                 })
         )
-        promises.push(
-            props.setCreatingAccount(false)
-        )
         Promise.all(promises)
             .then(() => {
                 navigate("/profile")
@@ -113,8 +109,9 @@ export default function SignUpProfile(props) {
     return (
         <div className="signup-profile">
             <div className="signup-profile-left">
+                <p className="logo-signup">TasteIt</p>
                 <div className="signup-profile-content">
-                    <h2 className="signup-profile-heading">Tell us a little about yourself</h2>
+                    <h2 className="signup-profile-heading">Tell us a little about <span className="accent-signup">yourself</span></h2>
                     <p className="signup-profile-heading-sub">The more information, the more personalized your experience will be</p>
                     {error && <Alert variant="danger">{error}</Alert>}
                     <div className="signup-profile-form">
@@ -147,15 +144,10 @@ export default function SignUpProfile(props) {
                                 id="checkbox-diets"
                                 labelKey="diets"
                                 multiple
-                                onChange={(selected) => {
-                                    setDietsChecked(selected);
-                                    // Keep the menu open when making multiple selections
-                                    typeaheadRef.current.toggleMenu();
-                                }}
+                                onChange={setDietsChecked}
                                 options={diets}
                                 placeholder="Customize your secondary diets..."
                                 selected={dietsChecked}
-                                ref={typeaheadRef}
                             />
                         </div>
                         <div>
@@ -189,7 +181,7 @@ export default function SignUpProfile(props) {
             </div>
             <div className="signup-profile-hero">
                 <div className="signup-profile-hero-text">
-                    <h1 className="signup-profile-hero-heading">A little about us</h1>
+                    <h1 className="signup-profile-hero-heading">A little about <span className="accent-signup">us</span></h1>
                     <h3 className="signup-profile-hero-heading-sub"><span className="accent-signup">TasteIt</span> also helps build your grocery list and locate local sellers that might have what you want</h3>
                 </div>
             </div>

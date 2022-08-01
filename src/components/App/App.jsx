@@ -24,7 +24,6 @@ export default function App() {
   // state variables
   const [users, setUsers] = useState([])
   const [isLoading, setIsLoading] = useState(true)
-  const [creatingAccount, setCreatingAccount] = useState(true)
 
   // listen for realtime updates and update users
   useEffect(() => {
@@ -46,10 +45,10 @@ export default function App() {
     <div className="App">
         <BrowserRouter>
           <main className="main">
-            {currentUser && !creatingAccount && <Navbar />}
+            {currentUser && <Navbar />}
             <Routes>
               <Route path="/signup" element={<SignUp />} />
-              <Route path="/signup/profile" element={<SignUpProfile users={users} isLoading={isLoading} setCreatingAccount={setCreatingAccount}/>} />
+              <Route path="/signup/profile" element={<SignUpProfile users={users} isLoading={isLoading} />} />
               <Route path="/login" element={<LogIn />} />
               <Route path="/forgot-password" element={<ForgotPass />} />
               <Route path="/marketplace" element={<PrivateRoute><MarketPlace users={users} isLoading={isLoading} /></PrivateRoute>} />

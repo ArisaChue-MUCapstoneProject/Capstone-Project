@@ -1,4 +1,5 @@
 .signup-profile {
+    position: relative;
     display: grid;
     grid-template-columns: 1fr 1fr;
     background-color: var(--background);
@@ -7,6 +8,7 @@
     background-color: var(--bars);
     align-items: center;
     color: var(--fontContent);
+    z-index: 50;
 }
 
 .signup-profile-hero {
@@ -63,7 +65,7 @@
 }
 
 .accent-signup {
-    color: var(--brownDark);
+    color: var(--brownDark2);
     font-weight: bold;
 }
 

@@ -38,6 +38,7 @@ export default function LogIn(props) {
                 </div>
             </div>
             <div className="login-right">
+                <p className="logo">TasteIt</p>
                 <div className="login-content">
                 <h2 className="login-heading">Welcome Back</h2>
                 <p className="login-heading-sub">Thanks for coming back, please enter your details so you can start cooking</p>
@@ -45,11 +46,11 @@ export default function LogIn(props) {
                     <Form className="login-form" onSubmit={handleSubmit}>
                         <Form.Group id="email">
                             <Form.Label>Email</Form.Label>
-                            <Form.Control type="email" ref={emailRef} required></Form.Control>
+                            <Form.Control type="email" placeholder="name@example.com" ref={emailRef} required></Form.Control>
                         </Form.Group>
                         <Form.Group id="password">
                             <Form.Label>Password</Form.Label>
-                            <Form.Control type="password" ref={passwordRef} required></Form.Control>
+                            <Form.Control type="password" placeholder="Enter your password" ref={passwordRef} required></Form.Control>
                         </Form.Group>
                         <Link to="/forgot-password" id="login-forgot">Forgot Password?</Link>
                         <Button disabled={loading} type="submit">Log In</Button>

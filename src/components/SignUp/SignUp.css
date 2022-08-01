@@ -38,7 +38,7 @@
     transform: translate(-50%, -50%);
     display: grid;
     justify-content: center;
-    width: 75%;
+    width: 80%;
 }
 
 .signup-hero-heading {
@@ -62,16 +62,30 @@
 }
 
 .accent-signup {
-    color: var(--brownDark);
+    color: var(--brownDark2);
     font-weight: bold;
 }
 
 .signup-left {
+    position: relative;
+    height: 100%;
     display: flex;
     padding: 0;
     width: 100%;
     justify-content: center;
     align-items: center;
+}
+
+.logo-signup {
+    position: absolute;
+    top: 0%;
+    left: 0%;
+    margin: 1rem 2rem;
+    font-size: 2.1rem;
+    font-weight: bold;
+    color: var(--fontHeading);
+    border-top: solid var(--brownDark2);
+    border-bottom: solid var(--brownDark2);
 }
 
 .signup-content {
