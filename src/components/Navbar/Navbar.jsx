@@ -23,7 +23,7 @@ export default function Navbar() {
           <p id="navbar-links">Pantry</p>
       </Link>
       <Link to="/shoppingcart">
-          <p id="navbar-links">Shopping Cart</p>
+          <p id="navbar-links">Grocery List</p>
       </Link>
     </nav>
   )
