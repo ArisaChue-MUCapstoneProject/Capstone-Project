@@ -26,8 +26,9 @@ h1.recipes-hero-title {
     padding-left: 0.2rem;
 }
 h3.recipes-hero-sub {
-    font-size: 1.4rem;
+    font-size: 1.3rem;
     color: var(--greenDark2);
+    font-family: 'Lora', serif;
 }
 
 p.recipes-hero-sub {

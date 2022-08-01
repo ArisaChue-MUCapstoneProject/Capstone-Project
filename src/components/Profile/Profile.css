@@ -95,6 +95,7 @@ h1.profile-heading {
 .profile-list {
     display: flex;
     width: fit-content;
+    font-family: 'Nunito Sans', sans-serif;
 }
 
 .profile-item {

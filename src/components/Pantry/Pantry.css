@@ -21,6 +21,7 @@ h1.pantry-heading {
     padding-bottom: 0.5rem;
     padding-left: 0.15rem;
     color: var(--greenDark2);
+    font-family: 'Lora', serif;
 }
 
 .pantry-categories {
