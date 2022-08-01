@@ -22,11 +22,15 @@
     display: flex;
 }
 
-.bullet-icon {
-    width: auto;
+.product-icon {
     display: flex;
     align-items: center;
     margin-right: 1.5rem;
+}
+
+.product-svg {
+    height: 20px;
+    width: 20px;
 }
 
 .product-name {

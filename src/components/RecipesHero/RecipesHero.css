@@ -27,6 +27,7 @@ h1.recipes-hero-title {
 }
 h3.recipes-hero-sub {
     font-size: 1.4rem;
+    color: var(--greenDark2);
 }
 
 p.recipes-hero-sub {

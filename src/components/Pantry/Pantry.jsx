@@ -220,19 +220,19 @@ export default function Pantry(props) {
                 <Row>
                   <Form.Group className="mb-3" controlId="formGroupName">
                     <Form.Label>Product name</Form.Label>
-                    <Form.Control type="text" placeholder="Enter name" name="name" value={productForm.name} onChange={handleOnProductFormChange}/>
+                    <Form.Control type="text" placeholder="Enter name" name="name" value={productForm.name} onChange={handleOnProductFormChange} style={{color: "var(--fontContent)"}}/>
                   </Form.Group>
                 </Row>
                 <Row>
                   <Form.Group className="mb-3" controlId="formGroupNumber">
                     <Form.Label>Quantity</Form.Label>
-                    <Form.Control type="number" placeholder="Enter number" name="quantity" value={productForm.quantity} onChange={handleOnProductFormChange}/>
+                    <Form.Control type="number" placeholder="Enter number" name="quantity" value={productForm.quantity} onChange={handleOnProductFormChange} style={{color: "var(--fontContent)"}}/>
                   </Form.Group>
                 </Row>
                 <Row>
                   <Form.Group className="mb-3" controlId="formGroupNumber">
                     <Form.Label>Unit</Form.Label>
-                      <Form.Select value={curUnit} onChange={handleUnitChange}>
+                      <Form.Select value={curUnit} onChange={handleUnitChange} style={curUnit==basicUnits[0] ? {color: "gray"} : {color: "var(--fontContent"}}>
                         {basicUnits.map((val, ind) => (
                           <option key={val} value={val} disabled={ind == 0} hidden={ind == 0}>{val}</option>
                         ))}
@@ -242,7 +242,7 @@ export default function Pantry(props) {
                 <Row>
                   <Form.Group className="mb-3" controlId="formGroupNumber">
                     <Form.Label>Category</Form.Label>
-                      <Form.Select value={curCategory} onChange={handleCategoryChange}>
+                      <Form.Select value={curCategory} onChange={handleCategoryChange} style={curUnit==basicUnits[0] ? {color: "gray"} : {color: "var(--fontContent"}}>
                         {basicCategories.map((val, ind) => (
                           <option key={val} value={val} disabled={ind == 0} hidden={ind == 0}>{val}</option>
                         ))}

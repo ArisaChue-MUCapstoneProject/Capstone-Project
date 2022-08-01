@@ -2,7 +2,7 @@ import * as React from "react"
 import { metricToCustomary } from "../../utils/conversion"
 import { Button } from "react-bootstrap" 
 import { AiOutlinePlus, AiOutlineMinus, AiOutlineClose } from 'react-icons/ai'
-import { GiKnifeFork } from 'react-icons/gi'
+import { GiFruitBowl } from 'react-icons/gi'
 import "./ProductCard.css"
 
 export default function Products(props) {
@@ -20,8 +20,8 @@ export default function Products(props) {
     <div className="product-card">
       <div className="product-content">
         <div className="product-name-container">
-          <div className="bullet-icon">
-            <GiKnifeFork />
+          <div className="product-icon">
+            <GiFruitBowl className="product-svg" />
           </div>
           <p className="product-name">{props.name.substring(0, 1).toUpperCase() + props.name.substring(1).toLowerCase()}</p>
         </div>
