@@ -3,7 +3,6 @@
     margin-top: 70px;
     padding: 1.5rem 2rem 0 2rem;
     background-image: linear-gradient(var(--background), var(--bars));
-    height: 100vh;
 }
 
 h1.profile-heading {
@@ -105,4 +104,17 @@ h1.profile-heading {
     padding: 0.45rem;
     border-radius: 20px;
     background-color: var(--brownDark);
+}
+
+.btn-link.profile-logout {
+    text-align: center;
+    grid-column-start: 1;
+    grid-row-start: 2;
+    color: var(--fontContent);
+    padding: 1rem 0 2rem;
+    font-size: 1.2rem;
+}
+
+.btn-link.profile-logout:hover {
+    color: var(--brownDark);
 }

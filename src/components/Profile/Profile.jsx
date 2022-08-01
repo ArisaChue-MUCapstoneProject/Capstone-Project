@@ -287,10 +287,10 @@ export default function Profile(props) {
                 </div>
                 <div>
                   <div className="profile-diet-heading">
-                  <p className="profile-sub-heading">Allergies:</p>
-                  <CustomTooltip dialogue={allergyDialogue} />
+                    <p className="profile-sub-heading">Allergies:</p>
+                    <CustomTooltip dialogue={allergyDialogue} />
                   </div>
-                 
+
                   <div className="profile-sub-content">
                     {!showUserAllergiesForm &&
                       (userAllergies.length
@@ -347,8 +347,9 @@ export default function Profile(props) {
                 </div>
               </div>
             </div>
+            <Button variant="link" className="profile-logout" onClick={handleLogOut}>Log Out</Button>
           </div>
-          {/* <Button variant="link" onClick={handleLogOut}>Log Out</Button> */}
+          
         </div>
         : <p>Loading</p>
 
