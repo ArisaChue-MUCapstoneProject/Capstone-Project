@@ -5,7 +5,7 @@ import BootstrapSwitchButton from 'bootstrap-switch-button-react'
 import Slider from '@mui/material/Slider';
 import Sidebar from "../Sidebar/Sidebar"
 import SellerCard from "../SellerCard/SellerCard"
-import { Alert } from "react-bootstrap" 
+import { Alert } from "react-bootstrap"
 import { doc, updateDoc } from "firebase/firestore"
 import { db } from "../../firebase"
 import { useAuth } from "../../contexts/AuthContext"
@@ -17,7 +17,7 @@ export default function MarketPlace(props) {
 
     // get user data from the database
     const { currentUser } = useAuth()
-    
+
     const [isSidebarOpen, setIsSidebarOpen] = useState(false)
     const [isUserInfoLoading, setIsUserInfoLoading] = useState(true)
     const [isMetric, setIsMetric] = useState(true)
@@ -61,11 +61,11 @@ export default function MarketPlace(props) {
 
         // update products in the database
         if (!props.isLoading && userProducts) {
-        const docRef = doc(db, "users", currentUser.uid)
-        updateDoc(docRef, { products: userProducts })
-            .catch(error => {
-            setError(error.message)
-        })
+            const docRef = doc(db, "users", currentUser.uid)
+            updateDoc(docRef, { products: userProducts })
+                .catch(error => {
+                    setError(error.message)
+                })
         }
     }, [userProducts])
 
@@ -73,17 +73,17 @@ export default function MarketPlace(props) {
     useEffect(() => {
         // update products on sale in the database
         if (!props.isLoading && userSale) {
-        const docRef = doc(db, "users", currentUser.uid)
-        updateDoc(docRef, { sale: userSale })
-            .catch(error => {
-            setError(error.message)
-        })
+            const docRef = doc(db, "users", currentUser.uid)
+            updateDoc(docRef, { sale: userSale })
+                .catch(error => {
+                    setError(error.message)
+                })
         }
     }, [userSale])
 
     // open and close sidebar
     const handleOnSidebarToggle = () => {
-        if(isSidebarOpen) {
+        if (isSidebarOpen) {
             setIsSidebarOpen(false)
         } else {
             setIsSidebarOpen(true)
@@ -100,7 +100,7 @@ export default function MarketPlace(props) {
             let newProducts = [...userProducts]
             // records that product is on sale
             newProducts[itemIndex].onSale = true
-            const newItem = {...newProducts[itemIndex]}
+            const newItem = { ...newProducts[itemIndex] }
             setUserProducts(newProducts)
         }
     }
@@ -171,21 +171,22 @@ export default function MarketPlace(props) {
     return (
         <div className="marketplace">
             {!props.isLoading && !isUserInfoLoading
-               ? <>
-                    <Sidebar isLoading={isUserInfoLoading} isSidebarOpen={isSidebarOpen} handleOnSidebarToggle={handleOnSidebarToggle} userSale={userSale} userProducts={userProducts} userCart={userCart} handleSellItem={handleSellItem} handleRemoveSaleItem={handleRemoveSaleItem}/>
+                ? <>
+                    <Sidebar isLoading={isUserInfoLoading} isSidebarOpen={isSidebarOpen} handleOnSidebarToggle={handleOnSidebarToggle} userSale={userSale} userProducts={userProducts} userCart={userCart} handleSellItem={handleSellItem} handleRemoveSaleItem={handleRemoveSaleItem} />
+                    <div className="marketplace-heading-container">
+                        <h1 className="marketplace-heading">Marketplace</h1>
+                        <p className="marketplace-heading-sub">Sellers near you, sorted by those who can best check off your grocery list to save you the extra trips.</p>
+                    </div>
                     <div className="marketplace-content">
-                        <div>
-                            <h1 className="heading">Sellers Near You</h1>
                             <div className="marketplace-sellers">
                                 {sellers.length
                                     ? sellers.map((user) => (
-                                        user.account.uid != currentUser.uid && user.account.data.sale && user.account.data.sale.length > 0 && <SellerCard key={user.account.uid} user={user} isMetric={isMetric}/>
+                                        user.account.uid != currentUser.uid && user.account.data.sale && user.account.data.sale.length > 0 && <SellerCard key={user.account.uid} user={user} isMetric={isMetric} />
                                     ))
                                     : <p>No sellers yet</p>
                                 }
                             </div>
-                        </div>
-                        <div className="marketplace-content-heading">
+                        <div className="marketplace-side-content">
                             <div className="marketplace-switch">
                                 <p>Unit Display:</p>
                                 <BootstrapSwitchButton
@@ -195,7 +196,7 @@ export default function MarketPlace(props) {
                                     offlabel="Customary"
                                     offstyle="info"
                                     width={150}
-                                    onChange={() => {setIsMetric(!isMetric)}}
+                                    onChange={() => { setIsMetric(!isMetric) }}
                                 />
                             </div>
                             <div className="marketplace-slider">
@@ -208,7 +209,7 @@ export default function MarketPlace(props) {
                                         size="small"
                                         sx={{
                                             color: isMetric ? "#6b705c" : "#b2967d",
-                                          }}
+                                        }}
                                         onChange={handleDistanceFilterChange}
                                     />
                                 </div>
