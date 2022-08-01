@@ -61,8 +61,8 @@
     padding: 0.7rem 1rem;
 }
 
-.accent {
-    color: var(--fontContent);
+.accent-signup {
+    color: var(--brownDark);
     font-weight: bold;
 }
 

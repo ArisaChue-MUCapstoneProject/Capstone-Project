@@ -40,7 +40,7 @@ export default function LogIn(props) {
             <div className="login-right">
                 <div className="login-content">
                 <h2 className="login-heading">Welcome Back</h2>
-                <p className="login-heading-sub">Thanks for coming back, please enter your details</p>
+                <p className="login-heading-sub">Thanks for coming back, please enter your details so you can start cooking</p>
                     {error && <Alert variant="danger">{error}</Alert>}
                     <Form className="login-form" onSubmit={handleSubmit}>
                         <Form.Group id="email">

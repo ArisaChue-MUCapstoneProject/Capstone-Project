@@ -37,7 +37,7 @@ export default function SignUp(props) {
       <div className="signup-left">
         <div className="signup-content">
         <h2 className="signup-heading">Create an account</h2>
-                <p className="signup-heading-sub">Let's get started with a few credentials</p>
+                <p className="signup-heading-sub">Join us so you can start saving food right from your computer</p>
           {error && <Alert variant="danger">{error}</Alert>}
           <Form onSubmit={handleSubmit} className="signup-form">
             <Form.Group id="email">
@@ -60,8 +60,8 @@ export default function SignUp(props) {
       <div className="signup-hero">
         <div className="signup-hero-text">
           <h1 className="signup-hero-heading">Welcome!</h1>
-          <h3 className="signup-hero-heading-sub">Join us so you can start saving food right from your computer</h3> </div>
-
+          <h3 className="signup-hero-heading-sub"><span className="accent-signup">TasteIt</span> tracks the food you have at home and generates recipes that best use up your food</h3> 
+          </div>
       </div>
 
     </div>

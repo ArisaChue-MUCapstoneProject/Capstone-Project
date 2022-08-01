@@ -1,0 +1,113 @@
+.forgot-pass {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    background-color: var(--background);
+    font-family: 'Nunito Sans', sans-serif;
+    height: 100vh;
+    background-color: var(--bars);
+    align-items: center;
+    color: var(--fontContent);
+}
+
+.forgot-hero {
+    position: relative;
+    height: 97%;
+    border-radius: 35px;
+    margin-left: 1rem;
+}
+
+.forgot-hero::before {
+    content: "";
+    position: absolute;
+    top: 0px;
+    right: 0px;
+    bottom: 0px;
+    left: 0px;
+    background-image: url("../../icons/login_home.jpeg");
+    opacity: 0.85;
+    background-size: cover;
+    background-position: center;
+    border-radius: 35px;
+}
+
+.forgot-hero-text {
+    color: white;
+    position: absolute;
+    top: 49.5%;
+    left: 49.5%;
+    transform: translate(-50%, -50%);
+    display: grid;
+    justify-content: center;
+}
+
+.forgot-hero-heading {
+    align-self: center;
+    justify-self: center;
+    font-size: 4rem;
+    padding-bottom: 0.7rem;
+    margin: 0;
+}
+
+.forgot-hero-heading-sub {
+    font-size: 2rem;
+    align-self: center;
+    justify-self: center;
+    text-align: center;
+}
+
+.accent {
+    color: var(--fontContent);
+    font-weight: bold;
+}
+
+.forgot-right {
+    display: flex;
+    padding: 0;
+    width: 100%;
+    justify-content: center;
+    align-items: center;
+}
+
+.forgot-content {
+    width: 100%;
+    display: grid;
+}
+
+.forgot-heading {
+    font-size: 3rem;
+    padding-left: 10%;
+    margin-bottom: 0.25rem;
+    font-weight: bold;
+    color: var(--fontHeading);
+}
+
+.forgot-heading-sub {
+    font-size: 1rem;
+    padding-left: 10%;
+    color: var(--fontSub);
+    margin-bottom: 1.5rem;
+}
+
+form.forgot-form {
+    width: 80%;
+    justify-self: center;
+    display: grid;
+    row-gap: 10px;
+}
+
+.forgot-links {
+    display: flex;
+    justify-self: center;
+    width: 80%;
+    justify-content: space-between;
+}
+
+#forgot-links {
+    margin: 0;
+    margin-top: 1rem;
+    justify-self: center;
+}
+
+#forgot-links a:hover {
+    color: var(--brownDark);
+}
