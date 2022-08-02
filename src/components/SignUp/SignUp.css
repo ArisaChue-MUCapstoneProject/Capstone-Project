@@ -1,5 +1,124 @@
-.home {
-    background-color: aqua;
-    min-width: 100vw;
-    min-height: 100vh;
+.signup {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    background-color: var(--background);
+    font-family: 'Nunito Sans', sans-serif;
+    height: 100vh;
+    background-color: var(--bars);
+    align-items: center;
+    color: var(--fontContent);
+}
+
+.signup-hero {
+    position: relative;
+    height: 97%;
+    border-radius: 35px;
+    margin-right: 1rem;
+}
+
+.signup-hero::before {
+    content: "";
+    position: absolute;
+    top: 0px;
+    right: 0px;
+    bottom: 0px;
+    left: 0px;
+    background-image: url("../../icons/signup_home.jpeg");
+    opacity: 0.75;
+    background-size: cover;
+    background-position: center;
+    border-radius: 35px;
+}
+
+.signup-hero-text {
+    color: white;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    display: grid;
+    justify-content: center;
+    width: 80%;
+}
+
+.signup-hero-heading {
+    align-self: center;
+    justify-self: center;
+    font-size: 4rem;
+    padding: 0;
+    margin-bottom: 1rem;
+    background-color: var(--bars);
+    color: var(--fontHeading);
+    padding: 0.7rem 1rem;
+}
+
+.signup-hero-heading-sub {
+    font-size: 2rem;
+    width: 100%;
+    text-align: center;
+    background-color: var(--bars);
+    color: var(--fontSub);
+    padding: 0.7rem 1rem;
+}
+
+.accent-signup {
+    color: var(--brownDark2);
+    font-weight: bold;
+}
+
+.signup-left {
+    position: relative;
+    height: 100%;
+    display: flex;
+    padding: 0;
+    width: 100%;
+    justify-content: center;
+    align-items: center;
+}
+
+.logo-signup {
+    position: absolute;
+    top: 0%;
+    left: 0%;
+    margin: 1rem 2rem;
+    font-size: 2.1rem;
+    font-weight: bold;
+    color: var(--fontHeading);
+    border-top: solid var(--brownDark2);
+    border-bottom: solid var(--brownDark2);
+}
+
+.signup-content {
+    width: 100%;
+    display: grid;
+}
+
+.signup-heading {
+    font-size: 3rem;
+    padding-left: 10%;
+    margin-bottom: 0.25rem;
+    font-weight: bold;
+    color: var(--fontHeading);
+}
+
+.signup-heading-sub {
+    font-size: 1rem;
+    padding-left: 10%;
+    color: var(--fontSub);
+}
+
+form.signup-form {
+    width: 80%;
+    justify-self: center;
+    display: grid;
+    row-gap: 10px;
+}
+
+#signup-login {
+    margin-top: 1rem;
+    justify-self: center;
+}
+
+#signup-login a:hover {
+    color: var(--brownDark);
 }

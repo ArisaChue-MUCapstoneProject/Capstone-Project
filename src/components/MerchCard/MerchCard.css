@@ -1,3 +1,29 @@
 .merchcard {
-    border: solid;
+    border: var(--greenDark2) solid;
+    border-radius: 10px;
+    padding: 0.5rem;
+    display: grid;
+    justify-items: center;
+}
+
+#merch-name {
+    margin: 0;
+    font-size: 1.1rem;
+    text-align: center;
+}
+
+#merch-amount {
+    margin-bottom: 0.3rem;
+    font-size: 0.8rem;
+    text-align: center;
+}
+
+.merch-button {
+    width: 100%;
+}
+
+.btn-secondary {
+    background-color: var(--greenDark2) !important;
+    border-color: var(--greenDark2) !important;
+    width: 100%;
 }

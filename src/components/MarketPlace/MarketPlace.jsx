@@ -5,24 +5,19 @@ import BootstrapSwitchButton from 'bootstrap-switch-button-react'
 import Slider from '@mui/material/Slider';
 import Sidebar from "../Sidebar/Sidebar"
 import SellerCard from "../SellerCard/SellerCard"
-import { Alert } from "react-bootstrap" 
+import { Alert } from "react-bootstrap"
 import { doc, updateDoc } from "firebase/firestore"
 import { db } from "../../firebase"
 import { useAuth } from "../../contexts/AuthContext"
-import { metricToCustomary } from "../../utils/conversion"
+import { metricToCustomary, UNIT_TYPE } from "../../utils/conversion"
 import { getDistance, kmToMiles } from "../../utils/distance"
 
 
 export default function MarketPlace(props) {
-    // unit enum 
-    const UNIT_TYPE = Object.freeze({
-        VOLUME: 1,
-        WEIGHT: 0,
-        UNKNOWN: -1,
-    })
+
     // get user data from the database
     const { currentUser } = useAuth()
-    
+
     const [isSidebarOpen, setIsSidebarOpen] = useState(false)
     const [isUserInfoLoading, setIsUserInfoLoading] = useState(true)
     const [isMetric, setIsMetric] = useState(true)
@@ -31,7 +26,7 @@ export default function MarketPlace(props) {
     const [userSale, setUserSale] = useState([])
     const [sellers, setSellers] = useState([])
     const [userLocation, setUserLocation] = useState({})
-    const [maxDis, setMaxDis] = useState(10)
+    const [maxDis, setMaxDis] = useState(50)
     const [error, setError] = useState("")
 
     function clearError() {
@@ -66,11 +61,11 @@ export default function MarketPlace(props) {
 
         // update products in the database
         if (!props.isLoading && userProducts) {
-        const docRef = doc(db, "users", currentUser.uid)
-        updateDoc(docRef, { products: userProducts })
-            .catch(error => {
-            setError(error.message)
-        })
+            const docRef = doc(db, "users", currentUser.uid)
+            updateDoc(docRef, { products: userProducts })
+                .catch(error => {
+                    setError(error.message)
+                })
         }
     }, [userProducts])
 
@@ -78,17 +73,17 @@ export default function MarketPlace(props) {
     useEffect(() => {
         // update products on sale in the database
         if (!props.isLoading && userSale) {
-        const docRef = doc(db, "users", currentUser.uid)
-        updateDoc(docRef, { sale: userSale })
-            .catch(error => {
-            setError(error.message)
-        })
+            const docRef = doc(db, "users", currentUser.uid)
+            updateDoc(docRef, { sale: userSale })
+                .catch(error => {
+                    setError(error.message)
+                })
         }
     }, [userSale])
 
     // open and close sidebar
     const handleOnSidebarToggle = () => {
-        if(isSidebarOpen) {
+        if (isSidebarOpen) {
             setIsSidebarOpen(false)
         } else {
             setIsSidebarOpen(true)
@@ -105,7 +100,7 @@ export default function MarketPlace(props) {
             let newProducts = [...userProducts]
             // records that product is on sale
             newProducts[itemIndex].onSale = true
-            const newItem = {...newProducts[itemIndex]}
+            const newItem = { ...newProducts[itemIndex] }
             setUserProducts(newProducts)
         }
     }
@@ -124,29 +119,14 @@ export default function MarketPlace(props) {
         }
     }
 
-    const getUnits = (item, isMetric) => {
-        const quantityWithUnits = isMetric ? item.quantity : metricToCustomary(item.quantity, item.unitType)
-        var unit
-        if (item.unitType == UNIT_TYPE.VOLUME) {
-            unit = isMetric ? "milliliters" : "cups"
-        } else if (item.unitType == UNIT_TYPE.WEIGHT) {
-            unit = isMetric ? "grams" : "ounces"
-        } else {
-            unit = "counts"
-        }
-        return `${quantityWithUnits} ${unit}`
-    }
-
     const getSellerOrder = (curUsers, maxDistance) => {
+        // sellerNumProducts structure: {seller index in users, num of ingredients matching}
         let sellerNumProducts = curUsers.map((user, indx) => {
             if (user.uid != currentUser.uid && user.data.sale) {
-                let sellerCount = 0
-                user.data.sale.forEach((item) => {
-                    // TODO: better nlp algo to match names
-                    if (userCart.find(prod => prod.name == item.name)) {
-                        sellerCount += 1
-                    }
-                })
+                // get number of how many ingredients seller and user share
+                let sellerCount = user.data.sale.filter((item) => {
+                    return userCart.find(prod => prod.name == item.name)
+                }).length
                 const res = {
                     index: indx,
                     count: sellerCount
@@ -154,6 +134,7 @@ export default function MarketPlace(props) {
                 return res
             }
         }).filter(val => val)
+        // sort descending order from max matching num to least
         sellerNumProducts.sort((seller1, seller2) => {
             return seller2.count - seller1.count
         })
@@ -190,33 +171,49 @@ export default function MarketPlace(props) {
     return (
         <div className="marketplace">
             {!props.isLoading && !isUserInfoLoading
-               ? <>
-                    <Sidebar isLoading={isUserInfoLoading} isSidebarOpen={isSidebarOpen} handleOnSidebarToggle={handleOnSidebarToggle} userSale={userSale} userProducts={userProducts} userCart={userCart} handleSellItem={handleSellItem} handleRemoveSaleItem={handleRemoveSaleItem} getUnits={getUnits}/>
+                ? <>
+                    <Sidebar isLoading={isUserInfoLoading} isSidebarOpen={isSidebarOpen} handleOnSidebarToggle={handleOnSidebarToggle} userSale={userSale} userProducts={userProducts} userCart={userCart} handleSellItem={handleSellItem} handleRemoveSaleItem={handleRemoveSaleItem} />
+                    <div className="marketplace-heading-container">
+                        <h1 className="marketplace-heading">Marketplace</h1>
+                        <p className="marketplace-heading-sub">Sellers near you, sorted by those who can best check off your grocery list to save you the extra trips.</p>
+                    </div>
                     <div className="marketplace-content">
-                        <BootstrapSwitchButton
-                            checked={isMetric}
-                            onlabel="Metric"
-                            onstyle="primary"
-                            offlabel="Customary"
-                            offstyle="info"
-                            width={100}
-                            onChange={() => {setIsMetric(!isMetric)}}
-                        />
-                        <p>Maximum Distance from Sellers: ({isMetric ? "km" : "mi"})</p>
-                        <Slider
-                            aria-label="Always visible"
-                            defaultValue={80}
-                            value={maxDis}
-                            valueLabelDisplay="on"
-                            onChange={handleDistanceFilterChange}
-                        />
-                        <div className="marketplace-sellers">
-                            {sellers.length
-                                ? sellers.map((user) => (
-                                    user.account.uid != currentUser.uid && user.account.data.sale && user.account.data.sale.length > 0 && <SellerCard key={user.account.uid} user={user} getUnits={getUnits} isMetric={isMetric}/>
-                                ))
-                                : <p>No sellers yet</p>
-                            }
+                            <div className="marketplace-sellers">
+                                {sellers.length
+                                    ? sellers.map((user) => (
+                                        user.account.uid != currentUser.uid && user.account.data.sale && user.account.data.sale.length > 0 && <SellerCard key={user.account.uid} user={user} isMetric={isMetric} />
+                                    ))
+                                    : <p>No sellers yet</p>
+                                }
+                            </div>
+                        <div className="marketplace-side-content">
+                            <div className="marketplace-switch">
+                                <p>Unit Display:</p>
+                                <BootstrapSwitchButton
+                                    checked={isMetric}
+                                    onlabel="Metric"
+                                    onstyle="primary"
+                                    offlabel="Customary"
+                                    offstyle="info"
+                                    width={150}
+                                    onChange={() => { setIsMetric(!isMetric) }}
+                                />
+                            </div>
+                            <div className="marketplace-slider">
+                                <p className="distance-heading">Maximum Distance from Sellers: <p id="distance" style={{ color: isMetric ? "#6b705c" : "#b2967d", fontWeight: "bold" }}>{maxDis} ({isMetric ? "km" : "mi"})</p></p>
+                                <div id="slider">
+                                    <Slider
+                                        aria-label="Always visible"
+                                        defaultValue={80}
+                                        value={maxDis}
+                                        size="small"
+                                        sx={{
+                                            color: isMetric ? "#6b705c" : "#b2967d",
+                                        }}
+                                        onChange={handleDistanceFilterChange}
+                                    />
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </>

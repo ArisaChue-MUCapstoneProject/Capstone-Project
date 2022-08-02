@@ -10,6 +10,7 @@ import { units, basicUnits, convertToStandard, updateStandardAmount, isVolumeUni
 import leftUtensil from "../../icons/leftutensil.png"
 import rightUtensil from "../../icons/rightutensil.png"
 import RecipeCard from "../RecipeCard/RecipeCard"
+import RecipesHero from "../RecipesHero/RecipesHero"
 
 export default function Recipes(props) {
   // unit enum 
@@ -150,7 +151,9 @@ export default function Recipes(props) {
     const newIngredient = {
       name: ingredientName,
       quantity: 2,
-      unit: "gram"
+      unit: "gram",
+      unitType: 0,
+      category: "dairy"
     }
     setUserCart([...userCart, newIngredient])
   }
@@ -170,7 +173,8 @@ export default function Recipes(props) {
           return {
             name: ingredient.name,
             quantity: curIngred[3],
-            unitType: ingredient.unitType
+            unitType: ingredient.unitType,
+            category: ingredient.category
           }
         } // else don't push anything since product would be used up
       } else { // don't modify product since conversion failed
@@ -182,12 +186,10 @@ export default function Recipes(props) {
 
   return (
     <div className="recipes">
-      <div className="recipes-hero">
-        <img className="utensil-img" id="left" src={ leftUtensil } alt="fork knife" />
-        <h2 className="recipes-heading">Recipes Just For You</h2>
-        <img className="utensil-img" id="right" src={ rightUtensil } alt="fork knife" />
-      </div>
       {error && <Alert variant="danger">{error}</Alert>}
+      <div className="recipes-hero">
+        <RecipesHero userProducts={userProducts}/>
+      </div>
       {recipes && recipes.length > 0 
         ? <div className="recipes-grid">
           {

@@ -1,0 +1,122 @@
+.signup-profile {
+    position: relative;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    background-color: var(--background);
+    font-family: 'Nunito Sans', sans-serif;
+    height: 100vh;
+    background-color: var(--bars);
+    align-items: center;
+    color: var(--fontContent);
+    z-index: 50;
+}
+
+.signup-profile-hero {
+    position: relative;
+    height: 97%;
+    border-radius: 35px;
+    margin-right: 1rem;
+}
+
+.signup-profile-hero::before {
+    content: "";
+    position: absolute;
+    top: 0px;
+    right: 0px;
+    bottom: 0px;
+    left: 0px;
+    background-image: url("../../icons/signup_home.jpeg");
+    opacity: 0.75;
+    background-size: cover;
+    background-position: center;
+    border-radius: 35px;
+}
+
+.signup-profile-hero-text {
+    color: white;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    display: grid;
+    justify-content: center;
+    width: 100%;
+}
+
+.signup-profile-hero-heading {
+    align-self: center;
+    justify-self: center;
+    font-size: 4rem;
+    padding: 0;
+    margin-bottom: 1rem;
+    background-color: var(--bars);
+    color: var(--fontHeading);
+    padding: 0.7rem 1rem;
+}
+
+.signup-profile-hero-heading-sub {
+    font-size: 2rem;
+    width: 80%;
+    justify-self: center;
+    text-align: center;
+    background-color: var(--bars);
+    color: var(--fontSub);
+    padding: 0.7rem 1rem;
+}
+
+.accent-signup {
+    color: var(--brownDark2);
+    font-weight: bold;
+}
+
+.signup-profile-left {
+    display: flex;
+    padding: 0;
+    width: 100%;
+    justify-content: center;
+    align-items: center;
+}
+
+.signup-profile-content {
+    width: 100%;
+    display: grid;
+}
+
+.signup-profile-heading {
+    font-size: 3rem;
+    padding-left: 10%;
+    margin-bottom: 0.25rem;
+    font-weight: bold;
+    color: var(--fontHeading);
+}
+
+.signup-profile-heading-sub {
+    font-size: 1rem;
+    padding-left: 10%;
+    color: var(--fontSub);
+}
+
+.signup-profile-form {
+    width: 80%;
+    justify-self: center;
+    display: grid;
+    row-gap: 10px;
+}
+
+.signup-form-heading {
+    display: flex;
+}
+
+.signup-profile-form-heading {
+    margin-bottom: 0.5rem;
+    margin-top: 0.5rem;
+}
+
+.signup-profile-location {
+    padding-top: 0.5rem;
+    display: flex;
+}
+
+.signup-location {
+    padding-right: 1rem;
+}

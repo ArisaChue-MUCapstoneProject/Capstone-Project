@@ -1,3 +1,141 @@
+.profile {
+    background-color: var(--background);
+    margin-top: 70px;
+    padding: 1.5rem 2rem 0 2rem;
+    background-image: linear-gradient(var(--background), var(--bars));
+}
+
+h1.profile-heading {
+    padding-bottom: 0.5rem;
+    font-size: 2.8rem;
+    font-family: 'Lato', sans-serif;
+    margin: 0;
+    font-weight: bold;
+    color: var(--fontHeading);
+}
+
+.profile-heading-sub {
+    font-size: 1.2rem;
+    padding-bottom: 1.3rem;
+    text-align: center;
+    color: var(--greenDark2);
+    font-family: 'Lora', serif;
+}
+
+.overlap {
+    display: grid;
+    justify-content: center;
+}
+
+.overlap > * {
+    grid-column-start: 1;
+    grid-row-start: 1;
+  }
+
+  .profile-background {
+justify-self: center;
+    height: 350px;
+    width: 75%;
+    border: 0.7px solid var(--fontSub);
+    border-radius: 20px;
+    background-image: url("../../icons/kitchen_table.jpeg");
+    background-size: cover;
+    background-position: 0% 79%;
+  }
+
+#profile-pfp {
+    align-self: flex-start;
+    position: absolute;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    margin-top: 15rem;
+    width: 15%;
+    height: auto;
+    aspect-ratio: 1 / 1;
+    font-size: 5rem;
+    border: 0.5px solid var(--greenDark2);
+}
+
+.profile-content {
+    background-color: var(--recipeCard);
+    border: 0.5px solid var(--greenDark2);
+    border-radius: 15px;
+    margin: 15rem 15rem 0;
+    padding: 10% 2rem 2rem;
+    font-family: 'Noto Sans JP', sans-serif;
+    color: var(--fontContent);
+    box-shadow: 2px 2px 2px rgb(203, 203, 203);
+    display: grid;
+    grid-template-rows: 1fr 1fr 1fr 1fr;
+}
+
+.profile-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    padding-bottom: 1rem;
+}
+
+.profile-sub-heading {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: var(--brownDark2);
+    width: fit-content;
+}
+
+.btn.btn-dark {
+    height: fit-content;
+    background-color: transparent;
+    border: none;
+    padding: 0.2rem 0.5rem;
+    color: var(--fontContent);
+}
+
+.profile-icon {
+    width: auto;
+    height: 1.5rem;
+}
+
+.profile-sub-content {
+    padding: 0 1.5rem 0;
+    font-size: 1.3rem;
+    display: flex;
+    justify-content: space-between;
+}
+
+.overflow {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
 .profile-diet-heading {
     display: flex;
+}
+
+.profile-list {
+    display: flex;
+    width: fit-content;
+    font-family: 'Nunito Sans', sans-serif;
+}
+
+.profile-item {
+    font-size: 1rem;
+    border: solid var(--greenDark2);
+    margin: 0 1rem 0 0;
+    padding: 0.45rem;
+    border-radius: 20px;
+    background-color: var(--brownDark);
+}
+
+.btn-link.profile-logout {
+    text-align: center;
+    grid-column-start: 1;
+    grid-row-start: 2;
+    color: var(--fontContent);
+    padding: 1rem 0 2rem;
+    font-size: 1.2rem;
+}
+
+.btn-link.profile-logout:hover {
+    color: var(--brownDark);
 }

@@ -15,7 +15,7 @@ app.use(cors())
 // fetches best recipes given user food items from API
 app.get('/listapirecipes/:sort/', async (request, response) => {
     let params = {
-        number: 5,
+        number: 12,
         instructionsRequired: true,
         addRecipeInformation: true,
         fillIngredients: true,

@@ -76,6 +76,7 @@ export const basicUnits = ["choose unit", "mL", "tbsp", "tsp", "fl oz", "cup", "
 const volumeUnits = new Set(["milliliter", "ml", "millilitre", "cc", "mL", "tablespoon", "tbsp", "tbs", "tbl", "T", "teaspoon", "tsp", "t", "pinch", "pin", "dash", "d", "fluidounce", "floz", "gill", "cup", "c", "stick", "pint", "p", "pt", "flpt", "quart", "q", "qt", "flqt", "gallon", "gal", "liter", "litre", "l", "L", "deciliter", "decilitre", "dL", "dl", "peck", "pk", "barrel", "bbl", "bushel", "bu"])
 const weightUnits = new Set(["gram", "gramme", "g", "pound", "lb", "ounce", "oz", "milligram", "milligramme", "mg", "kilogram", "kilogramme", "kg", "dozen", "doz", "bunch", "bch", "bu", "bushel", "bn"])
 
+export const basicCategories = ["choose category", "vegetables", "fruits", "meat", "dairy", "snacks", "grains", "frozen", "beverages", "condiments", "other"]
 // unit enum 
 export const UNIT_TYPE = Object.freeze({
     VOLUME: 1,
@@ -89,6 +90,20 @@ export const MERCH_TYPE = Object.freeze({
     INSTOCK: 0,
     WISHLIST: -1
 })
+
+// get correct metric or customary units, return string of value with units
+export const getUnits = (item, isMetric) => {
+    const quantityWithUnits = isMetric ? item.quantity : metricToCustomary(item.quantity, item.unitType)
+    var unit
+    if (item.unitType == UNIT_TYPE.VOLUME) {
+        unit = isMetric ? "milliliters" : "cups"
+    } else if (item.unitType == UNIT_TYPE.WEIGHT) {
+        unit = isMetric ? "grams" : "ounces"
+    } else {
+        unit = "counts"
+    }
+    return `${quantityWithUnits} ${unit}`
+}
 
 // return 1 if volume unit, 0 if weight unit, -1 if non-measureable
 export function isVolumeUnit(unit) {

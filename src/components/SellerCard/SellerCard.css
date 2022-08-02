@@ -1,14 +1,86 @@
 .seller-card {
-    border: solid;
     padding: 0.25rem;
+    box-shadow: 2px 2px 3px rgb(186, 185, 185);
+    border-radius: 8px;
+    background-color: var(--card);
+    width: 310px;
+    /* height: 200px; */
+}
+
+.seller-heading {
+    /* width: 100%; */
+    display: flex;
+    margin: 1rem;
+    font-family: 'Nunito Sans', sans-serif;
+    flex: content;
+    
+}
+
+.seller-info {
+    margin-left: 1rem;
+    display: flex;
+    justify-content: space-between;
+    flex-grow: 1
+}
+
+#seller-name, #seller-email, #seller-dis {
+    margin: 0;
+}
+
+#seller-name {
+    font-size: 1.4rem;
+    font-weight: 600;
+    color: var(--fontContent);
+}
+
+#seller-email, #seller-dis {
+    font-size: 0.8rem;
+    color: var(--fontSub);
+}
+
+#seller-dis {
+    font-size: 0.6rem;
+    text-align: end;
 }
 
 .seller-card-grid {
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: 5px;
+    padding: 0.5rem 1rem 0.5rem;
 }
 
 .item-sell-card {
-    border: solid;
+    border: var(--greenDark2) solid 1px;
+    border-radius: 8px;
+    display: grid;
+    grid-template-columns: 1fr;
+    justify-items: center;
+    color: var(--fontContent);
+}
+
+#item-name {
+    font-size: 1.1rem;
+    margin: 0;
+    padding: 0.5rem 0.5rem 0;
+    font-family: 'Noto Sans JP', sans-serif;
+}
+
+#item-amount {
+    margin: 0;
+    font-size: 0.8rem;
+    padding-bottom: 0.4rem;
+    font-family: 'Noto Sans JP', sans-serif;
+}
+
+.c0 {
+    background-color: var(--green3);
+}
+
+.c1 {
+    background-color: var(--green2);
+}
+
+.c2 {
+    background-color: var(--green1);
 }

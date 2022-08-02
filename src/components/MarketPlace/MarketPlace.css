@@ -1,19 +1,95 @@
 .marketplace {
     margin: auto;
-    width: 100%;
-    background-color: #e9eff6;
     padding: 70px 0 0;
-    margin-top: 1rem;
+    margin-top: 1.5rem;
+}
+
+.marketplace-heading-container {
+    margin-left: 6rem;
 }
 
 .marketplace-content {
-    margin: 1rem 3rem 0 6rem;
-    border: solid;
+    margin: 1.5rem 2rem 0 6rem;
+    display: flex;
+    justify-content: space-between;
+}
+
+h1.marketplace-heading {
+    padding-bottom: 0.5rem;
+    font-size: 2.7rem;
+    font-family: 'Lato', sans-serif;
+    margin: 0;
+    font-weight: bold;
+    color: var(--fontHeading);
+}
+
+.marketplace-heading-sub {
+    font-size: 1.2rem;
+    padding-bottom: 0.5rem;
+    padding-left: 0.15rem;
+    color: var(--greenDark2);
+    font-family: 'Lora', serif;
 }
 
 .marketplace-sellers {
-    margin-top: 1rem;
     display: grid;
     grid-template-columns: 1fr 1fr 1fr 1fr;
     gap: 10px;
+    width: 70%;
+    color: var(--greenDark2);
+    margin-right: 2rem;
+}
+
+.marketplace-side-content {
+    width: 30%;
+}
+
+.marketplace-switch {
+    padding: 1rem;
+    width: 100%;
+    height: fit-content;
+    margin-bottom: 1rem;
+    box-shadow: 3px 3px 5px gray;
+    border-radius: 8px;
+    background-color: var(--card);
+    font-family: 'Noto Sans JP', sans-serif;
+    color: var(--fontContent);
+}
+
+.btn-primary {
+    background-color: var(--greenDark2) !important;
+    border-color: var(--greenDark2) !important;
+}
+
+.btn-info {
+    background-color: var(--brownDark) !important;
+    border-color: var(--brownDark) !important;
+}
+
+.switch-handle {
+    background-color: var(--background) !important;
+}
+
+.marketplace-slider {
+    padding: 1rem;
+    width: 100%;
+    height: fit-content;
+    box-shadow: 3px 3px 5px gray;
+    border-radius: 8px;
+    background-color: var(--card);
+    font-family: 'Noto Sans JP', sans-serif;
+    color: var(--fontContent);
+}
+
+.distance-heading {
+    margin: 0;
+    display: flex;
+}
+
+#distance {
+    padding-left: 0.2rem;
+}
+
+#slider {
+    width: 70%;
 }
