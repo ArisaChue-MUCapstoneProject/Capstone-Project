@@ -4,6 +4,7 @@ import { Link, useNavigate } from "react-router-dom"
 import { Card, Button, Badge, Alert, Form } from "react-bootstrap"
 import Avatar from '@mui/material/Avatar'
 import { Typeahead } from 'react-bootstrap-typeahead'
+import PacmanLoader from "react-spinners/PacmanLoader";
 import { AiOutlineEdit } from 'react-icons/ai'
 import { IoRefreshOutline } from 'react-icons/io5'
 import { doc, updateDoc } from "firebase/firestore"
@@ -354,7 +355,7 @@ export default function Profile(props) {
           </div>
           
         </div>
-        : <p>Loading</p>
+        : <PacmanLoader color="var(--green3)" loading={!props.isLoading || !isUserInfoLoading} size={35} className="loader"/>
 
       }
     </div>

@@ -1,6 +1,7 @@
 import * as React from "react"
 import { useState, useEffect } from "react"
 import { Alert } from "react-bootstrap" 
+import PacmanLoader from "react-spinners/PacmanLoader";
 import axios from 'axios';
 import { doc, updateDoc } from "firebase/firestore"
 import "./Recipes.css"
@@ -199,7 +200,7 @@ export default function Recipes(props) {
           }
         </div>
         : isRecipesLoading 
-          ? <p>Loading</p>
+          ? <PacmanLoader color="var(--green3)" loading={isRecipesLoading} size={35} className="loader"/>
           : <p>Please decrease your restrictions</p>
       }
     </div>

@@ -3,6 +3,7 @@ import { useState, useEffect, useRef } from "react"
 import { Link, useNavigate } from "react-router-dom"
 import axios from 'axios';
 import { Button, Card, Alert, Form } from "react-bootstrap"
+import PacmanLoader from "react-spinners/PacmanLoader";
 import { Typeahead } from 'react-bootstrap-typeahead'
 import { doc, updateDoc } from "firebase/firestore"
 import { useAuth } from "../../contexts/AuthContext"
@@ -171,7 +172,7 @@ export default function SignUpProfile(props) {
                                     <p className="signup-location">Your Current Location:</p>
                                     <p>{userLocation.city}, {userLocation.region} ({userLocation.flag.emoji})</p>
                                 </div>
-                                : <p>Loading Location</p>
+                                : <PacmanLoader color="var(--green3)" loading={userLocation || !isLocationLoading} size={35} className="loader"/>
                             }
                         </div>
                         <Button disabled={loading} onClick={handleMakeProfile}>Create your account</Button>
