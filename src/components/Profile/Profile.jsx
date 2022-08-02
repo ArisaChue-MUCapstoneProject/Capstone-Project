@@ -190,6 +190,7 @@ export default function Profile(props) {
       {!props.isLoading && !isUserInfoLoading
         ? <div>
           <div className="overlap">
+            <p className="profile-background"></p>
             <Avatar id="profile-pfp"{...stringAvatar(userName)} />
             <div className="profile-content">
               <div className="profile-row">
@@ -203,7 +204,7 @@ export default function Profile(props) {
                       </Form.Group>
 
                     }
-                    <Button variant="light" className="profile-button overflow" onClick={showNameForm}><AiOutlineEdit className="profile-icon"/></Button>
+                    <Button variant="dark" className="profile-button overflow" onClick={showNameForm}><AiOutlineEdit className="profile-icon"/></Button>
                   </div>
                 </div>
                 <div>
@@ -226,7 +227,7 @@ export default function Profile(props) {
                         selected={primDietChecked}
                       />
                     }
-                    <Button variant="light" className="profile-button overflow" onClick={showPrimDietForm}><AiOutlineEdit className="profile-icon"/></Button>
+                    <Button variant="dark" className="profile-button overflow" onClick={showPrimDietForm}><AiOutlineEdit className="profile-icon"/></Button>
                   </div>
                 </div>
               </div>
@@ -235,7 +236,7 @@ export default function Profile(props) {
                   <p className="profile-sub-heading">Email:</p>
                   <div className="profile-sub-content">
                     <p className="overflow">{currentUser.email}</p>
-                    <Link to="/profile/update" className="btn btn-light profile-button overflow"><AiOutlineEdit className="profile-icon"/></Link>
+                    <Link to="/profile/update" className="btn btn-dark profile-button overflow"><AiOutlineEdit className="profile-icon"/></Link>
                   </div>
                 </div>
                 <div>
@@ -272,7 +273,7 @@ export default function Profile(props) {
                         ref={typeaheadDietsRef}
                       />
                     }
-                    <Button variant="light" className="profile-button overflow" onClick={showDietsForm}><AiOutlineEdit className="profile-icon"/></Button>
+                    <Button variant="dark" className="profile-button overflow" onClick={showDietsForm}><AiOutlineEdit className="profile-icon"/></Button>
                   </div>
                 </div>
               </div>
@@ -282,7 +283,7 @@ export default function Profile(props) {
                   {!isLocationLoading
                     ? <div className="profile-sub-content">
                       <p className="overflow">{userLocation.city}, {userLocation.region} ({userLocation.flag.emoji})</p>
-                      <Button variant="light" className="profile-button overflow" onClick={handleLocationRefresh}><IoRefreshOutline className="profile-icon"/></Button>
+                      <Button variant="dark" className="profile-button overflow" onClick={handleLocationRefresh}><IoRefreshOutline className="profile-icon"/></Button>
                     </div>
                     : <p>Loading</p>
                   }
@@ -322,7 +323,7 @@ export default function Profile(props) {
                         ref={typeaheadAllergiesRef}
                       />
                     }
-                    <Button variant="light" className="profile-button overflow" onClick={showAllergiesForm}><AiOutlineEdit className="profile-icon"/></Button>
+                    <Button variant="dark" className="profile-button overflow" onClick={showAllergiesForm}><AiOutlineEdit className="profile-icon"/></Button>
                   </div>
                 </div>
               </div>
@@ -338,7 +339,7 @@ export default function Profile(props) {
                   </div>
                 </div>
                 <div>
-                  <p className="profile-sub-heading">Shopping List:</p>
+                  <p className="profile-sub-heading">Grocery List:</p>
                   <div className="profile-list profile-cart profile-sub-content">
                     {
                       userCart.map((cart) => (

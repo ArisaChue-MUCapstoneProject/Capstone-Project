@@ -2,7 +2,7 @@ import * as React from "react"
 import Avatar from '@mui/material/Avatar'
 import { getUnits } from "../../utils/conversion"
 import { kmToMiles } from "../../utils/distance"
-import { stringAvatar } from "../../utils/design"
+import { stringAvatar, capitalizeName } from "../../utils/design"
 import "./SellerCard.css"
 
 export default function SellerCard(props) {
@@ -10,10 +10,10 @@ export default function SellerCard(props) {
     return (
         <div className="seller-card">
             <div className="seller-heading">
-                <Avatar {...stringAvatar('Arisa Chue')} />
+                <Avatar {...stringAvatar(props.user.account.data.name)} />
                 <div className="seller-info">
                     <div>
-                        <p id="seller-name">Preeti Nag</p>
+                        <p id="seller-name">{capitalizeName(props.user.account.data.name)}</p>
                         <p id="seller-email">{props.user.account.data.email}</p>
                     </div>
                     <p id="seller-dis">{props.user.distance ? props.isMetric ? `${props.user.distance} km` : `${kmToMiles(props.user.distance)} mi` : "N/A" } away</p>

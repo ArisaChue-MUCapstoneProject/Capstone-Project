@@ -76,7 +76,7 @@ export const basicUnits = ["choose unit", "mL", "tbsp", "tsp", "fl oz", "cup", "
 const volumeUnits = new Set(["milliliter", "ml", "millilitre", "cc", "mL", "tablespoon", "tbsp", "tbs", "tbl", "T", "teaspoon", "tsp", "t", "pinch", "pin", "dash", "d", "fluidounce", "floz", "gill", "cup", "c", "stick", "pint", "p", "pt", "flpt", "quart", "q", "qt", "flqt", "gallon", "gal", "liter", "litre", "l", "L", "deciliter", "decilitre", "dL", "dl", "peck", "pk", "barrel", "bbl", "bushel", "bu"])
 const weightUnits = new Set(["gram", "gramme", "g", "pound", "lb", "ounce", "oz", "milligram", "milligramme", "mg", "kilogram", "kilogramme", "kg", "dozen", "doz", "bunch", "bch", "bu", "bushel", "bn"])
 
-export const basicCategories = ["choose category", "vegatables", "fruits", "meat", "dairy", "snacks", "grains", "frozen", "beverages", "condiments", "other"]
+export const basicCategories = ["choose category", "vegetables", "fruits", "meat", "dairy", "snacks", "grains", "frozen", "beverages", "condiments", "other"]
 // unit enum 
 export const UNIT_TYPE = Object.freeze({
     VOLUME: 1,

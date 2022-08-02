@@ -2,6 +2,7 @@ import * as React from "react"
 import { useState } from "react"
 import { Link } from "react-router-dom"
 import Modal from "react-bootstrap/Modal"
+import { BsDot } from 'react-icons/bs'
 import { Container, Row, Col, Button, Alert } from "react-bootstrap" 
 import "./RecipeModal.css"
 
@@ -56,16 +57,16 @@ export default function RecipeModal(props) {
                       ? <div>
                           {
                             recipeInfo.extendedIngredients.map((ingredient) => (
-                                <div key={ingredient.id}>
+                                <div className="modal-ingreds" key={ingredient.id}>
                                   {/* checking if user has each ingredient */}
                                   {ingredientInfo.find(ingred => ingred[0] === ingredient.id)
-                                    ? <div>
-                                        <p style={{color: "green"}}>* {ingredient.original}</p> 
-                                        <p>{ingredientInfo.find(ingred => ingred[0] === ingredient.id)[2]}</p>
+                                    ? <div className="modal-ingred-name">
+                                        <p style={{color: "green"}}><BsDot />{ingredient.original}</p> 
+                                        <p className="modal-ingred-message">{ingredientInfo.find(ingred => ingred[0] === ingredient.id)[2]}</p>
                                       </div>
-                                    : <p style={{color: "red"}}>* {ingredient.original}</p>
+                                    : <p className="modal-ingred-name" style={{color: "red"}}><BsDot />{ingredient.original}</p>
                                   }
-                                  <Button onClick={() => addIngredientToCart(ingredient.name)}>Add to list</Button>
+                                  <Button onClick={() => addIngredientToCart(ingredient.name)}>Add</Button>
                                 </div>
                             ))
                           }

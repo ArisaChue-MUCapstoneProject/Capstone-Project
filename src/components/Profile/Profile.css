@@ -32,12 +32,23 @@ h1.profile-heading {
     grid-row-start: 1;
   }
 
+  .profile-background {
+justify-self: center;
+    height: 350px;
+    width: 75%;
+    border: 0.7px solid var(--fontSub);
+    border-radius: 20px;
+    background-image: url("../../icons/kitchen_table.jpeg");
+    background-size: cover;
+    background-position: 0% 79%;
+  }
+
 #profile-pfp {
     align-self: flex-start;
     position: absolute;
     left: 50%;
     transform: translate(-50%, -50%);
-    margin-top: 8rem;
+    margin-top: 15rem;
     width: 15%;
     height: auto;
     aspect-ratio: 1 / 1;
@@ -49,7 +60,7 @@ h1.profile-heading {
     background-color: var(--recipeCard);
     border: 0.5px solid var(--greenDark2);
     border-radius: 15px;
-    margin: 8rem 15rem 0;
+    margin: 15rem 15rem 0;
     padding: 10% 2rem 2rem;
     font-family: 'Noto Sans JP', sans-serif;
     color: var(--fontContent);
@@ -67,15 +78,16 @@ h1.profile-heading {
 .profile-sub-heading {
     font-size: 1.5rem;
     font-weight: bold;
-    color: var(--brownDark);
+    color: var(--brownDark2);
     width: fit-content;
 }
 
-.btn.btn-light {
+.btn.btn-dark {
     height: fit-content;
     background-color: transparent;
-    border: 0.5px var(--greenDark2) solid;
+    border: none;
     padding: 0.2rem 0.5rem;
+    color: var(--fontContent);
 }
 
 .profile-icon {
