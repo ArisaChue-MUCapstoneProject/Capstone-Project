@@ -200,7 +200,7 @@ export default function SignUpProfile(props) {
                                     <p className="signup-location">Your Current Location:</p>
                                     <p className="overflow">{userLocation.features[0].properties.county}, {userLocation.features[0].properties.state_code}</p>
                                 </div>
-                                : <PacmanLoader color="var(--green3)" loading={!userLocation || isLocationLoading} size={35} className="loader" />
+                                : <PacmanLoader color="var(--green3)" loading={!userLocation || isLocationLoading} size={20} className="loader" />
                             }
                         </div>
                         <Button disabled={loading} onClick={handleMakeProfile}>Create your account</Button>
