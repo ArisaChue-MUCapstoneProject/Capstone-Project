@@ -43,12 +43,14 @@ app.get('/apirecipeinfo/:recipeid', async (request, response) => {
     response.json(data);
 });
 
-// get current user location
-app.get('/address', async (request, response) => {
+// get current user location (reverse geocoding)
+app.get('/address/:lat/:long', async (request, response) => {
     const params = {
-        api_key: process.env.REACT_APP_MAP_API_KEY
+        lat: request.params.lat,
+        lon: request.params.long,
+        apiKey: process.env.REACT_APP_MAP_API_KEY
     }
-    let address_url = "https://ipgeolocation.abstractapi.com/v1/";
+    let address_url = "https://api.geoapify.com/v1/geocode/reverse";
     let { data } = await axios(address_url, { params })
     response.json(data);
 });

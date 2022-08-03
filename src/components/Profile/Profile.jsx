@@ -44,6 +44,8 @@ export default function Profile(props) {
   const allergies = ["Diary", "Peanut", "Soy", "Egg", "Shellfish", "Tree Nut", "Gluten"]
   const [allergiesChecked, setAllergiesChecked] = useState([])
   const navigate = useNavigate()
+  const [userLat, setUserLat] = useState("")
+  const [userLong, setUserLong] = useState("")
 
   const primDietDialogue = "Primary dietary restriction will filter out recipes that fail this restriction."
   const dietDialogue = "Secondary dietary restrictions will not filter out recipes that fail this restriction, but will show a warning at the top of recipe instructions."
@@ -102,6 +104,25 @@ export default function Profile(props) {
       return val.toLowerCase() != userPrimDiet
     }))
   }, [userPrimDiet])
+
+  // update address when lat and long updates
+  useEffect(() => {
+    async function fetchAddress() {
+      try {
+        setIsLocationLoading(true)
+        var { data } = await axios(apiAddressUrl + `${userLat}/${userLong}`)
+        setUserLocation(data)
+        setIsLocationLoading(false)
+      } catch (error) {
+        setError(error.message)
+        setIsLocationLoading(false)
+      }
+    }
+    if (userLat && userLong) {
+      fetchAddress()
+
+    }
+  }, [userLat, userLong])
 
   function showPrimDietForm() {
     if (showUserPrimDietForm) {
@@ -167,13 +188,15 @@ export default function Profile(props) {
     setNameForm(event.target.value)
   }
 
-  const handleLocationRefresh = async () => {
+  const handleLocationRefresh = () => {
     try {
       setIsLocationLoading(true)
       if ("geolocation" in navigator) {
-        var { data } = await axios(apiAddressUrl)
-        setUserLocation(data)
-        setIsLocationLoading(false)
+        navigator.geolocation.getCurrentPosition(function (position) {
+          setUserLat(position.coords.latitude)
+          setUserLong(position.coords.longitude)
+          setIsLocationLoading(false)
+        })
       } else {
         setError("please enable location access to find closest sellers")
         setIsLocationLoading(false)
@@ -205,7 +228,7 @@ export default function Profile(props) {
                       </Form.Group>
 
                     }
-                    <Button variant="dark" className="profile-button overflow" onClick={showNameForm}><AiOutlineEdit className="profile-icon"/></Button>
+                    <Button variant="dark" className="profile-button overflow" onClick={showNameForm}><AiOutlineEdit className="profile-icon" /></Button>
                   </div>
                 </div>
                 <div>
@@ -228,7 +251,7 @@ export default function Profile(props) {
                         selected={primDietChecked}
                       />
                     }
-                    <Button variant="dark" className="profile-button overflow" onClick={showPrimDietForm}><AiOutlineEdit className="profile-icon"/></Button>
+                    <Button variant="dark" className="profile-button overflow" onClick={showPrimDietForm}><AiOutlineEdit className="profile-icon" /></Button>
                   </div>
                 </div>
               </div>
@@ -237,7 +260,7 @@ export default function Profile(props) {
                   <p className="profile-sub-heading">Email:</p>
                   <div className="profile-sub-content">
                     <p className="overflow">{currentUser.email}</p>
-                    <Link to="/profile/update" className="btn btn-dark profile-button overflow"><AiOutlineEdit className="profile-icon"/></Link>
+                    <Link to="/profile/update" className="btn btn-dark profile-button overflow"><AiOutlineEdit className="profile-icon" /></Link>
                   </div>
                 </div>
                 <div>
@@ -274,7 +297,7 @@ export default function Profile(props) {
                         ref={typeaheadDietsRef}
                       />
                     }
-                    <Button variant="dark" className="profile-button overflow" onClick={showDietsForm}><AiOutlineEdit className="profile-icon"/></Button>
+                    <Button variant="dark" className="profile-button overflow" onClick={showDietsForm}><AiOutlineEdit className="profile-icon" /></Button>
                   </div>
                 </div>
               </div>
@@ -283,10 +306,10 @@ export default function Profile(props) {
                   <p className="profile-sub-heading">Your Current Location:</p>
                   {!isLocationLoading
                     ? <div className="profile-sub-content">
-                      <p className="overflow">{userLocation.city}, {userLocation.region} ({userLocation.flag.emoji})</p>
-                      <Button variant="dark" className="profile-button overflow" onClick={handleLocationRefresh}><IoRefreshOutline className="profile-icon"/></Button>
+                      <p className="overflow">{userLocation.features[0].properties.county}, {userLocation.features[0].properties.state_code}</p>
+                      <Button variant="dark" className="profile-button overflow" onClick={handleLocationRefresh}><IoRefreshOutline className="profile-icon" /></Button>
                     </div>
-                    : <p>Loading</p>
+                    : <PacmanLoader color="var(--green3)" loading={isLocationLoading} size={20} className="loader" />
                   }
                 </div>
                 <div>
@@ -324,7 +347,7 @@ export default function Profile(props) {
                         ref={typeaheadAllergiesRef}
                       />
                     }
-                    <Button variant="dark" className="profile-button overflow" onClick={showAllergiesForm}><AiOutlineEdit className="profile-icon"/></Button>
+                    <Button variant="dark" className="profile-button overflow" onClick={showAllergiesForm}><AiOutlineEdit className="profile-icon" /></Button>
                   </div>
                 </div>
               </div>
@@ -353,9 +376,9 @@ export default function Profile(props) {
             </div>
             <Button variant="link" className="profile-logout" onClick={handleLogOut}>Log Out</Button>
           </div>
-          
+
         </div>
-        : <PacmanLoader color="var(--green3)" loading={!props.isLoading || !isUserInfoLoading} size={35} className="loader"/>
+        : <PacmanLoader color="var(--green3)" loading={props.isLoading || isUserInfoLoading} size={35} className="loader" />
 
       }
     </div>
