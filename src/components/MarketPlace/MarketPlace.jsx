@@ -218,7 +218,7 @@ export default function MarketPlace(props) {
                         </div>
                     </div>
                 </>
-                : <PacmanLoader color="var(--green3)" loading={!props.isLoading || !isUserInfoLoading} size={35} className="loader"/>
+                : <PacmanLoader color="var(--green3)" loading={props.isLoading || isUserInfoLoading} size={35} className="loader"/>
             }
         </div>
     )

@@ -2,6 +2,7 @@ import * as React from "react"
 import { useState, useEffect, useMemo } from "react"
 import { Form, Row, Col, Button, Alert } from "react-bootstrap" 
 import BootstrapSwitchButton from 'bootstrap-switch-button-react'
+import PacmanLoader from "react-spinners/PacmanLoader";
 import { doc, updateDoc } from "firebase/firestore"
 import "bootstrap/dist/css/bootstrap.min.css";
 
@@ -180,8 +181,8 @@ export default function Pantry(props) {
                 ))
               }
             </div>
-          {userProducts && userProductsByCategory &&
-          <div className="products-list">
+          {userProducts && userProductsByCategory
+          ? <div className="products-list">
             {
               basicCategories.map((category, indx) => (
                 indx > 0 &&
@@ -191,7 +192,7 @@ export default function Pantry(props) {
                         <h4 className="category-headings" id={`${category}-heading`}>{category.substring(0,1).toUpperCase()+category.substring(1).toLowerCase()}</h4>
                         {
                           userProductsByCategory[category].map((product) => (
-                            <ProductCard key={product.name} name={product.name} quantity={product.quantity} unitType={product.unitType} isMetric={isMetric} operations={Operations} handleProductQuantity={handleProductQuantity}/>
+                            <ProductCard key={product.name} item={product} isMetric={isMetric} operations={Operations} handleProductQuantity={handleProductQuantity}/>
                           ))
                         }
                       </div>
@@ -201,6 +202,7 @@ export default function Pantry(props) {
               ))
             }
           </div>
+          : <PacmanLoader color="var(--green3)" loading={!userProducts || !userProductsByCategory} size={35} className="loader"/>
           }
           <div className="pantry-side-content">
             <div className="pantry-switch">
