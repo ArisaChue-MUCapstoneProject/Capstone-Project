@@ -8,6 +8,7 @@ import "bootstrap/dist/css/bootstrap.min.css";
 
 import ProductCard from "../ProductCard/ProductCard"
 import { useAuth } from "../../contexts/AuthContext"
+import ReceiptModal from "../ReceiptModal/ReceiptModal"
 import { units, basicUnits, convertToStandard, updateStandardAmount, isVolumeUnit, basicCategories } from "../../utils/conversion"
 import { db } from "../../firebase"
 import "./Pantry.css"
@@ -36,6 +37,7 @@ export default function Pantry(props) {
   const [isMetric, setIsMetric] = useState(true)
   const [isUserInfoLoading, setIsUserInfoLoading] = useState(true)
   const [error, setError] = useState("")
+  const [receiptModalShow, setReceiptModalShow] = useState(false)
 
   // update user data once page loads
   useEffect(() => {
@@ -167,6 +169,11 @@ export default function Pantry(props) {
     setCurCategory(event.target.value)
   }
 
+  // pop up recipe modal for specific recipe card
+  const handleReceiptModal = (showStatus) => {
+    setReceiptModalShow(showStatus)
+  }
+
   return (
     <div className="pantry">
       <h1 className="pantry-heading heading">Products</h1>
@@ -256,7 +263,11 @@ export default function Pantry(props) {
                 </Row>
               </Col>
             </Form>
+            <div>
+              <Button onClick={() => handleReceiptModal(true)}>Camera</Button>
+            </div>
           </div>
+          <ReceiptModal show={receiptModalShow} onHide={() => handleReceiptModal(false)}></ReceiptModal>
         </div>
     </div>
   )

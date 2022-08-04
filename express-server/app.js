@@ -75,8 +75,8 @@ async function readReceipt(receiptUrl) {
     return result
 }
 
-app.get('/receipt', async (request, response) => {
-    const { fields } = await readReceipt(request.query.url)
+app.post('/receipt', async (request, response) => {
+    const { fields } = await readReceipt(request.body.url)
     response.json(fields);
 });
 
