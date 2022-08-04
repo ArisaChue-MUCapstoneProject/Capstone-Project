@@ -4,6 +4,7 @@ import { Link } from "react-router-dom"
 import Modal from "react-bootstrap/Modal"
 import { BsDot } from 'react-icons/bs'
 import { Container, Row, Col, Button, Alert } from "react-bootstrap" 
+import PacmanLoader from "react-spinners/PacmanLoader";
 import "./RecipeModal.css"
 
 export default function RecipeModal(props) {
@@ -11,7 +12,7 @@ export default function RecipeModal(props) {
         return null
     }
     if(props.isIngredLoading) {
-      return <p>Loading</p>
+      return <PacmanLoader color="var(--green3)" loading={props.isIngredLoading} size={35} className="loader"/>
     }
     const { recipeInfo, userDiets, addIngredientToCart, modalError, ingredientInfo, isIngredLoading, useRecipe, ...modalProps } = props
     const validMins = !(recipeInfo.readyInMinutes == undefined || recipeInfo.readyInMinutes.length == 0)

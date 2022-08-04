@@ -3,6 +3,7 @@ import { useState, useEffect, useRef } from "react"
 import { Link, useNavigate } from "react-router-dom"
 import axios from 'axios';
 import { Button, Card, Alert, Form } from "react-bootstrap"
+import PacmanLoader from "react-spinners/PacmanLoader";
 import { Typeahead } from 'react-bootstrap-typeahead'
 import { doc, updateDoc } from "firebase/firestore"
 import { useAuth } from "../../contexts/AuthContext"
@@ -26,11 +27,13 @@ export default function SignUpProfile(props) {
     const [error, setError] = useState("")
     const [userLocation, setUserLocation] = useState({})
     const [isLocationLoading, setIsLocationLoading] = useState(true)
-  const [nameForm, setNameForm] = useState("")
+    const [nameForm, setNameForm] = useState("")
+    const [userLat, setUserLat] = useState("")
+    const [userLong, setUserLong] = useState("")
 
-  const primDietDialogue = "Primary dietary restriction will filter out recipes that fail this restriction."
-  const dietDialogue = "Secondary dietary restrictions will not filter out recipes that fail this restriction, but will show a warning at the top of recipe instructions."
-  const allergyDialogue = "Allergy restrictions will filter all recipes that contain specified allergens."
+    const primDietDialogue = "Primary dietary restriction will filter out recipes that fail this restriction."
+    const dietDialogue = "Secondary dietary restrictions will not filter out recipes that fail this restriction, but will show a warning at the top of recipe instructions."
+    const allergyDialogue = "Allergy restrictions will filter all recipes that contain specified allergens."
 
     // get location every render
     useEffect(() => {
@@ -47,6 +50,25 @@ export default function SignUpProfile(props) {
             return val != primDietChecked
         }))
     }, [primDietChecked])
+
+    // update address when lat and long updates
+    useEffect(() => {
+        async function fetchAddress() {
+            try {
+                setIsLocationLoading(true)
+                var { data } = await axios(apiAddressUrl + `${userLat}/${userLong}`)
+                setUserLocation(data)
+                setIsLocationLoading(false)
+            } catch (error) {
+                setError(error.message)
+                setIsLocationLoading(false)
+            }
+        }
+        if (userLat && userLong) {
+            fetchAddress()
+
+        }
+    }, [userLat, userLong])
 
     // update diet and allergies into database
     const handleMakeProfile = async (e) => {
@@ -92,16 +114,23 @@ export default function SignUpProfile(props) {
 
     const handleNameFormChange = (event) => {
         setNameForm(event.target.value)
-      }
+    }
 
     // get user's current location
-    async function getLocation() {
-        if ("geolocation" in navigator) {
-            var { data } = await axios(apiAddressUrl)
-            setUserLocation(data)
-            setIsLocationLoading(false)
-        } else {
-            setError("please enable location access to find closest sellers")
+    function getLocation() {
+        try {
+            setIsLocationLoading(true)
+            if ("geolocation" in navigator) {
+                navigator.geolocation.getCurrentPosition(function (position) {
+                    setUserLat(position.coords.latitude)
+                    setUserLong(position.coords.longitude)
+                })
+            } else {
+                setError("please enable location access to find closest sellers")
+                setIsLocationLoading(false)
+            }
+        } catch (error) {
+            setError(error.message)
             setIsLocationLoading(false)
         }
     }
@@ -117,14 +146,14 @@ export default function SignUpProfile(props) {
                     <div className="signup-profile-form">
                         <div>
                             <p className="signup-profile-form-heading">First and last name?</p>
-                        <Form.Group controlId="formGroupName">
-                        <Form.Control type="text" placeholder="Jane Doe" name="name" value={nameForm} onChange={handleNameFormChange} style={{ color: "var(--fontContent)" }} />
-                      </Form.Group>
+                            <Form.Group controlId="formGroupName">
+                                <Form.Control type="text" placeholder="Jane Doe" name="name" value={nameForm} onChange={handleNameFormChange} style={{ color: "var(--fontContent)" }} />
+                            </Form.Group>
                         </div>
                         <div>
                             <div className="signup-form-heading">
-                            <p className="signup-profile-form-heading">Primary Dietary Restriction?</p>
-                            <CustomTooltip dialogue={primDietDialogue} />
+                                <p className="signup-profile-form-heading">Primary Dietary Restriction?</p>
+                                <CustomTooltip dialogue={primDietDialogue} />
                             </div>
                             <Typeahead
                                 id="checkbox-primary-diet"
@@ -137,8 +166,8 @@ export default function SignUpProfile(props) {
                         </div>
                         <div>
                             <div className="signup-form-heading">
-                            <p className="signup-profile-form-heading">Other Dietary Restrictions?</p>
-                            <CustomTooltip dialogue={dietDialogue} />
+                                <p className="signup-profile-form-heading">Other Dietary Restrictions?</p>
+                                <CustomTooltip dialogue={dietDialogue} />
                             </div>
                             <Typeahead
                                 id="checkbox-diets"
@@ -152,8 +181,8 @@ export default function SignUpProfile(props) {
                         </div>
                         <div>
                             <div className="signup-form-heading">
-                            <p className="signup-profile-form-heading">Allergies?</p>
-                            <CustomTooltip dialogue={allergyDialogue} />
+                                <p className="signup-profile-form-heading">Allergies?</p>
+                                <CustomTooltip dialogue={allergyDialogue} />
                             </div>
                             <Typeahead
                                 id="checkbox-diets"
@@ -169,9 +198,9 @@ export default function SignUpProfile(props) {
                             {userLocation && !isLocationLoading
                                 ? <div className="signup-profile-location">
                                     <p className="signup-location">Your Current Location:</p>
-                                    <p>{userLocation.city}, {userLocation.region} ({userLocation.flag.emoji})</p>
+                                    <p className="overflow">{userLocation.features[0].properties.county}, {userLocation.features[0].properties.state_code}</p>
                                 </div>
-                                : <p>Loading Location</p>
+                                : <PacmanLoader color="var(--green3)" loading={!userLocation || isLocationLoading} size={20} className="loader" />
                             }
                         </div>
                         <Button disabled={loading} onClick={handleMakeProfile}>Create your account</Button>

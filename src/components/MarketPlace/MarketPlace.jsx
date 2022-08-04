@@ -2,6 +2,7 @@ import * as React from "react"
 import { useState, useEffect } from "react"
 import "./MarketPlace.css"
 import BootstrapSwitchButton from 'bootstrap-switch-button-react'
+import PacmanLoader from "react-spinners/PacmanLoader";
 import Slider from '@mui/material/Slider';
 import Sidebar from "../Sidebar/Sidebar"
 import SellerCard from "../SellerCard/SellerCard"
@@ -217,7 +218,7 @@ export default function MarketPlace(props) {
                         </div>
                     </div>
                 </>
-                : <p>Loading</p>
+                : <PacmanLoader color="var(--green3)" loading={props.isLoading || isUserInfoLoading} size={35} className="loader"/>
             }
         </div>
     )

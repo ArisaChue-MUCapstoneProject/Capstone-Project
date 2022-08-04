@@ -3,13 +3,13 @@ import { getAuth } from "firebase/auth"
 import { getFirestore } from "firebase/firestore"
 
 const app = initializeApp({
-    apiKey: "AIzaSyAdCvuzs3nWfmAlaJWPtiykMH9jMu4VLik",
-    authDomain: "capstone-project-bfd9d.firebaseapp.com",
-    projectId: "capstone-project-bfd9d",
-    storageBucket: "capstone-project-bfd9d.appspot.com",
-    messagingSenderId: "6267959779",
-    appId: "1:6267959779:web:a25dab50d4e330f06a48d6",
-    measurementId: "G-RKW8GBMFNP"
+    apiKey: process.env.REACT_APP_FIREBASE_API_KEY,
+    authDomain: process.env.REACT_APP_FIREBASE_AUTH_DOMAIN,
+    projectId: process.env.REACT_APP_FIREBASE_PROJECT_ID,
+    storageBucket: process.env.REACT_APP_FIREBASE_STORAGE_BUCKET,
+    messagingSenderId: process.env.REACT_APP_FIREBASE_MESSAGING_SENDER_ID,
+    appId: process.env.REACT_APP_FIREBASE_APP_ID,
+    measurementId: process.env.REACT_APPP_MEASUREMENT_ID
   })
 
 export const auth = getAuth(app)
