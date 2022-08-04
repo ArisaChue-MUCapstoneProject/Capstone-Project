@@ -11,6 +11,11 @@ app.use(morgan("tiny"))
 app.use(cors())
 dotenv.config();
 
+// Microsoft Azure Receipt Form Recognizer SDK
+const { AzureKeyCredential, DocumentAnalysisClient } = require("@azure/ai-form-recognizer");
+const key = process.env.REACT_APP_RECEIPTS_API_KEY;
+const endpoint = "https://mu-capstone.cognitiveservices.azure.com/";
+
 // fetches best recipes given user food items from API
 app.get('/listapirecipes/:sort/', async (request, response) => {
     let params = {
@@ -53,6 +58,26 @@ app.get('/address/:lat/:long', async (request, response) => {
     let address_url = "https://api.geoapify.com/v1/geocode/reverse";
     let { data } = await axios(address_url, { params })
     response.json(data);
+});
+
+// reading image url of receipt into string
+async function readReceipt(receiptUrl) {
+    const client = new DocumentAnalysisClient(endpoint, new AzureKeyCredential(key));
+    const poller = await client.beginAnalyzeDocument("prebuilt-receipt", receiptUrl);
+
+    const {
+        documents: [result]
+    } = await poller.pollUntilDone();
+
+    if (!result) {
+        throw new Error("Expected at least one receipt in the result.");
+    }
+    return result
+}
+
+app.get('/receipt', async (request, response) => {
+    const { fields } = await readReceipt(request.query.url)
+    response.json(fields);
 });
 
 module.exports = app
