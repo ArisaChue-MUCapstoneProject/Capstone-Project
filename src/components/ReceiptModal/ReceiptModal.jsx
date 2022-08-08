@@ -3,6 +3,7 @@ import { useState } from "react"
 import { Link } from "react-router-dom"
 import Modal from "react-bootstrap/Modal"
 import { BsDot } from 'react-icons/bs'
+import { AiOutlinePlus, AiOutlineMinus, AiOutlineClose } from 'react-icons/ai'
 import { Container, Row, Col, Button, Alert, Form } from "react-bootstrap"
 import PacmanLoader from "react-spinners/PacmanLoader";
 import { useEffect } from "react"
@@ -126,6 +127,12 @@ export default function ReceiptModal(props) {
         closeReceiptModal()
     }
 
+    const handleReceiptItemRemove = (indx) => {
+        const newReceipt = receiptItems.map(i => ({ ...i }))
+        newReceipt.splice(indx, 1)
+        setReceiptItems(newReceipt)
+    }
+
     const closeReceiptModal = () => {
         setCurImageFile(null)
         setCurImageUrl("")
@@ -192,6 +199,9 @@ export default function ReceiptModal(props) {
                                                         <option key={catVal} value={catVal} disabled={ind == 0} hidden={ind == 0}>{catVal}</option>
                                                     ))}
                                                 </Form.Select>
+                                            </div>
+                                            <div>
+                                                <Button className="receipt-item-remove" onClick={() => handleReceiptItemRemove(indx)}><AiOutlineClose /></Button>
                                             </div>
                                         </div>
                                     ))}

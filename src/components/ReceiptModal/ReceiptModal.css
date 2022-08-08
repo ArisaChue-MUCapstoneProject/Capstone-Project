@@ -20,5 +20,13 @@
 
 .receipt-items {
     display: flex;
+    align-items: flex-end;
     margin: 0.5rem 0.5rem 1rem 0.5rem;
+}
+
+.receipt-item-remove {
+    padding: 0.45rem 0.5rem;
+    margin-left: 0.3rem;
+    display: flex;
+    align-items: center;
 }
