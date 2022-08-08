@@ -98,10 +98,9 @@ export default function MarketPlace(props) {
         if (itemIndex == -1) {
             setError("cannot sell item since it does not exist")
         } else {
-            let newProducts = [...userProducts]
+            let newProducts = userProducts.map(i => ({ ...i }))
             // records that product is on sale
             newProducts[itemIndex].onSale = true
-            const newItem = { ...newProducts[itemIndex] }
             setUserProducts(newProducts)
         }
     }
@@ -113,7 +112,7 @@ export default function MarketPlace(props) {
         if (itemProductsIndex == -1) {
             setError("cannot remove item since it does not exist")
         } else {
-            let newProducts = [...userProducts]
+            let newProducts = userProducts.map(i => ({ ...i }))
             // records that product is no longer on sale
             newProducts[itemProductsIndex].onSale = false
             setUserProducts(newProducts)

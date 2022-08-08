@@ -3,11 +3,13 @@ import { useState, useEffect, useMemo } from "react"
 import { Form, Row, Col, Button, Alert } from "react-bootstrap" 
 import BootstrapSwitchButton from 'bootstrap-switch-button-react'
 import PacmanLoader from "react-spinners/PacmanLoader";
+import { ImFilePicture } from 'react-icons/im'
 import { doc, updateDoc } from "firebase/firestore"
 import "bootstrap/dist/css/bootstrap.min.css";
 
 import ProductCard from "../ProductCard/ProductCard"
 import { useAuth } from "../../contexts/AuthContext"
+import ReceiptModal from "../ReceiptModal/ReceiptModal"
 import { units, basicUnits, convertToStandard, updateStandardAmount, isVolumeUnit, basicCategories } from "../../utils/conversion"
 import { db } from "../../firebase"
 import "./Pantry.css"
@@ -36,6 +38,7 @@ export default function Pantry(props) {
   const [isMetric, setIsMetric] = useState(true)
   const [isUserInfoLoading, setIsUserInfoLoading] = useState(true)
   const [error, setError] = useState("")
+  const [receiptModalShow, setReceiptModalShow] = useState(false)
 
   // update user data once page loads
   useEffect(() => {
@@ -77,7 +80,7 @@ export default function Pantry(props) {
   // changes product item quantity based on button click
   const handleProductQuantity = (productName, operation) => {
     let itemIndex = userProducts.findIndex(item => item.name === productName)
-    let newProducts = [...userProducts]
+    let newProducts = userProducts.map(i => ({ ...i }))
     clearError()
 
     // edit item quantity
@@ -107,7 +110,7 @@ export default function Pantry(props) {
     let itemName = productForm.name.toLowerCase()
     let itemIndex = userProducts.findIndex(item => item.name === itemName)
 
-    let newProducts = [...userProducts]
+    let newProducts = userProducts.map(i => ({ ...i }))
     clearError()
     // add new item to products
     if (productForm.quantity < 1) {
@@ -167,6 +170,11 @@ export default function Pantry(props) {
     setCurCategory(event.target.value)
   }
 
+  // pop up recipe modal for specific recipe card
+  const handleReceiptModal = (showStatus) => {
+    setReceiptModalShow(showStatus)
+  }
+
   return (
     <div className="pantry">
       <h1 className="pantry-heading heading">Products</h1>
@@ -181,6 +189,7 @@ export default function Pantry(props) {
                 ))
               }
             </div>
+            <div className="products-list-container">
           {userProducts && userProductsByCategory
           ? <div className="products-list">
             {
@@ -204,6 +213,7 @@ export default function Pantry(props) {
           </div>
           : <PacmanLoader color="var(--green3)" loading={!userProducts || !userProductsByCategory} size={35} className="loader"/>
           }
+          </div>
           <div className="pantry-side-content">
             <div className="pantry-switch">
               <p>Unit Display:</p>
@@ -256,7 +266,9 @@ export default function Pantry(props) {
                 </Row>
               </Col>
             </Form>
+              <Button className="product-receipt-button" onClick={() => handleReceiptModal(true)}><ImFilePicture className="product-file-icon"/></Button>
           </div>
+          <ReceiptModal show={receiptModalShow} onHide={() => handleReceiptModal(false)} userProducts={userProducts} setUserProducts={setUserProducts}></ReceiptModal>
         </div>
     </div>
   )

@@ -8,6 +8,8 @@
     "dev": "supervisor server.js"
   },
   "dependencies": {
+    "@azure/ai-form-recognizer": "^4.0.0-beta.4",
+    "@azure/identity": "^2.1.0",
     "axios": "^0.27.2",
     "body-parser": "^2.0.0-beta.1",
     "cors": "^2.8.5",
