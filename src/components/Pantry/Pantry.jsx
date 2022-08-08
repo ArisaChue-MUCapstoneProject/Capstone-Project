@@ -189,6 +189,7 @@ export default function Pantry(props) {
                 ))
               }
             </div>
+            <div className="products-list-container">
           {userProducts && userProductsByCategory
           ? <div className="products-list">
             {
@@ -212,6 +213,7 @@ export default function Pantry(props) {
           </div>
           : <PacmanLoader color="var(--green3)" loading={!userProducts || !userProductsByCategory} size={35} className="loader"/>
           }
+          </div>
           <div className="pantry-side-content">
             <div className="pantry-switch">
               <p>Unit Display:</p>

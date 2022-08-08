@@ -180,6 +180,7 @@ export default function ShoppingCart(props) {
             ))
           }
         </div>
+        <div className="cart-list-container">
         {userCart && userCartByCategory &&
           <div className="cart-list">
             {
@@ -202,6 +203,7 @@ export default function ShoppingCart(props) {
             }
           </div>
         }
+        </div>
         <div className="cart-side-content">
           <div className="cart-switch">
             <p>Unit Display:</p>
