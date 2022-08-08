@@ -137,18 +137,23 @@ export default function Recipes(props) {
     }
   }, [recipeInfo])
 
-  const addIngredientToCart = (ingredientName) => {
+  const addIngredientToCart = (ingredientName, cat, amount, amountUnit) => {
     clearError()
     if (!ingredientName) {
       setError("ingredient was not found in recipe, please enter it manually")
     }
-    // TODO: change quantity to something specific, change unit
+    if (amount == undefined) {
+      amount = 0
+    }
+    if (amountUnit == undefined) {
+      amountUnit = "count"
+    }
+    const quantityAmount = convertToStandard(amountUnit, Number(amount))
     const newIngredient = {
       name: ingredientName,
-      quantity: 2,
-      unit: "gram",
-      unitType: 0,
-      category: "dairy"
+      quantity: quantityAmount[1],
+      unitType: quantityAmount[0],
+      category: cat
     }
     let newCart = userCart.map(i => ({ ...i }))
     newCart.push(newIngredient)

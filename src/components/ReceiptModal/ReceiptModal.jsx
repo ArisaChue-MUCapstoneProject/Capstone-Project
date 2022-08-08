@@ -43,7 +43,6 @@ export default function ReceiptModal(props) {
                 () => {
                     // download url
                     getDownloadURL(uploadTask.snapshot.ref).then((url) => {
-                        console.log(url);
                         setCurImageUrl(url)
                     });
                     setUploadingImage(false)
@@ -53,8 +52,7 @@ export default function ReceiptModal(props) {
     }, [curImageFile])
 
     const onImageChange = (event) => {
-        let img = event.target.files[0];
-        setCurImageFile(img)
+        setCurImageFile(event.target.files[0])
     }
 
     const handleReceiptRemove = () => {
@@ -70,22 +68,20 @@ export default function ReceiptModal(props) {
                 url: curImageUrl
             }
             await axios.post(receiptScannerUrl, imageObject).then((res) => {
-                console.log(res.data)
                 const curItems = res.data.Items.values.map((val) => {
-                    let item = {
+                    return {
                         name: val?.properties?.Description?.value || "",
                         quantity: val?.properties?.Quantity?.value || "",
                         unit: basicUnits[0],
                         category: basicCategories[0]
                     }
-                    return item
                 })
                 setReceiptItems(curItems)
             }).catch((error) => {
-                console.log(error.message)
+                setError(error.message)
             })
         } catch (error) {
-            console.log(error.message)
+            setError(error.message)
         }
         setScanningImage(false)
     }
@@ -98,7 +94,7 @@ export default function ReceiptModal(props) {
     }
 
     const handleEachItemUpdate = (item, products) => {
-        let itemIndex = products.findIndex(val => val.name === item.name)
+        const itemIndex = products.findIndex(val => val.name === item.name)
         if (itemIndex == -1) {
             products.push(item)
         } else {
@@ -113,13 +109,12 @@ export default function ReceiptModal(props) {
     const handleOnSubmitReceiptForm = () => {
         const newItems = receiptItems.map((val) => {
             const quantityAmount = convertToStandard(val.unit, Number(val.quantity))
-            let item = {
+            return {
                 name: val.name.toLowerCase(),
                 quantity: quantityAmount[1],
                 category: val.category,
                 unitType: isVolumeUnit(val.unit)
             }
-            return item
         })
         const newProducts = userProducts.map(i => ({ ...i }))
         newItems.forEach((val) => handleEachItemUpdate(val, newProducts))
@@ -127,9 +122,9 @@ export default function ReceiptModal(props) {
         closeReceiptModal()
     }
 
-    const handleReceiptItemRemove = (indx) => {
+    const handleReceiptItemRemove = (index) => {
         const newReceipt = receiptItems.map(i => ({ ...i }))
-        newReceipt.splice(indx, 1)
+        newReceipt.splice(index, 1)
         setReceiptItems(newReceipt)
     }
 
@@ -174,34 +169,34 @@ export default function ReceiptModal(props) {
 
                             {receiptItems.length > 0 &&
                                 <div className="receipt-item-grid">
-                                    {receiptItems.map((val, indx) => (
-                                        <div key={indx} className="receipt-items">
+                                    {receiptItems.map((val, index) => (
+                                        <div key={index} className="receipt-items">
                                             <div>
-                                                {indx == 0 && <Form.Label className="receipt-form-label">Product name:</Form.Label>}
-                                                <Form.Control type="text" placeholder="Enter name" name="name" value={val?.name} onChange={event => handleReceiptOutputFormChange(event, indx)} style={{ color: "var(--fontContent)" }} />
+                                                {index == 0 && <Form.Label className="receipt-form-label">Product name:</Form.Label>}
+                                                <Form.Control type="text" placeholder="Enter name" name="name" value={val?.name} onChange={event => handleReceiptOutputFormChange(event, index)} style={{ color: "var(--fontContent)" }} />
                                             </div>
                                             <div>
-                                            {indx == 0 && <Form.Label className="receipt-form-label">Quantity:</Form.Label>}
-                                                <Form.Control type="number" placeholder="Enter quantity" name="quantity" value={val?.quantity} onChange={event => handleReceiptOutputFormChange(event, indx)} style={{ color: "var(--fontContent)" }} />
+                                            {index == 0 && <Form.Label className="receipt-form-label">Quantity:</Form.Label>}
+                                                <Form.Control type="number" placeholder="Enter quantity" name="quantity" value={val?.quantity} onChange={event => handleReceiptOutputFormChange(event, index)} style={{ color: "var(--fontContent)" }} />
                                             </div>
                                             <div>
-                                                {indx == 0 && <Form.Label className="receipt-form-label">Unit:</Form.Label>}
-                                                <Form.Select name="unit" value={val?.unit} onChange={event => handleReceiptOutputFormChange(event, indx)} style={val?.unit == basicUnits[0] ? { color: "gray" } : { color: "var(--fontContent" }}>
+                                                {index == 0 && <Form.Label className="receipt-form-label">Unit:</Form.Label>}
+                                                <Form.Select name="unit" value={val?.unit} onChange={event => handleReceiptOutputFormChange(event, index)} style={val?.unit == basicUnits[0] ? { color: "gray" } : { color: "var(--fontContent" }}>
                                                     {basicUnits.map((unitVal, ind) => (
                                                         <option key={unitVal} value={unitVal} disabled={ind == 0} hidden={ind == 0}>{unitVal}</option>
                                                     ))}
                                                 </Form.Select>
                                             </div>
                                             <div>
-                                                {indx == 0 && <Form.Label className="receipt-form-label">Category:</Form.Label>}
-                                                <Form.Select name="category" value={val?.category} onChange={event => handleReceiptOutputFormChange(event, indx)} style={val?.category == basicCategories[0] ? { color: "gray" } : { color: "var(--fontContent" }}>
+                                                {index == 0 && <Form.Label className="receipt-form-label">Category:</Form.Label>}
+                                                <Form.Select name="category" value={val?.category} onChange={event => handleReceiptOutputFormChange(event, index)} style={val?.category == basicCategories[0] ? { color: "gray" } : { color: "var(--fontContent" }}>
                                                     {basicCategories.map((catVal, ind) => (
                                                         <option key={catVal} value={catVal} disabled={ind == 0} hidden={ind == 0}>{catVal}</option>
                                                     ))}
                                                 </Form.Select>
                                             </div>
                                             <div>
-                                                <Button className="receipt-item-remove" onClick={() => handleReceiptItemRemove(indx)}><AiOutlineClose /></Button>
+                                                <Button className="receipt-item-remove" onClick={() => handleReceiptItemRemove(index)}><AiOutlineClose /></Button>
                                             </div>
                                         </div>
                                     ))}

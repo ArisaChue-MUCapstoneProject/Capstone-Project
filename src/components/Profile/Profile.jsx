@@ -54,8 +54,6 @@ export default function Profile(props) {
   useEffect(() => {
     if (!props.isLoading) {
       var userInfo = props.users.find(u => u.uid === currentUser.uid)
-      console.log(currentUser)
-      console.log(props.users)
       userInfo.data.products && setUserProducts(userInfo.data.products)
       userInfo.data.cart && setUserCart(userInfo.data.cart)
       userInfo.data.primDiet && setUserPrimDiet(userInfo.data.primDiet)
@@ -306,7 +304,7 @@ export default function Profile(props) {
               <div className="profile-row">
                 <div>
                   <p className="profile-sub-heading">Your Current Location:</p>
-                  {!isLocationLoading && userLocation.length
+                  {!isLocationLoading && userLocation.length != 0
                     ? <div className="profile-sub-content">
                       <p className="overflow">{userLocation.features[0].properties.county}, {userLocation.features[0].properties.state_code}</p>
                       <Button variant="dark" className="profile-button overflow" onClick={handleLocationRefresh}><IoRefreshOutline className="profile-icon" /></Button>
