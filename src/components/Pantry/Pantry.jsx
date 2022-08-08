@@ -80,7 +80,7 @@ export default function Pantry(props) {
   // changes product item quantity based on button click
   const handleProductQuantity = (productName, operation) => {
     let itemIndex = userProducts.findIndex(item => item.name === productName)
-    let newProducts = [...userProducts]
+    let newProducts = userProducts.map(i => ({ ...i }))
     clearError()
 
     // edit item quantity
@@ -110,7 +110,7 @@ export default function Pantry(props) {
     let itemName = productForm.name.toLowerCase()
     let itemIndex = userProducts.findIndex(item => item.name === itemName)
 
-    let newProducts = [...userProducts]
+    let newProducts = userProducts.map(i => ({ ...i }))
     clearError()
     // add new item to products
     if (productForm.quantity < 1) {

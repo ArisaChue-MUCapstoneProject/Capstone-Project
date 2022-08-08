@@ -7,19 +7,13 @@ import { doc, updateDoc } from "firebase/firestore"
 import "./Recipes.css"
 import { db } from "../../firebase"
 import { useAuth } from "../../contexts/AuthContext"
-import { units, basicUnits, convertToStandard, updateStandardAmount, isVolumeUnit } from "../../utils/conversion"
+import { units, basicUnits, convertToStandard, updateStandardAmount, isVolumeUnit, UNIT_TYPE } from "../../utils/conversion"
 import leftUtensil from "../../icons/leftutensil.png"
 import rightUtensil from "../../icons/rightutensil.png"
 import RecipeCard from "../RecipeCard/RecipeCard"
 import RecipesHero from "../RecipesHero/RecipesHero"
 
 export default function Recipes(props) {
-  // unit enum 
-  const UNIT_TYPE = Object.freeze({
-    VOLUME: 1,
-    WEIGHT: 0,
-    UNKNOWN: -1
-  })
 
   // get user data from the database
   const { currentUser } = useAuth()
@@ -156,7 +150,9 @@ export default function Recipes(props) {
       unitType: 0,
       category: "dairy"
     }
-    setUserCart([...userCart, newIngredient])
+    let newCart = userCart.map(i => ({ ...i }))
+    newCart.push(newIngredient)
+    setUserCart(newCart)
   }
 
   // on click function on recipe modal that decreases user's products amount

@@ -76,7 +76,7 @@ export default function ShoppingCart(props) {
   // changes shopping cart item quantity based on button click
   const handleCartQuantity = (itemName, operation) => {
     let itemIndex = userCart.findIndex(item => item.name === itemName)
-    let newCart = [...userCart]
+    let newCart = userCart.map(i => ({ ...i }))
     clearError()
 
     // edit item quantity
@@ -106,7 +106,7 @@ export default function ShoppingCart(props) {
     let itemName = shoppingCartForm.name.toLowerCase()
     let itemIndex = userCart.findIndex(item => item.name === itemName)
 
-    let newCart = [...userCart]
+    let newCart = userCart.map(i => ({ ...i }))
     clearError()
     // add new item to cart
     if (shoppingCartForm.quantity < 1) {
