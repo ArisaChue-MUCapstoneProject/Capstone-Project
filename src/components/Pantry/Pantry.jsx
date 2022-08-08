@@ -3,6 +3,7 @@ import { useState, useEffect, useMemo } from "react"
 import { Form, Row, Col, Button, Alert } from "react-bootstrap" 
 import BootstrapSwitchButton from 'bootstrap-switch-button-react'
 import PacmanLoader from "react-spinners/PacmanLoader";
+import { ImFilePicture } from 'react-icons/im'
 import { doc, updateDoc } from "firebase/firestore"
 import "bootstrap/dist/css/bootstrap.min.css";
 
@@ -263,11 +264,9 @@ export default function Pantry(props) {
                 </Row>
               </Col>
             </Form>
-            <div>
-              <Button onClick={() => handleReceiptModal(true)}>Camera</Button>
-            </div>
+              <Button className="product-receipt-button" onClick={() => handleReceiptModal(true)}><ImFilePicture className="product-file-icon"/></Button>
           </div>
-          <ReceiptModal show={receiptModalShow} onHide={() => handleReceiptModal(false)}></ReceiptModal>
+          <ReceiptModal show={receiptModalShow} onHide={() => handleReceiptModal(false)} userProducts={userProducts} setUserProducts={setUserProducts}></ReceiptModal>
         </div>
     </div>
   )

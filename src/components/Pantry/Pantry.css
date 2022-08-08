@@ -1,14 +1,17 @@
 .pantry {
+    position: relative;
     margin: auto;
     background-color: var(--background);
     padding: 70px 0 0px;
-    margin: 1.5rem 2rem 0 6rem;
+    margin: 1.5rem 6rem 0 6rem;
 }
 
 .pantry-content {
+    position: relative;
     display: flex;
     font-family: 'Noto Sans JP', sans-serif;
     color: var(--fontContent);
+    padding-left: 20%;
 }
 
 h1.pantry-heading {
@@ -25,9 +28,11 @@ h1.pantry-heading {
 }
 
 .pantry-categories {
+    position: fixed;
+    left: 6%;
     border-radius: 8px;
     border: 1px solid var(--greenDark2);
-    width: 18%;
+    width: 15%;
     display: grid;
     grid-template-rows: repeat(11, 4rem);
     padding: 1rem 0 1rem 2.5rem;
@@ -63,14 +68,16 @@ h1.pantry-heading {
 }
 
 .products-list {
-    width: 52%;
+    width: 60%;
     padding: 0 1.5rem 0;
 }
 
 .pantry-side-content {
+    position: fixed;
+    right: 6%;
     display: grid;
     justify-items: center;
-    width: 30%;
+    width: 26%;
     height: fit-content;
 }
 
@@ -99,3 +106,19 @@ h1.pantry-heading {
 .product-submit {
     margin: 0;
 }
+
+.product-receipt-button {
+    border-radius: 0.5rem;
+    width: 80%;
+    margin: 1rem;
+    padding: 1rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.product-file-icon {
+    height: auto;
+    width: 1.5rem;
+}
+
