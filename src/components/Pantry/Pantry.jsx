@@ -10,7 +10,7 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import ProductCard from "../ProductCard/ProductCard"
 import { useAuth } from "../../contexts/AuthContext"
 import ReceiptModal from "../ReceiptModal/ReceiptModal"
-import { units, basicUnits, convertToStandard, updateStandardAmount, isVolumeUnit, basicCategories } from "../../utils/conversion"
+import { units, basicUnits, convertToStandard, updateStandardAmount, isVolumeUnit, basicCategories, UNIT_TYPE } from "../../utils/conversion"
 import { db } from "../../firebase"
 import "./Pantry.css"
 
@@ -38,6 +38,7 @@ export default function Pantry(props) {
   const [isMetric, setIsMetric] = useState(true)
   const [isUserInfoLoading, setIsUserInfoLoading] = useState(true)
   const [error, setError] = useState("")
+  const [errorForm, setErrorForm] = useState([])
   const [receiptModalShow, setReceiptModalShow] = useState(false)
 
   // update user data once page loads
@@ -77,11 +78,16 @@ export default function Pantry(props) {
     setError("")
   }
 
+  function clearErrorForm() {
+    setErrorForm([])
+  }
+
   // changes product item quantity based on button click
   const handleProductQuantity = (productName, operation) => {
+    clearError()
+
     let itemIndex = userProducts.findIndex(item => item.name === productName)
     let newProducts = userProducts.map(i => ({ ...i }))
-    clearError()
 
     // edit item quantity
     if (itemIndex === -1) {
@@ -106,18 +112,27 @@ export default function Pantry(props) {
 
   // adds new product item when submit button is clicked
   const handleOnSubmitProductForm = () => {
+    clearErrorForm()
+    // error handling when user hasn't filled out form
+    if (curCategory == basicCategories[0] || curUnit == basicUnits[0] || productForm.name.length == 0 || productForm.quantity.length == 0) {
+      let errorStrings = ["We are missing:"]
+      productForm.name.length == 0 && errorStrings.push("Name")
+      productForm.quantity.length == 0 && errorStrings.push("Quantity")
+      curUnit == basicUnits[0] && errorStrings.push("Unit")
+      curCategory == basicCategories[0] && errorStrings.push("Category")
+      setErrorForm(errorStrings)
+      return
+    }
     // submitted info from form
     let itemName = productForm.name.toLowerCase()
     let itemIndex = userProducts.findIndex(item => item.name === itemName)
 
     let newProducts = userProducts.map(i => ({ ...i }))
-    clearError()
-    // add new item to products
+    
     if (productForm.quantity < 1) {
-      setError("Quantity must be positive whole number")
-    }
+      setErrorForm(["Quantity must be positive number"])
+    } // add new item to products
     else if (itemIndex === -1) {
-      // TODO: check if user filled entire form out
       // keep all database quantities to standard
       const unitType = isVolumeUnit(curUnit)
       const quantityAmount = convertToStandard(curUnit, Number(productForm.quantity))
@@ -135,16 +150,22 @@ export default function Pantry(props) {
     } else {
       // if user submitted an item that already exists, just change quantity
       const unitType = isVolumeUnit(curUnit)
+      // error handling: adding to existing amount with different unit type
       if (newProducts[itemIndex].unitType != unitType) {
-        setError("please make sure measurement is correct")
+        let errorStrings = ["Your units are not consistent with your previous entries."]
+        let secondMessage = "Please make sure you are adding a *"
+        secondMessage += newProducts[itemIndex].unitType == UNIT_TYPE.VOLUME ? "volume" : newProducts[itemIndex].unitType == UNIT_TYPE.WEIGHT ? "weight" : "count/misc"
+        secondMessage += "* unit type"
+        errorStrings.push(secondMessage)
+        setErrorForm(errorStrings)
       } else {
         const quantityAmount = convertToStandard(curUnit, Number(productForm.quantity))
         newProducts[itemIndex].quantity += quantityAmount[1]
         setUserProducts(newProducts)
+        setProductForm(basicProductForm)
+        setCurUnit(basicUnits[0])
+        setCurCategory(basicCategories[0])
       }
-      setProductForm(basicProductForm)
-      setCurUnit(basicUnits[0])
-      setCurCategory(basicCategories[0])
     }
   }
 
@@ -230,6 +251,7 @@ export default function Pantry(props) {
             <Form className="product-form">
               <Col>
                 <Row>
+                {errorForm.length > 0 && <Alert variant="danger">{errorForm.map((message, index) => <p key={index} className="remove-margin">{message}</p>)}</Alert>}
                   <Form.Group className="mb-3" controlId="formGroupName">
                     <Form.Label>Product name</Form.Label>
                     <Form.Control type="text" placeholder="Enter name" name="name" value={productForm.name} onChange={handleOnProductFormChange} style={{color: "var(--fontContent)"}}/>

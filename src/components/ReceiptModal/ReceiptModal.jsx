@@ -10,12 +10,13 @@ import { useEffect } from "react"
 import axios from 'axios';
 import { ref, uploadBytesResumable, getDownloadURL, uploadBytes } from "firebase/storage"
 import { storage } from "../../firebase"
-import { units, basicUnits, convertToStandard, updateStandardAmount, isVolumeUnit, basicCategories } from "../../utils/conversion"
+import { units, basicUnits, convertToStandard, updateStandardAmount, isVolumeUnit, basicCategories, UNIT_TYPE } from "../../utils/conversion"
 import "./ReceiptModal.css"
 
 export default function ReceiptModal(props) {
     const receiptScannerUrl = "http://localhost:3001/receipt?"
     const [error, setError] = useState("")
+    const [errorForm, setErrorForm] = useState([])
     const [curImageFile, setCurImageFile] = useState(null)
     const [curImageUrl, setCurImageUrl] = useState("")
     const [loadingPercent, setLoadingPercent] = useState(0)
@@ -23,6 +24,10 @@ export default function ReceiptModal(props) {
     const [uploadingImage, setUploadingImage] = useState(false)
     const [scanningImage, setScanningImage] = useState(false)
     const { userProducts, setUserProducts, ...modalProps } = props
+
+    function clearErrorForm() {
+        setErrorForm([])
+      }
 
     useEffect(() => {
         if (curImageFile != null) {
@@ -93,13 +98,20 @@ export default function ReceiptModal(props) {
         setReceiptItems(newItems)
     }
 
-    const handleEachItemUpdate = (item, products) => {
+    const handleEachItemUpdate = (item, index, products, errors) => {
+        if (item.quantity < 1) {
+            errors.push(`Item ${index+1}: quantity must be a positive number`)
+            return
+        }
         const itemIndex = products.findIndex(val => val.name === item.name)
         if (itemIndex == -1) {
             products.push(item)
         } else {
             if (products[itemIndex].unitType != item.unitType) {
-                setError("please make sure measurement is correct")
+                let curUnitError = "Please make sure you are adding a *"
+                curUnitError += products[itemIndex].unitType == UNIT_TYPE.VOLUME ? "volume" : products[itemIndex].unitType == UNIT_TYPE.WEIGHT ? "weight" : "count/misc"
+                curUnitError += "* unit type"
+                errors.push(`Item ${index+1}: ${curUnitError}`)
             } else {
                 products[itemIndex].quantity += item.quantity
             }
@@ -107,22 +119,43 @@ export default function ReceiptModal(props) {
     }
 
     const handleOnSubmitReceiptForm = () => {
-        const newItems = receiptItems.map((val) => {
-            const quantityAmount = convertToStandard(val.unit, Number(val.quantity))
-            return {
-                name: val.name.toLowerCase(),
-                quantity: quantityAmount[1],
-                category: val.category,
-                unitType: isVolumeUnit(val.unit)
+        clearErrorForm()
+        let errorString = "We are missing info for items:"
+        const newItems = receiptItems.map((val, index) => {
+            // error handling when user hasn't filled out form
+            if (val.category == basicCategories[0] || val.unit == basicUnits[0] || val.name.length == 0 || val.quantity.length == 0) {
+                errorString += ` ${index+1}`
+            } else {
+                const quantityAmount = convertToStandard(val.unit, Number(val.quantity))
+                return {
+                    name: val.name.toLowerCase(),
+                    quantity: quantityAmount[1],
+                    category: val.category,
+                    unitType: isVolumeUnit(val.unit)
+                }
             }
         })
+        if (errorString != "We are missing info for items:") {
+            setErrorForm([`${errorString}`])
+            return
+        }
+        let itemErrors = ["Please check the following items:"]
         const newProducts = userProducts.map(i => ({ ...i }))
-        newItems.forEach((val) => handleEachItemUpdate(val, newProducts))
-        setUserProducts(newProducts)
-        closeReceiptModal()
+        newItems.forEach((val, index) => handleEachItemUpdate(val, index, newProducts, itemErrors))
+        if (itemErrors.length > 1) {
+            setErrorForm(itemErrors)
+        } else {
+            setUserProducts(newProducts)
+            closeReceiptModal()
+        }
     }
 
     const handleReceiptItemRemove = (index) => {
+        clearErrorForm()
+        if (index >= receiptItems.length || index < 0) {
+            setErrorForm(["Unable to remove nonexisting item"])
+            return
+        }
         const newReceipt = receiptItems.map(i => ({ ...i }))
         newReceipt.splice(index, 1)
         setReceiptItems(newReceipt)
@@ -166,11 +199,12 @@ export default function ReceiptModal(props) {
                             <PacmanLoader color="var(--green3)" loading={scanningImage} size={20} className="loader" />
                         </Row>
                         <Row>
-
+                            {errorForm.length > 0 && <Alert variant="danger">{errorForm.map((message, index) => <p key={index} className="remove-margin">{message}</p>)}</Alert>}
                             {receiptItems.length > 0 &&
                                 <div className="receipt-item-grid">
                                     {receiptItems.map((val, index) => (
                                         <div key={index} className="receipt-items">
+                                            <p className="receipt-item-bullet">{index+1}.</p>
                                             <div>
                                                 {index == 0 && <Form.Label className="receipt-form-label">Product name:</Form.Label>}
                                                 <Form.Control type="text" placeholder="Enter name" name="name" value={val?.name} onChange={event => handleReceiptOutputFormChange(event, index)} style={{ color: "var(--fontContent)" }} />

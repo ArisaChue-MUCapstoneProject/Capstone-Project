@@ -71,7 +71,7 @@ export const units = {
     "count": 1
 }
 
-export const basicUnits = ["choose unit", "mL", "tbsp", "tsp", "fl oz", "cup", "gallon", "L", "g", "lb", "oz", "kg", "count"]
+export const basicUnits = ["choose unit", "mL", "tbsp", "tsp", "fl oz", "cup", "gallon", "L", "g", "lb", "oz", "kg", "count/misc"]
 
 const volumeUnits = new Set(["milliliter", "ml", "millilitre", "cc", "mL", "tablespoon", "tbsp", "tbs", "tbl", "T", "teaspoon", "tsp", "t", "pinch", "pin", "dash", "d", "fluidounce", "floz", "gill", "cup", "c", "stick", "pint", "p", "pt", "flpt", "quart", "q", "qt", "flqt", "gallon", "gal", "liter", "litre", "l", "L", "deciliter", "decilitre", "dL", "dl", "peck", "pk", "barrel", "bbl", "bushel", "bu"])
 const weightUnits = new Set(["gram", "gramme", "g", "pound", "lb", "ounce", "oz", "milligram", "milligramme", "mg", "kilogram", "kilogramme", "kg", "dozen", "doz", "bunch", "bch", "bu", "bushel", "bn"])

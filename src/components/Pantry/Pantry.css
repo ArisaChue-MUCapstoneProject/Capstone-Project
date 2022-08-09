@@ -4,6 +4,7 @@
     background-color: var(--background);
     padding: 70px 0 0px;
     margin: 1.5rem 6rem 0 6rem;
+    scroll-behavior: smooth;
 }
 
 .pantry-content {
@@ -83,6 +84,10 @@ h1.pantry-heading {
     justify-items: center;
     width: 30%;
     height: fit-content;
+}
+
+.remove-margin {
+    margin: 0;
 }
 
 .pantry-switch {
