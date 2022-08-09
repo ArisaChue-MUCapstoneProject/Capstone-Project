@@ -15,7 +15,6 @@ export default function RecipeCard(props) {
   const [recipeModelShow, setRecipeModalShow] = useState(false)
   const [isHeartClick, setIsHeartClick] = useState(false);
   const [error, setError] = useState("")
-  const [modalError, setModalError] = useState("")
   const validMins = !(props.curRecipe.readyInMinutes == undefined || props.curRecipe.readyInMinutes.length == 0)
   const validLikes = !(props.curRecipe.aggregateLikes == undefined)
   const cuisine = props.curRecipe.cuisines[0] || props.curRecipe.dishTypes[0] || "meal"
@@ -36,14 +35,14 @@ export default function RecipeCard(props) {
   const handleGetRecipeInstructions = async (recipeId) => {
     const curRecipeInfo = props.recipes.find(recipe => recipe.id === recipeId)
     if (curRecipeInfo == null) {
-      setModalError("recipe does not exist, please click on another one")
+      props.setModalError(["recipe does not exist, please click on another one"])
     } else if (curRecipeInfo.analyzedInstructions.length == 0) {
       // try fetching data from recipe specific get request
       try {
         var { data } = await axios(recipeInfoUrl + recipeId)
         props.setRecipeInfo(data)
       } catch (error) {
-        setModalError(error.message)
+        props.setModalError([error.message])
       }
     } else {
       props.setRecipeInfo(curRecipeInfo)
@@ -77,7 +76,7 @@ export default function RecipeCard(props) {
           </div>
         </div>
         {/* recipe modal */}
-        <RecipeModal show={recipeModelShow} onHide={() => handleRecipeModal(false)} recipeInfo={props.recipeInfo} modalError={modalError} userDiets={props.userDiets} ingredientInfo={props.ingredientInfo} isIngredLoading={props.isIngredLoading} useRecipe={props.useRecipe} addIngredientToCart={props.addIngredientToCart}></RecipeModal>
+        <RecipeModal show={recipeModelShow} onHide={() => handleRecipeModal(false)} recipeInfo={props.recipeInfo} modalError={props.modalError} userDiets={props.userDiets} ingredientInfo={props.ingredientInfo} isIngredLoading={props.isIngredLoading} useRecipe={props.useRecipe} addIngredientToCart={props.addIngredientToCart}></RecipeModal>
     </div>
   )
 }

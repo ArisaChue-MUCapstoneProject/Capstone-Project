@@ -44,7 +44,7 @@ export default function RecipeModal(props) {
       <Modal.Body className="show-grid">
         <Container>
           <Row>
-            {modalError && <Alert variant="danger">{modalError}</Alert>}
+          {modalError.length > 0 && <Alert variant="danger">{modalError.map((message, index) => <p key={index} className="remove-margin">{message}</p>)}</Alert>}
           </Row>
           <Row>
             {warning && <Alert variant="warning">{warning}</Alert>}

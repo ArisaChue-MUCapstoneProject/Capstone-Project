@@ -108,9 +108,9 @@ export default function ReceiptModal(props) {
             products.push(item)
         } else {
             if (products[itemIndex].unitType != item.unitType) {
-                let curUnitError = "Please make sure you are adding a *"
+                let curUnitError = "Please make sure you are adding a ["
                 curUnitError += products[itemIndex].unitType == UNIT_TYPE.VOLUME ? "volume" : products[itemIndex].unitType == UNIT_TYPE.WEIGHT ? "weight" : "count/misc"
-                curUnitError += "* unit type"
+                curUnitError += "] unit type"
                 errors.push(`Item ${index+1}: ${curUnitError}`)
             } else {
                 products[itemIndex].quantity += item.quantity

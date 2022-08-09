@@ -153,9 +153,9 @@ export default function Pantry(props) {
       // error handling: adding to existing amount with different unit type
       if (newProducts[itemIndex].unitType != unitType) {
         let errorStrings = ["Your units are not consistent with your previous entries."]
-        let secondMessage = "Please make sure you are adding a *"
+        let secondMessage = "Please make sure you are adding a ["
         secondMessage += newProducts[itemIndex].unitType == UNIT_TYPE.VOLUME ? "volume" : newProducts[itemIndex].unitType == UNIT_TYPE.WEIGHT ? "weight" : "count/misc"
-        secondMessage += "* unit type"
+        secondMessage += "] unit type"
         errorStrings.push(secondMessage)
         setErrorForm(errorStrings)
       } else {

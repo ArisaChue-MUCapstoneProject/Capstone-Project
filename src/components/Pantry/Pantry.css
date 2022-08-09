@@ -76,7 +76,7 @@ h1.pantry-heading {
     padding: 0;
     margin: 0;
     height: 75vh;
-    overflow: scroll;
+    overflow: auto;
 }
 
 .pantry-side-content {
