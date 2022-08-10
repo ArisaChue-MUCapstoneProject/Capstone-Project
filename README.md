@@ -1,9 +1,11 @@
 # TasteIt
 
 Website URL:
+
 [deployed site coming soon]
 
 Summary:
+
 My website tracks food items users have at home and generates recipes that best match with these products. The goal of my project is to reduce food waste that happens at home. My website personalizes the generated recipes by the user’s dietary restrictions/allergies and highlights ingredients users have and don’t have (which they can automatically add to their grocery list) in each recipe. Once a user uses a recipe, my website will automatically update the user's ingredients with the correct remaining amount they have. My website also has a marketplace where users can see sellers (in order of sellers that best match the user’s grocery list, and filtered by a specified distance range) and the user can also sell their ingredients if they wish. 
 
 Key Features:
