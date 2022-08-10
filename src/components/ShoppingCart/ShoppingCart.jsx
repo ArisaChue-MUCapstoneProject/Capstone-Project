@@ -191,8 +191,10 @@ export default function ShoppingCart(props) {
   return (
     <div className="shopping-cart">
       {error && <Alert variant="danger">{error}</Alert>}
+      <div className="heading-banner-container">
       <h1 className="cart-heading heading">Grocery List</h1>
       <p className="cart-heading-sub">Tracking list of products you need, so your next grocery trip can be care-free.</p>
+      </div>
       <div className="cart-content">
         <div className="cart-categories">
           <p className="category-select">Categories:</p>

@@ -198,8 +198,10 @@ export default function Pantry(props) {
 
   return (
     <div className="pantry">
+      <div className="heading-banner-container">
       <h1 className="pantry-heading heading">Products</h1>
       <p className="pantry-heading-sub">Tracking list of products you have at home, so you won't have to remember them.</p>
+      </div>
         {error && <Alert variant="danger">{error}</Alert>}
         <div className="pantry-content">
             <div className="pantry-categories">
@@ -236,6 +238,7 @@ export default function Pantry(props) {
           }
           </div>
           <div className="pantry-side-content">
+            <div className="unit-receipt">
             <div className="pantry-switch">
               <p>Unit Display:</p>
               <BootstrapSwitchButton
@@ -248,6 +251,11 @@ export default function Pantry(props) {
                   onChange={() => {setIsMetric(!isMetric)}}
               />
             </div>
+            <div className="receipt-button-container">
+              <p>Scan Receipt:</p>
+            <Button className="product-receipt-button" onClick={() => handleReceiptModal(true)}><ImFilePicture className="product-file-icon"/></Button>
+            </div>
+                        </div>
             <Form className="product-form">
               <Col>
                 <Row>
@@ -288,7 +296,6 @@ export default function Pantry(props) {
                 </Row>
               </Col>
             </Form>
-              <Button className="product-receipt-button" onClick={() => handleReceiptModal(true)}><ImFilePicture className="product-file-icon"/></Button>
           </div>
           <ReceiptModal show={receiptModalShow} onHide={() => handleReceiptModal(false)} userProducts={userProducts} setUserProducts={setUserProducts}></ReceiptModal>
         </div>

@@ -179,7 +179,7 @@ export default function MarketPlace(props) {
                     </div>
                     <div className="marketplace-content">
                             <div className="marketplace-sellers">
-                                {sellers.length
+                                {sellers.length > 0
                                     ? sellers.map((user) => (
                                         user.account.uid != currentUser.uid && user.account.data.sale && user.account.data.sale.length > 0 && <SellerCard key={user.account.uid} user={user} isMetric={isMetric} />
                                     ))
