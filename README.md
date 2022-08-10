@@ -1,25 +1,31 @@
-# Capstone-Project
+# TasteIt
 
-Current app name ideas: 
-- YumTum (Yummy in My Tummy)
-- TasteIt (Taste It, Don't Waste It)
+Website URL:
+[deployed site coming soon]
 
-User role: 
-1. a busy person who cooks often
+Summary:
+My website tracks food items users have at home and generates recipes that best match with these products. The goal of my project is to reduce food waste that happens at home. My website personalizes the generated recipes by the user’s dietary restrictions/allergies and highlights ingredients users have and don’t have (which they can automatically add to their grocery list) in each recipe. Once a user uses a recipe, my website will automatically update the user's ingredients with the correct remaining amount they have. My website also has a marketplace where users can see sellers (in order of sellers that best match the user’s grocery list, and filtered by a specified distance range) and the user can also sell their ingredients if they wish. 
 
-User Personas:
-1. My user is Preeti and she lives in New York City. She is 32 and has a family of 4 kids. She is very well up to date with technology, so she will use a website app frequently. Her main motivation to use this web app is to keep track of all of her groceries to feed a large family. Deploying the project on a website could be a pain point since it would be much easier for Preeti to take pictures of her receipts and upload them using an app. Another pain point would be the variety of recipes, and if Preeti uses this web app often, the recipes could start repeating.
-2. My user is Faruq and he lives in California. He is a college student who lives alone, but needs to cook for himself. He is also well versed with technology. Because he doesn’t have much experience with cooking, his main motivation to use this web app is to discover recipes that are accessible (something from what he already has) since going to grocery stores is difficult for him without a car. One pain point could be how easy the recipes are—Faruq would want easy recipes, which would need another layer of filtering. 
+Key Features:
 
-User stories:
-1. As a college student, I want to create a profile so the app can know my cooking level and adjust recipes according to my level set
-2. As a user with allergies, I want to filter my recipes according to remove recipes that have dangerous ingredients so I can safely trust the web app
-3. As a mom with a large family, I want to see a list of the current food I have since I need to buy a lot of food and track them all
-4. As a user who lives in a rural area, I want my generated recipes to maximize what I have right now so I wouldn’t have to go to the store often
-5. As a picky eater, I want to see a list of all of the recipes that are possible so I can scroll through my options and decide by myself
-6. As a busy businessman, I want the app to be able to extract the food items I bought from just a picture of a receipt so I don’t have to manually input each food item
-7. As an Asian American, I want to see a variety of ethnic recipes so I can create something that my tongue is used to
-8. As a dad of a large family, I want the app to prioritize food items that I bought early so I can use them up before they get spoiled
-9. As an incentive-driven user, I want to get rewards the more I use the web app so I can be motivated to continue relying on this app
-10. As a businessman, I want to sell food items that I see on the list that I no longer want so I can gain profit (instead of throwing them away) while also decreasing my food waste
-11. As a forgetful person, I would want the app to send me notifications of food that are spoiling soon so I can be reminded to use it
+- login/signup
+- customize their profile by diet preferences and allergies
+- manually input, or used an automated OCR receipt scan, to log in current food items in the household
+- generate recipes (filtered by user's restrictions) that best match with current user's food items
+- differentiate between ingredients users have and don't have for each recipe
+- once user uses a recipe, user's food items will automatically update with remaining amount
+- add recipe ingredients to grocery list, or manually input items
+- sell own food items, or view local sellers (distance range set by user) and their food items on sale
+
+Snapshots:
+
+<img width="1728" alt="Screen Shot 2022-08-09 at 8 20 54 PM" src="https://user-images.githubusercontent.com/62860690/183809595-ab937cac-b997-4a1f-a193-3c2e8ace096a.png">
+<img width="1728" alt="Screen Shot 2022-08-09 at 8 21 05 PM" src="https://user-images.githubusercontent.com/62860690/183809605-41ed2495-e8b1-463b-a787-575d3b780f1e.png">
+<img width="1728" alt="Screen Shot 2022-08-09 at 8 21 57 PM" src="https://user-images.githubusercontent.com/62860690/183809610-5de3b1de-9b1c-4905-be6d-c53b4b81cf48.png">
+<img width="1728" alt="Screen Shot 2022-08-09 at 8 26 41 PM" src="https://user-images.githubusercontent.com/62860690/183809617-94f09b2b-ee26-4fa2-8a99-a7590db1bd3f.png">
+<img width="1728" alt="Screen Shot 2022-08-09 at 8 28 50 PM" src="https://user-images.githubusercontent.com/62860690/183809623-dbf0edd9-e708-4950-a02f-c67aa8aaedfa.png">
+<img width="1728" alt="Screen Shot 2022-08-09 at 8 33 24 PM" src="https://user-images.githubusercontent.com/62860690/183809687-4ff5b7ae-579f-4631-8864-141fd1b3a488.png">
+<img width="1728" alt="Screen Shot 2022-08-09 at 8 29 52 PM" src="https://user-images.githubusercontent.com/62860690/183809628-5bd7ba4c-a210-40d3-9ebe-334b84c4b686.png">
+<img width="1728" alt="Screen Shot 2022-08-09 at 8 30 49 PM" src="https://user-images.githubusercontent.com/62860690/183809634-483f974c-103e-49cd-8fbf-097f86726758.png">
+<img width="1728" alt="Screen Shot 2022-08-09 at 8 34 13 PM" src="https://user-images.githubusercontent.com/62860690/183809699-d7b8442c-4357-4f55-aecb-a9e6286da029.png">
+<img width="1728" alt="Screen Shot 2022-08-09 at 8 55 16 PM" src="https://user-images.githubusercontent.com/62860690/183809706-c6ee679a-297c-4d0c-84e2-fad31d46c780.png">
