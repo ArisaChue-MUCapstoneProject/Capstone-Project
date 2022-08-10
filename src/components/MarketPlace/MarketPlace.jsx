@@ -147,7 +147,7 @@ export default function MarketPlace(props) {
                     distance: null
                 }
             } else {
-                let dis = getDistance(userLocation.latitude, userLocation.longitude, curUsers[seller.index].data.location.latitude, curUsers[seller.index].data.location.longitude)
+                let dis = getDistance(userLocation.features[0].properties.lat, userLocation.features[0].properties.lon, curUsers[seller.index].data.location.features[0].properties.lat, curUsers[seller.index].data.location.features[0].properties.lon)
                 if (isMetric && dis > maxDistance) {
                     return
                 }
