@@ -12,17 +12,23 @@
 }
 
 h1.cart-heading {
-    padding-bottom: 0.5rem;
+    margin-bottom: 0.5rem;
     font-size: 3rem;
-    
+    padding: 0 0.5rem;
+    background-color: #e3e7f0a9;
+    width: fit-content;
+    color: var(--fontHeading);
+    width: fit-content;
 }
 
 .cart-heading-sub {
     font-size: 1.2rem;
-    padding-bottom: 0.5rem;
-    padding-left: 0.15rem;
-    color: var(--greenDark2);
+    color: var(--fontSub);
     font-family: 'Lora', serif;
+    margin-bottom: 0.5rem;
+    background-color: #e3e7f0a9;
+    padding: 0 0.5rem;
+    width: fit-content;
 }
 
 .cart-categories {
@@ -74,7 +80,7 @@ h1.cart-heading {
     padding: 0;
     margin: 0;
     height: 75vh;
-    overflow: scroll;
+    overflow: auto;
 }
 
 .cart-side-content {

@@ -6,7 +6,7 @@
 .receipt-image-buttons {
     display: flex;
     justify-content: space-around;
-    margin: 0.5rem;
+    margin: 0.5rem 0.5rem 1rem;
 }
 
 .receipt-item-grid {
@@ -21,7 +21,14 @@
 .receipt-items {
     display: flex;
     align-items: flex-end;
-    margin: 0.5rem 0.5rem 1rem 0.5rem;
+    margin: 0 0.5rem 1rem 0.5rem;
+}
+
+.receipt-item-bullet {
+    margin: 0;
+    padding-bottom: 0.5rem;
+    margin-right: 0.5rem;
+    color: var(--fontSub);
 }
 
 .receipt-item-remove {

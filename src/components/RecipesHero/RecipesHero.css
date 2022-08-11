@@ -39,14 +39,17 @@ p.recipes-hero-sub {
 .recipes-hero-ingreds {
     display: flex;
     padding-left: 1rem;
+    flex-direction: row;
+    flex-wrap: wrap;
 }
 
 .recipes-hero-item {
     border: solid var(--greenDark2);
-    margin: 0 1rem 0 0;
+    margin: 0.5rem 1rem 0 0;
     padding: 0.45rem;
     border-radius: 20px;
     background-color: var(--brownDark);
+    width: fit-content;
 }
 
 .recipes-hero-img {

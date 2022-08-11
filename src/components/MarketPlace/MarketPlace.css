@@ -6,6 +6,13 @@
 
 .marketplace-heading-container {
     margin-left: 6rem;
+    background-image: url("../../icons/page_banner.jpeg");
+    border-radius: 10px;
+    padding: 2.5rem 1rem 0.5rem;
+    margin-bottom: 1rem;
+    background-size: cover;
+    background-position: 0% 80%;
+    margin-right: 2rem;
 }
 
 .marketplace-content {
@@ -15,20 +22,25 @@
 }
 
 h1.marketplace-heading {
-    padding-bottom: 0.5rem;
-    font-size: 2.7rem;
+    margin-bottom: 0.5rem;
+    font-size: 3rem;
     font-family: 'Lato', sans-serif;
-    margin: 0;
     font-weight: bold;
+    padding: 0 0.5rem;
+    background-color: #e3e7f0a9;
+    width: fit-content;
     color: var(--fontHeading);
+    width: fit-content;
 }
 
 .marketplace-heading-sub {
     font-size: 1.2rem;
-    padding-bottom: 0.5rem;
-    padding-left: 0.15rem;
-    color: var(--greenDark2);
+    color: var(--fontSub);
     font-family: 'Lora', serif;
+    margin-bottom: 0.5rem;
+    background-color: #e3e7f0a9;
+    padding: 0 0.5rem;
+    width: fit-content;
 }
 
 .marketplace-sellers {

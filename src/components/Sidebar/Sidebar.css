@@ -11,6 +11,8 @@
     border-top: 1px solid var(--fontSub);
     border-right: 1px solid var(--fontSub);
     border-top-right-radius: 7px;
+    overflow-y: hidden; 
+    overflow-x: hidden;
 }
 
 
@@ -52,6 +54,7 @@ h1.heading {
 .open {
     width: 400px;
     padding: 1rem;
+    overflow-y: auto;
 }
 
 .toggle-button {
